@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+  schedule:
+    # Daily: providers change dataflows and keys without notice; the live suite catches it.
+    - cron: "17 21 * * *"
+  workflow_dispatch:
+
+jobs:
+  test:
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v10.2.0
+        with:
+          enable-cache: true
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: uv sync --locked
+
+      - name: Run unit tests
+        run: uv run pytest
+
+      - name: Build package
+        run: uv build
+
+  live:
+    # Re-verifies every catalog mapping for KR, US, JP, CN, EA and GB against the real ECOS,
+    # OECD, IMF and BIS APIs. Informative, not blocking: OECD rate limits shared runner IPs.
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    env:
+      ECOS_API_KEY: ${{ secrets.ECOS_API_KEY }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: astral-sh/setup-uv@v10.2.0
+        with:
+          enable-cache: true
+
+      - run: uv sync --locked
+
+      - name: CLI health check
+        run: uv run global-economic-statistical-mcp --check
+
+      - name: Live API tests
+        run: uv run pytest -m live
+
+      - name: Cross-validation report
+        if: always()
+        env:
+          GESM_DATA_DIR: ${{ runner.temp }}/gesm
+        run: |
+          uv run python scripts/validation_report.py validation-report
+          cat validation-report/summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload cross-validation summary
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: validation-report
+          path: validation-report/
+          retention-days: 90
