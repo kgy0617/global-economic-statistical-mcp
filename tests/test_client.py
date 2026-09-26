@@ -4,7 +4,7 @@ import httpx
 import pytest
 from conftest import TEST_KEY, monthly
 
-from ecos_mcp.client import EcosApiError, EcosClient
+from global_economic_statistical_mcp.ecos_client import EcosApiError, EcosClient
 
 pytestmark = pytest.mark.anyio
 

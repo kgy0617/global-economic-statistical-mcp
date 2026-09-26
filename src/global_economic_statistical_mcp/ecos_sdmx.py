@@ -22,13 +22,14 @@ from __future__ import annotations
 
 import re
 import uuid
-from dataclasses import asdict, dataclass, field
+from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any
 
-from ecos_mcp.concepts import CONCEPTS
-from ecos_mcp.config import KST
-from ecos_mcp.timeseries import TRANSFORMS, series_key, to_number
+from global_economic_statistical_mcp.catalog.concepts import CONCEPTS
+from global_economic_statistical_mcp.catalog.countries import get_country
+from global_economic_statistical_mcp.config import KST
+from global_economic_statistical_mcp.timeseries import TRANSFORMS, series_key, to_number
 
 AGENCY = "ECOS_MCP"
 VERSION = "1.0"
@@ -60,7 +61,7 @@ CONCEPT_NAMES = {
     },
 }
 MAPPING_NOTE = (
-    "Unofficial SDMX mapping of Bank of Korea ECOS metadata produced by ecos-mcp; "
+    "Unofficial SDMX mapping of Bank of Korea ECOS metadata produced by global-economic-statistical-mcp; "
     "the Bank of Korea does not publish SDMX structures for ECOS."
 )
 
@@ -141,7 +142,7 @@ def _meta(language: str) -> dict[str, Any]:
         "id": f"ECOS_MCP-{uuid.uuid4().hex[:16]}",
         "test": False,
         "prepared": datetime.now(KST).isoformat(timespec="seconds"),
-        "sender": {"id": AGENCY, "name": "ECOS MCP Server"},
+        "sender": {"id": AGENCY, "name": "Global Economic Statistical MCP"},
         "contentLanguages": ["en" if language == "en" else "ko"],
     }
 
@@ -196,6 +197,29 @@ class TableStructure:
     @property
     def series_key(self) -> list[str]:
         return ["FREQ", *(d.id for d in self.dimensions)]
+
+
+def linked_concepts(stat_code: str) -> list[dict[str, Any]]:
+    """Canonical concepts that use this ECOS table, with their other (international) sources for Korea."""
+    korea = get_country("KR")
+    out = []
+    for c in CONCEPTS:
+        ecos = [m for m in c.sources if m.provider == "ECOS" and m.dataflow == stat_code]
+        if not ecos:
+            continue
+        out.append(
+            {
+                "concept_id": c.id,
+                "name": c.name_ko,
+                "ecos_keys": [{"cycle": m.freq, "key": m.key} for m in ecos],
+                "other_sources_for_KR": [
+                    {"provider": m.provider, "dataflow": m.dataflow, "key": m.render_key(korea), "freq": m.freq}
+                    for m in c.sources
+                    if m.provider != "ECOS"
+                ],
+            }
+        )
+    return out
 
 
 def build_table_structure(
@@ -316,17 +340,9 @@ def compact_structure(structure: TableStructure, language: str = "kr") -> dict[s
     if not structure.complete:
         out["complete"] = False
         out["note"] = "API 한도로 항목 목록 일부만 조회했습니다 (sample 키 등). 정식 키를 쓰면 전체 항목이 조회됩니다."
-    matching_concepts = [c for c in CONCEPTS if c.ecos.stat_code == structure.stat_code]
-    if matching_concepts:
-        out["canonical_concepts"] = [
-            {
-                "concept_id": c.concept_id,
-                "name": c.name_ko if language == "kr" else c.name_en,
-                "sdmx": asdict(c.sdmx),
-                "cross_agency": {k: v for k, v in asdict(c.cross_agency).items() if v},
-            }
-            for c in matching_concepts
-        ]
+    linked = linked_concepts(structure.stat_code)
+    if linked:
+        out["canonical_concepts"] = linked
     return out
 
 
@@ -335,16 +351,10 @@ def structure_message(structure: TableStructure, language: str = "kr") -> dict[s
     stat = sdmx_id(structure.stat_code)
     freq_names = FREQ_NAMES["en" if language == "en" else "kr"]
     lang_note = [{"type": "ECOS_MCP_MAPPING", "title": MAPPING_NOTE}]
-    for c in [c for c in CONCEPTS if c.ecos.stat_code == structure.stat_code]:
-        lang_note.append({"type": "SDMX_CANONICAL_CONCEPT", "title": c.concept_id})
-        if c.cross_agency.imf:
-            lang_note.append({"type": "CROSS_AGENCY_IMF", "title": f"{c.cross_agency.imf.get('dataflow')}:{c.cross_agency.imf.get('series_key')}"})
-        if c.cross_agency.oecd:
-            lang_note.append({"type": "CROSS_AGENCY_OECD", "title": f"{c.cross_agency.oecd.get('dataflow')}:{c.cross_agency.oecd.get('series_key')}"})
-        if c.cross_agency.bis:
-            lang_note.append({"type": "CROSS_AGENCY_BIS", "title": f"{c.cross_agency.bis.get('dataflow')}:{c.cross_agency.bis.get('series_key')}"})
-
-
+    for c in linked_concepts(structure.stat_code):
+        lang_note.append({"type": "CANONICAL_CONCEPT", "title": c["concept_id"]})
+        for other in c["other_sources_for_KR"]:
+            lang_note.append({"type": "CROSS_AGENCY", "title": f"{other['provider']} {other['dataflow']} {other['key']}"})
     def code_entry(c: CodeInfo, known: set[str]) -> dict[str, Any]:
         entry: dict[str, Any] = {"id": sdmx_id(c.code), "name": c.name}
         if c.parent and c.parent in known:

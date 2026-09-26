@@ -1,4 +1,4 @@
-"""Rebuild src/ecos_mcp/tables.json from the live ECOS StatisticTableList API.
+"""Rebuild src/global_economic_statistical_mcp/catalog/data/tables.json from the live ECOS StatisticTableList API.
 
 Usage:
     ECOS_API_KEY=<your key> uv run python scripts/update_tables.py
@@ -13,10 +13,10 @@ import json
 import sys
 from pathlib import Path
 
-from ecos_mcp.client import EcosClient
-from ecos_mcp.config import today_kst
+from global_economic_statistical_mcp.config import today_kst
+from global_economic_statistical_mcp.ecos_client import EcosClient
 
-OUTPUT = Path(__file__).resolve().parent.parent / "src" / "ecos_mcp" / "tables.json"
+OUTPUT = Path(__file__).resolve().parent.parent / "src" / "global_economic_statistical_mcp" / "catalog" / "data" / "tables.json"
 FIELDS = ("P_STAT_CODE", "STAT_CODE", "STAT_NAME", "CYCLE", "SRCH_YN", "ORG_NAME")
 
 

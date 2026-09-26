@@ -1,7 +1,7 @@
 [project]
-name = "ecos-mcp"
-version = "0.3.0"
-description = "MCP server for Bank of Korea ECOS (Economic Statistics System) Open API with an SDMX view of its metadata"
+name = "global-economic-statistical-mcp"
+version = "0.4.0"
+description = "MCP server for macroeconomic statistics from the Bank of Korea (ECOS) and OECD, IMF, BIS (SDMX), with a concept catalog, validation layer and provenance"
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
@@ -9,7 +9,7 @@ authors = [
     { name = "kgy0617", email = "35395723+kgy0617@users.noreply.github.com" }
 ]
 requires-python = ">=3.11"
-keywords = ["mcp", "model-context-protocol", "ecos", "bank-of-korea", "economics", "statistics", "sdmx"]
+keywords = ["mcp", "model-context-protocol", "ecos", "bank-of-korea", "sdmx", "oecd", "imf", "bis", "economics", "statistics"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
@@ -27,12 +27,12 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/kgy0617/ecos_mcp"
-Repository = "https://github.com/kgy0617/ecos_mcp"
-Issues = "https://github.com/kgy0617/ecos_mcp/issues"
+Homepage = "https://github.com/kgy0617/global-economic-statistical-mcp"
+Repository = "https://github.com/kgy0617/global-economic-statistical-mcp"
+Issues = "https://github.com/kgy0617/global-economic-statistical-mcp/issues"
 
 [project.scripts]
-ecos-mcp = "ecos_mcp:main"
+global-economic-statistical-mcp = "global_economic_statistical_mcp:main"
 
 [dependency-groups]
 dev = [

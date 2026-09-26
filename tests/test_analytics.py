@@ -1,6 +1,6 @@
 import pytest
 
-from ecos_mcp.analytics import (
+from global_economic_statistical_mcp.analytics import (
     align,
     can_convert,
     coarsest_cycle,
@@ -64,7 +64,10 @@ def test_normalize():
 
 
 def test_unit_multiplier_and_scaling():
-    from ecos_mcp.analytics import scale_multiplier, unit_multiplier_from_name
+    from global_economic_statistical_mcp.analytics import (
+        scale_multiplier,
+        unit_multiplier_from_name,
+    )
 
     assert unit_multiplier_from_name("십억원") == 9
     assert unit_multiplier_from_name("원") == 0
@@ -83,7 +86,7 @@ def test_unit_multiplier_and_scaling():
 
 
 def test_rebase_index():
-    from ecos_mcp.analytics import normalize, rebase_index
+    from global_economic_statistical_mcp.analytics import normalize, rebase_index
 
     series = [("202301", 100.0), ("202401", 120.0), ("202402", 132.0)]
     rebased = rebase_index(series, base_period="202401", base_value=100.0)
@@ -97,7 +100,7 @@ def test_rebase_index():
 
 
 def test_convert_currency():
-    from ecos_mcp.analytics import convert_currency
+    from global_economic_statistical_mcp.analytics import convert_currency
 
     usd_series = [("202401", 10.0), ("202402", 20.0)]
     fx_rates = [("202401", 1300.0), ("202402", 1400.0)]

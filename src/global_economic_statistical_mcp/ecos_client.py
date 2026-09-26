@@ -13,7 +13,7 @@ from typing import Any
 
 import httpx
 
-from ecos_mcp.config import (
+from global_economic_statistical_mcp.config import (
     ECOS_API_KEY,
     ECOS_BASE_URL,
     ECOS_ERROR_MAP,
@@ -286,7 +286,7 @@ class EcosClient:
         {"generated_at": ..., "tables": [...]} as written by scripts/update_tables.py.
         """
         if self._tables_cache is None:
-            cache_file = Path(__file__).parent / "tables.json"
+            cache_file = Path(__file__).parent / "catalog" / "data" / "tables.json"
             data: Any = []
             if cache_file.exists():
                 with open(cache_file, "r", encoding="utf-8") as f:

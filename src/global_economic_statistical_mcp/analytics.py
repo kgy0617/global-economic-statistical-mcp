@@ -7,13 +7,13 @@ import statistics
 from itertools import pairwise
 from typing import Any
 
-from ecos_mcp.config import (
+from global_economic_statistical_mcp.config import (
     PERIODS_PER_YEAR,
     convert_period,
     period_start_date,
     period_to_index,
 )
-from ecos_mcp.sdmx import FREQ_ORDER
+from global_economic_statistical_mcp.ecos_sdmx import FREQ_ORDER
 
 AGGREGATIONS = {"mean", "last", "first", "sum"}
 NORMALIZATIONS = {"none", "index", "zscore", "rebase"}

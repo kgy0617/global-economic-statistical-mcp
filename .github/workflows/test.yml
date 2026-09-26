@@ -46,7 +46,7 @@ jobs:
       - run: uv sync --locked
 
       - name: CLI health check
-        run: uv run ecos-mcp --check
+        run: uv run global-economic-statistical-mcp --check
 
       - name: Live API tests
         run: uv run pytest -m live

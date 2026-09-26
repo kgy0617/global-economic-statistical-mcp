@@ -1,7 +1,7 @@
 import pytest
 from conftest import item_row
 
-from ecos_mcp import sdmx
+from global_economic_statistical_mcp import ecos_sdmx as sdmx
 
 
 @pytest.mark.parametrize("code", ["0101000", "*AA", "A$B", "코드", "a.b/c"])

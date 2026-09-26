@@ -1,0 +1,16030 @@
+{
+"generated_at": "2026-09-26",
+"source": "ECOS StatisticItemList",
+"tables": [
+{
+"stat_code": "901Y009",
+"stat_name": "4.2.1. 소비자물가지수",
+"items": [
+{
+"group": "Group1",
+"code": "0",
+"name": "총지수",
+"parent": null,
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A",
+"name": "식료품 및 비주류음료",
+"parent": "0",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01",
+"name": "식료품",
+"parent": "A",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A011",
+"name": "빵 및 곡물",
+"parent": "A01",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01101",
+"name": "쌀",
+"parent": "A011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01102",
+"name": "현미",
+"parent": "A011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01103",
+"name": "찹쌀",
+"parent": "A011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01104",
+"name": "보리쌀",
+"parent": "A011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01105",
+"name": "콩",
+"parent": "A011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01106",
+"name": "땅콩",
+"parent": "A011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01107",
+"name": "혼식곡",
+"parent": "A011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01108",
+"name": "밀가루",
+"parent": "A011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01109",
+"name": "국수",
+"parent": "A011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01110",
+"name": "라면",
+"parent": "A011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01111",
+"name": "당면",
+"parent": "A011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01112",
+"name": "두부",
+"parent": "A011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01113",
+"name": "시리얼",
+"parent": "A011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01114",
+"name": "부침가루",
+"parent": "A011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01115",
+"name": "케이크",
+"parent": "A011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01116",
+"name": "빵",
+"parent": "A011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01117",
+"name": "떡",
+"parent": "A011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01118",
+"name": "파스타면",
+"parent": "A011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A012",
+"name": "육류",
+"parent": "A01",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01201",
+"name": "국산쇠고기",
+"parent": "A012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01202",
+"name": "수입쇠고기",
+"parent": "A012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01203",
+"name": "돼지고기",
+"parent": "A012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01204",
+"name": "닭고기",
+"parent": "A012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01205",
+"name": "소시지",
+"parent": "A012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01206",
+"name": "햄및베이컨",
+"parent": "A012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01207",
+"name": "기타육류가공품",
+"parent": "A012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A013",
+"name": "어류 및 수산",
+"parent": "A01",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01301",
+"name": "갈치",
+"parent": "A013",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01302",
+"name": "명태",
+"parent": "A013",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01303",
+"name": "조기",
+"parent": "A013",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01304",
+"name": "고등어",
+"parent": "A013",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01305",
+"name": "오징어",
+"parent": "A013",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01306",
+"name": "게",
+"parent": "A013",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01307",
+"name": "굴",
+"parent": "A013",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01308",
+"name": "조개",
+"parent": "A013",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01309",
+"name": "전복",
+"parent": "A013",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01310",
+"name": "새우",
+"parent": "A013",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01311",
+"name": "마른멸치",
+"parent": "A013",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01312",
+"name": "마른오징어",
+"parent": "A013",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01313",
+"name": "낙지",
+"parent": "A013",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01314",
+"name": "오징어채",
+"parent": "A013",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01315",
+"name": "북어채",
+"parent": "A013",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01316",
+"name": "어묵",
+"parent": "A013",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01317",
+"name": "맛살",
+"parent": "A013",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01318",
+"name": "수산물통조림",
+"parent": "A013",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01319",
+"name": "젓갈",
+"parent": "A013",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A014",
+"name": "우유, 치즈 및 계란",
+"parent": "A01",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01401",
+"name": "우유",
+"parent": "A014",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01402",
+"name": "분유",
+"parent": "A014",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01403",
+"name": "치즈",
+"parent": "A014",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01404",
+"name": "발효유",
+"parent": "A014",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01405",
+"name": "달걀",
+"parent": "A014",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A015",
+"name": "식용유지",
+"parent": "A01",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01501",
+"name": "참기름",
+"parent": "A015",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01502",
+"name": "식용유",
+"parent": "A015",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A016",
+"name": "과일",
+"parent": "A01",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01601",
+"name": "사과",
+"parent": "A016",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01602",
+"name": "배",
+"parent": "A016",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01603",
+"name": "복숭아",
+"parent": "A016",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01604",
+"name": "포도",
+"parent": "A016",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01605",
+"name": "밤",
+"parent": "A016",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01606",
+"name": "감",
+"parent": "A016",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01607",
+"name": "귤",
+"parent": "A016",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01608",
+"name": "오렌지",
+"parent": "A016",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01609",
+"name": "참외",
+"parent": "A016",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01610",
+"name": "수박",
+"parent": "A016",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01611",
+"name": "딸기",
+"parent": "A016",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01612",
+"name": "바나나",
+"parent": "A016",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01613",
+"name": "키위",
+"parent": "A016",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01614",
+"name": "블루베리",
+"parent": "A016",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01615",
+"name": "망고",
+"parent": "A016",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01616",
+"name": "체리",
+"parent": "A016",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01617",
+"name": "아보카도",
+"parent": "A016",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01618",
+"name": "파인애플",
+"parent": "A016",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01619",
+"name": "아몬드",
+"parent": "A016",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01620",
+"name": "과일가공품",
+"parent": "A016",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A017",
+"name": "채소 및 해조",
+"parent": "A01",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01701",
+"name": "배추",
+"parent": "A017",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01702",
+"name": "상추",
+"parent": "A017",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01703",
+"name": "시금치",
+"parent": "A017",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01704",
+"name": "양배추",
+"parent": "A017",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01705",
+"name": "미나리",
+"parent": "A017",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01706",
+"name": "깻잎",
+"parent": "A017",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01707",
+"name": "부추",
+"parent": "A017",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01708",
+"name": "무",
+"parent": "A017",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01709",
+"name": "열무",
+"parent": "A017",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01710",
+"name": "당근",
+"parent": "A017",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01711",
+"name": "감자",
+"parent": "A017",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01712",
+"name": "고구마",
+"parent": "A017",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01713",
+"name": "도라지",
+"parent": "A017",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01714",
+"name": "콩나물",
+"parent": "A017",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01715",
+"name": "버섯",
+"parent": "A017",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01716",
+"name": "오이",
+"parent": "A017",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01717",
+"name": "풋고추",
+"parent": "A017",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01718",
+"name": "호박",
+"parent": "A017",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01719",
+"name": "가지",
+"parent": "A017",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01720",
+"name": "토마토",
+"parent": "A017",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01721",
+"name": "파",
+"parent": "A017",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01722",
+"name": "양파",
+"parent": "A017",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01723",
+"name": "마늘",
+"parent": "A017",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01724",
+"name": "브로콜리",
+"parent": "A017",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01725",
+"name": "고사리",
+"parent": "A017",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01726",
+"name": "파프리카",
+"parent": "A017",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01727",
+"name": "단무지",
+"parent": "A017",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01728",
+"name": "김",
+"parent": "A017",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01729",
+"name": "맛김",
+"parent": "A017",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01730",
+"name": "미역",
+"parent": "A017",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A018",
+"name": "과자, 빙과류 및 당류",
+"parent": "A01",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01801",
+"name": "초콜릿",
+"parent": "A018",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01802",
+"name": "사탕",
+"parent": "A018",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01803",
+"name": "껌",
+"parent": "A018",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01804",
+"name": "아이스크림",
+"parent": "A018",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01805",
+"name": "비스킷",
+"parent": "A018",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01806",
+"name": "스낵과자",
+"parent": "A018",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01807",
+"name": "파이",
+"parent": "A018",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01808",
+"name": "설탕",
+"parent": "A018",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01809",
+"name": "잼",
+"parent": "A018",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01810",
+"name": "꿀",
+"parent": "A018",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01811",
+"name": "물엿",
+"parent": "A018",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A019",
+"name": "기타 식료품",
+"parent": "A01",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01901",
+"name": "고춧가루",
+"parent": "A019",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01902",
+"name": "참깨",
+"parent": "A019",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01903",
+"name": "생강",
+"parent": "A019",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01904",
+"name": "소금",
+"parent": "A019",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01905",
+"name": "간장",
+"parent": "A019",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01906",
+"name": "된장",
+"parent": "A019",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01907",
+"name": "양념소스",
+"parent": "A019",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01908",
+"name": "고추장",
+"parent": "A019",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01909",
+"name": "카레",
+"parent": "A019",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01910",
+"name": "식초",
+"parent": "A019",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01911",
+"name": "드레싱",
+"parent": "A019",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01912",
+"name": "혼합조미료",
+"parent": "A019",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01913",
+"name": "스프",
+"parent": "A019",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01914",
+"name": "이유식",
+"parent": "A019",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01915",
+"name": "김치",
+"parent": "A019",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01916",
+"name": "밑반찬",
+"parent": "A019",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01917",
+"name": "냉동식품",
+"parent": "A019",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01918",
+"name": "즉석식품",
+"parent": "A019",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01919",
+"name": "편의점도시락",
+"parent": "A019",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A01920",
+"name": "삼각김밥",
+"parent": "A019",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A02",
+"name": "비주류 음료",
+"parent": "A",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A021",
+"name": "커피, 차 및 코코아",
+"parent": "A02",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A02101",
+"name": "커피",
+"parent": "A021",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A02102",
+"name": "차",
+"parent": "A021",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A022",
+"name": "생수, 청량음료, 과일주스 및 채소주스",
+"parent": "A02",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A02201",
+"name": "주스",
+"parent": "A022",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A02202",
+"name": "두유",
+"parent": "A022",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A02203",
+"name": "생수",
+"parent": "A022",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A02204",
+"name": "기능성음료",
+"parent": "A022",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A02205",
+"name": "탄산음료",
+"parent": "A022",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "A02206",
+"name": "기타음료",
+"parent": "A022",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "B",
+"name": "주류 및 담배",
+"parent": "0",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "B01",
+"name": "주류",
+"parent": "B",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "B011",
+"name": "주류",
+"parent": "B01",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "B01101",
+"name": "소주",
+"parent": "B011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "B01102",
+"name": "과실주",
+"parent": "B011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "B01103",
+"name": "맥주",
+"parent": "B011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "B01104",
+"name": "막걸리",
+"parent": "B011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "B01105",
+"name": "양주",
+"parent": "B011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "B01106",
+"name": "약주",
+"parent": "B011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "B02",
+"name": "담배",
+"parent": "B",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "B021",
+"name": "담배",
+"parent": "B02",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "B02101",
+"name": "담배",
+"parent": "B021",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "C",
+"name": "의류 및 신발",
+"parent": "0",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "C01",
+"name": "의류 ",
+"parent": "C",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "C011",
+"name": "남자의류",
+"parent": "C01",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "C01101",
+"name": "남자외의",
+"parent": "C011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "C01102",
+"name": "남자상의",
+"parent": "C011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "C01103",
+"name": "남자하의",
+"parent": "C011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "C01104",
+"name": "남자내의",
+"parent": "C011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "C012",
+"name": "여자의류",
+"parent": "C01",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "C01201",
+"name": "여자외의",
+"parent": "C012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "C01202",
+"name": "원피스",
+"parent": "C012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "C01203",
+"name": "여자상의",
+"parent": "C012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "C01204",
+"name": "여자하의",
+"parent": "C012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "C01205",
+"name": "여자내의",
+"parent": "C012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "C013",
+"name": "캐쥬얼의류",
+"parent": "C01",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "C01301",
+"name": "점퍼",
+"parent": "C013",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "C01302",
+"name": "티셔츠",
+"parent": "C013",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "C01303",
+"name": "스웨터",
+"parent": "C013",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "C01304",
+"name": "청바지",
+"parent": "C013",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "C01305",
+"name": "운동복",
+"parent": "C013",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "C01306",
+"name": "등산복",
+"parent": "C013",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "C014",
+"name": "아동복 · 유아복",
+"parent": "C01",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "C01401",
+"name": "유아동복",
+"parent": "C014",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "C015",
+"name": "기타의류 및 의류 장신구",
+"parent": "C01",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "C01501",
+"name": "양말",
+"parent": "C015",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "C01502",
+"name": "모자",
+"parent": "C015",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "C01503",
+"name": "장갑",
+"parent": "C015",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "C016",
+"name": "의류 세탁, 수선 및 임차",
+"parent": "C01",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "C01601",
+"name": "의복수선료",
+"parent": "C016",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "C01602",
+"name": "세탁료",
+"parent": "C016",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "C02",
+"name": "신발",
+"parent": "C",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "C021",
+"name": "신발",
+"parent": "C02",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "C02101",
+"name": "아동화",
+"parent": "C021",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "C02102",
+"name": "구두",
+"parent": "C021",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "C02103",
+"name": "운동화",
+"parent": "C021",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "C02104",
+"name": "실내화",
+"parent": "C021",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "D",
+"name": "주택, 수도, 전기 및 연료",
+"parent": "0",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "D01",
+"name": "주택임차료",
+"parent": "D",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "D011",
+"name": "주택임차료",
+"parent": "D01",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "D01101",
+"name": "전세",
+"parent": "D011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "D01102",
+"name": "월세",
+"parent": "D011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "D03",
+"name": "주거시설 유지·보수",
+"parent": "D",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "D031",
+"name": "주거시설 유지·보수",
+"parent": "D03",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "D03101",
+"name": "주택수선재료",
+"parent": "D031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "D03102",
+"name": "설비수리비",
+"parent": "D031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "D04",
+"name": "수도 및 주거관련 서비스",
+"parent": "D",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "D041",
+"name": "상하수도료",
+"parent": "D04",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "D04101",
+"name": "상수도료",
+"parent": "D041",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "D04102",
+"name": "하수도료",
+"parent": "D041",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "D042",
+"name": "기타 주거관련 서비스",
+"parent": "D04",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "D04201",
+"name": "공동주택관리비",
+"parent": "D042",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "D04202",
+"name": "쓰레기봉투료",
+"parent": "D042",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "D04203",
+"name": "정화조청소료",
+"parent": "D042",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "D05",
+"name": "전기, 가스 및 기타연료",
+"parent": "D",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "D051",
+"name": "전기",
+"parent": "D05",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "D05101",
+"name": "전기료",
+"parent": "D051",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "D052",
+"name": "가스",
+"parent": "D05",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "D05201",
+"name": "도시가스",
+"parent": "D052",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "D05202",
+"name": "취사용LPG",
+"parent": "D052",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "D053",
+"name": "기타연료 및 에너지",
+"parent": "D05",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "D05301",
+"name": "등유",
+"parent": "D053",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "D05302",
+"name": "지역난방비",
+"parent": "D053",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "D05303",
+"name": "부탄가스",
+"parent": "D053",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E",
+"name": "가정용품 및 가사 서비스",
+"parent": "0",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E01",
+"name": "가구, 가사비품 및 카페트",
+"parent": "E",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E011",
+"name": "가구, 가사비품 및 카페트",
+"parent": "E01",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E01101",
+"name": "장롱",
+"parent": "E011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E01102",
+"name": "침대",
+"parent": "E011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E01103",
+"name": "거실장",
+"parent": "E011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E01104",
+"name": "소파",
+"parent": "E011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E01105",
+"name": "책상",
+"parent": "E011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E01106",
+"name": "의자",
+"parent": "E011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E01107",
+"name": "식탁",
+"parent": "E011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E01108",
+"name": "싱크대",
+"parent": "E011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E02",
+"name": "가정용 섬유제품",
+"parent": "E",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E021",
+"name": "가정용 섬유제품",
+"parent": "E02",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E02101",
+"name": "침구",
+"parent": "E021",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E02102",
+"name": "커튼",
+"parent": "E021",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E03",
+"name": "가정용 기기",
+"parent": "E",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E031",
+"name": "가정용 기구",
+"parent": "E03",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E03101",
+"name": "전기밥솥",
+"parent": "E031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E03102",
+"name": "가스레인지",
+"parent": "E031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E03103",
+"name": "전자레인지",
+"parent": "E031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E03104",
+"name": "전기레인지",
+"parent": "E031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E03105",
+"name": "냉장고",
+"parent": "E031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E03106",
+"name": "김치냉장고",
+"parent": "E031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E03107",
+"name": "에어컨",
+"parent": "E031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E03108",
+"name": "선풍기",
+"parent": "E031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E03109",
+"name": "공기청정기",
+"parent": "E031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E03110",
+"name": "세탁기",
+"parent": "E031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E03111",
+"name": "의류건조기",
+"parent": "E031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E03112",
+"name": "식기세척기",
+"parent": "E031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E03113",
+"name": "청소기",
+"parent": "E031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E03114",
+"name": "소형주방가전",
+"parent": "E031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E03115",
+"name": "보온매트",
+"parent": "E031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E032",
+"name": "가정용 기구 수리서비스",
+"parent": "E03",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E03201",
+"name": "가전제품수리비",
+"parent": "E032",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E03202",
+"name": "가전제품렌탈비",
+"parent": "E032",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E04",
+"name": "주방용품 및 가정용품",
+"parent": "E",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E041",
+"name": "주방용품 및 가정용품",
+"parent": "E04",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E04101",
+"name": "식기",
+"parent": "E041",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E04102",
+"name": "컵",
+"parent": "E041",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E04103",
+"name": "솥",
+"parent": "E041",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E04104",
+"name": "프라이팬",
+"parent": "E041",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E04105",
+"name": "냄비",
+"parent": "E041",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E04106",
+"name": "수저",
+"parent": "E041",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E04107",
+"name": "밀폐용기",
+"parent": "E041",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E04108",
+"name": "부엌용용구",
+"parent": "E041",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E05",
+"name": "가정·정원용 공구 및 장비",
+"parent": "E",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E051",
+"name": "가정·정원용 공구 및 장비",
+"parent": "E05",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E05101",
+"name": "보일러",
+"parent": "E051",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E05102",
+"name": "건전지",
+"parent": "E051",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E05103",
+"name": "소형가사용품",
+"parent": "E051",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E06",
+"name": "일상 생활용품 및 가사 서비스",
+"parent": "E",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E061",
+"name": "비내구성 가정용품",
+"parent": "E06",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E06101",
+"name": "세탁세제",
+"parent": "E061",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E06102",
+"name": "섬유유연제",
+"parent": "E061",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E06103",
+"name": "전구",
+"parent": "E061",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E06104",
+"name": "부엌용세제",
+"parent": "E061",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E06105",
+"name": "청소용세제",
+"parent": "E061",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E06106",
+"name": "살충제",
+"parent": "E061",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E06107",
+"name": "가정용비닐용품",
+"parent": "E061",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E06108",
+"name": "키친타월",
+"parent": "E061",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E06109",
+"name": "방향제",
+"parent": "E061",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E06110",
+"name": "습기제거제",
+"parent": "E061",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E062",
+"name": "가구내 고용 및 가사 서비스",
+"parent": "E06",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E06201",
+"name": "가사도우미료",
+"parent": "E062",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "E06202",
+"name": "간병도우미료",
+"parent": "E062",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F",
+"name": "보건",
+"parent": "0",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F01",
+"name": "의료용품 및 장비",
+"parent": "F",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F011",
+"name": "의약품",
+"parent": "F01",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F01101",
+"name": "감기약",
+"parent": "F011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F01102",
+"name": "진통제",
+"parent": "F011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F01103",
+"name": "소화제",
+"parent": "F011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F01104",
+"name": "위장약",
+"parent": "F011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F01105",
+"name": "진해거담제",
+"parent": "F011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F01106",
+"name": "소염진통제",
+"parent": "F011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F01107",
+"name": "피부질환제",
+"parent": "F011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F01108",
+"name": "치과구강용약",
+"parent": "F011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F01109",
+"name": "조제약",
+"parent": "F011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F01110",
+"name": "한방약",
+"parent": "F011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F01111",
+"name": "인삼",
+"parent": "F011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F01112",
+"name": "홍삼",
+"parent": "F011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F01113",
+"name": "비타민제",
+"parent": "F011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F01114",
+"name": "건강기능식품",
+"parent": "F011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F01115",
+"name": "유산균",
+"parent": "F011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F01116",
+"name": "병원약품",
+"parent": "F011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F012",
+"name": "의료용품 및 치료기기",
+"parent": "F01",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F01201",
+"name": "종이기저귀",
+"parent": "F012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F01202",
+"name": "생리대",
+"parent": "F012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F01203",
+"name": "마스크",
+"parent": "F012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F01204",
+"name": "반창고",
+"parent": "F012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F01205",
+"name": "안경",
+"parent": "F012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F01206",
+"name": "콘택트렌즈",
+"parent": "F012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F01207",
+"name": "의료측정기",
+"parent": "F012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F01208",
+"name": "보청기",
+"parent": "F012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F01209",
+"name": "건강기기렌탈비",
+"parent": "F012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F01210",
+"name": "치료재료",
+"parent": "F012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F02",
+"name": "외래환자 서비스",
+"parent": "F",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F021",
+"name": "의료서비스",
+"parent": "F02",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F02101",
+"name": "외래진료비",
+"parent": "F021",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F02102",
+"name": "건강검진비",
+"parent": "F021",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F02103",
+"name": "한방진료비",
+"parent": "F021",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F02104",
+"name": "약국조제료",
+"parent": "F021",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F022",
+"name": "기타의료서비스",
+"parent": "F02",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F02201",
+"name": "치과진료비",
+"parent": "F022",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F02202",
+"name": "치과보철료",
+"parent": "F022",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F03",
+"name": "병원 서비스",
+"parent": "F",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F031",
+"name": "병원 서비스",
+"parent": "F03",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F03101",
+"name": "입원진료비",
+"parent": "F031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "F03102",
+"name": "병원검사료",
+"parent": "F031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G",
+"name": "교통",
+"parent": "0",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G01",
+"name": "운송장비",
+"parent": "G",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G011",
+"name": "운송장비",
+"parent": "G01",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G01101",
+"name": "소형승용차",
+"parent": "G011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G01102",
+"name": "중형승용차",
+"parent": "G011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G01103",
+"name": "대형승용차",
+"parent": "G011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G01104",
+"name": "경승용차",
+"parent": "G011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G01105",
+"name": "다목적승용차",
+"parent": "G011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G01106",
+"name": "수입승용차",
+"parent": "G011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G01107",
+"name": "전기동력차",
+"parent": "G011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G01108",
+"name": "자전거",
+"parent": "G011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G02",
+"name": "개인운송장비 운영",
+"parent": "G",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G021",
+"name": "개인운송장비 연료 및 윤활유",
+"parent": "G02",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G02101",
+"name": "휘발유",
+"parent": "G021",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G02102",
+"name": "경유",
+"parent": "G021",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G02103",
+"name": "자동차용LPG",
+"parent": "G021",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G022",
+"name": "개인운송장비 소모품 및 유지·수리",
+"parent": "G02",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G02201",
+"name": "자동차용품",
+"parent": "G022",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G02202",
+"name": "블랙박스",
+"parent": "G022",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G02203",
+"name": "자동차타이어",
+"parent": "G022",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G02204",
+"name": "자동차수리비",
+"parent": "G022",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G02205",
+"name": "엔진오일교체료",
+"parent": "G022",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G02206",
+"name": "세차료",
+"parent": "G022",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G023",
+"name": "개인운송장비 관련 기타 서비스",
+"parent": "G02",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G02301",
+"name": "자동차학원비",
+"parent": "G023",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G02302",
+"name": "주차료",
+"parent": "G023",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G02303",
+"name": "도로통행료",
+"parent": "G023",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G02304",
+"name": "승용차임차료",
+"parent": "G023",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G02305",
+"name": "대리운전이용료",
+"parent": "G023",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G02306",
+"name": "자동차검사료",
+"parent": "G023",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G03",
+"name": "운송 서비스",
+"parent": "G",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G031",
+"name": "철도 여객수송",
+"parent": "G03",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G03101",
+"name": "열차료",
+"parent": "G031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G03102",
+"name": "도시철도료",
+"parent": "G031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G032",
+"name": "도로 여객수송",
+"parent": "G03",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G03201",
+"name": "시내버스료",
+"parent": "G032",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G03202",
+"name": "시외버스료",
+"parent": "G032",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G03203",
+"name": "택시료",
+"parent": "G032",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G033",
+"name": "항공 및 수상여객운송",
+"parent": "G03",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G03301",
+"name": "국내항공료",
+"parent": "G033",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G03302",
+"name": "국제항공료",
+"parent": "G033",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G03303",
+"name": "여객선료",
+"parent": "G033",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G034",
+"name": "기타 여객운송",
+"parent": "G03",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G03401",
+"name": "이삿짐운송료",
+"parent": "G034",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "G03402",
+"name": "택배이용료",
+"parent": "G034",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "H",
+"name": "통신",
+"parent": "0",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "H01",
+"name": "우편서비스",
+"parent": "H",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "H011",
+"name": "우편서비스",
+"parent": "H01",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "H01101",
+"name": "우편료",
+"parent": "H011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "H02",
+"name": "전화 및 팩스장비",
+"parent": "H",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "H021",
+"name": "전화 및 팩스장비",
+"parent": "H02",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "H02101",
+"name": "휴대전화기",
+"parent": "H021",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "H03",
+"name": "전화 및 팩스 서비스",
+"parent": "H",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "H031",
+"name": "전화 및 팩스 서비스",
+"parent": "H03",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "H03101",
+"name": "유선전화료",
+"parent": "H031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "H03102",
+"name": "휴대전화료",
+"parent": "H031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "H03103",
+"name": "인터넷이용료",
+"parent": "H031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "H03104",
+"name": "휴대전화기수리비",
+"parent": "H031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I",
+"name": "오락 및 문화",
+"parent": "0",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I01",
+"name": "음향, 영상, 사진 및 정보처리 장비",
+"parent": "I",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I011",
+"name": "영상·음향기기",
+"parent": "I01",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I01101",
+"name": "TV",
+"parent": "I011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I01102",
+"name": "영상음향기기",
+"parent": "I011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I012",
+"name": "정보처리기기·소모품",
+"parent": "I01",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I01201",
+"name": "컴퓨터",
+"parent": "I012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I01202",
+"name": "컴퓨터수리비",
+"parent": "I012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I01203",
+"name": "휴대용멀티미디어기기",
+"parent": "I012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I01204",
+"name": "컴퓨터소모품",
+"parent": "I012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I01205",
+"name": "저장장치",
+"parent": "I012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I02",
+"name": "기타 오락 및 문화용 주요 내구재",
+"parent": "I",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I021",
+"name": "기타 오락 및 문화용 주요 내구재",
+"parent": "I02",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I02101",
+"name": "악기",
+"parent": "I021",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I02102",
+"name": "헬스기구",
+"parent": "I021",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I03",
+"name": "기타 오락용품, 조경용품 및 애완동물",
+"parent": "I",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I031",
+"name": "기타 오락용품, 조경용품 및 애완동물",
+"parent": "I03",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I03101",
+"name": "장난감",
+"parent": "I031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I03102",
+"name": "레저용품",
+"parent": "I031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I03103",
+"name": "운동용품",
+"parent": "I031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I03104",
+"name": "화초",
+"parent": "I031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I03105",
+"name": "원예용품",
+"parent": "I031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I03106",
+"name": "반려동물용품",
+"parent": "I031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I03107",
+"name": "반려동물관리비",
+"parent": "I031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I04",
+"name": "오락 및 문화 서비스",
+"parent": "I",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I041",
+"name": "오락 및 스포츠 서비스",
+"parent": "I04",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I04101",
+"name": "수영장이용료",
+"parent": "I041",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I04102",
+"name": "볼링장이용료",
+"parent": "I041",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I04103",
+"name": "헬스클럽이용료",
+"parent": "I041",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I04104",
+"name": "골프연습장이용료",
+"parent": "I041",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I04105",
+"name": "골프장이용료",
+"parent": "I041",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I04106",
+"name": "당구장이용료",
+"parent": "I041",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I04107",
+"name": "노래방이용료",
+"parent": "I041",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I04108",
+"name": "PC방이용료",
+"parent": "I041",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I04109",
+"name": "놀이시설이용료",
+"parent": "I041",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I04110",
+"name": "운동경기관람료",
+"parent": "I041",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I042",
+"name": "문화 서비스",
+"parent": "I04",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I04201",
+"name": "영화관람료",
+"parent": "I042",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I04202",
+"name": "공연예술관람료",
+"parent": "I042",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I04203",
+"name": "관람시설이용료",
+"parent": "I042",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I04204",
+"name": "독서실비",
+"parent": "I042",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I04205",
+"name": "문화강습료",
+"parent": "I042",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I04206",
+"name": "온라인콘텐츠이용료",
+"parent": "I042",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I04207",
+"name": "방송수신료",
+"parent": "I042",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I04208",
+"name": "사진서비스료",
+"parent": "I042",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I05",
+"name": "신문, 서적 및 문방구",
+"parent": "I",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I051",
+"name": "서적",
+"parent": "I05",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I05101",
+"name": "유아용학습교재",
+"parent": "I051",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I05102",
+"name": "초등학교학습서",
+"parent": "I051",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I05103",
+"name": "중학교학습서",
+"parent": "I051",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I05104",
+"name": "고등학교학습서",
+"parent": "I051",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I05105",
+"name": "대학교재",
+"parent": "I051",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I05106",
+"name": "서적",
+"parent": "I051",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I052",
+"name": "신문 및 정기 간행물",
+"parent": "I05",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I05201",
+"name": "신문",
+"parent": "I052",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I053",
+"name": "문방구",
+"parent": "I05",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I05301",
+"name": "종이문구",
+"parent": "I053",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I05302",
+"name": "기타문구",
+"parent": "I053",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I05303",
+"name": "필기구",
+"parent": "I053",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I05304",
+"name": "회화용구",
+"parent": "I053",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I06",
+"name": "단체여행",
+"parent": "I",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I061",
+"name": "단체여행",
+"parent": "I06",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I06101",
+"name": "국내단체여행비",
+"parent": "I061",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "I06102",
+"name": "해외단체여행비",
+"parent": "I061",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "J",
+"name": "교육",
+"parent": "0",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "J01",
+"name": "유치원 및 초등교육",
+"parent": "J",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "J011",
+"name": "유치원 및 초등교육",
+"parent": "J01",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "J01101",
+"name": "유치원납입금",
+"parent": "J011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "J03",
+"name": "고등교육",
+"parent": "J",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "J031",
+"name": "고등교육",
+"parent": "J03",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "J03101",
+"name": "전문대학납입금",
+"parent": "J031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "J03102",
+"name": "국공립대학교납입금",
+"parent": "J031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "J03103",
+"name": "사립대학교납입금",
+"parent": "J031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "J03104",
+"name": "국공립대학원납입금",
+"parent": "J031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "J03105",
+"name": "사립대학원납입금",
+"parent": "J031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "J04",
+"name": "기타교육",
+"parent": "J",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "J041",
+"name": "학원 및 보습교육",
+"parent": "J04",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "J04101",
+"name": "초등학생학원비",
+"parent": "J041",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "J04102",
+"name": "중학생학원비",
+"parent": "J041",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "J04103",
+"name": "고등학생학원비",
+"parent": "J041",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "J04104",
+"name": "음악학원비",
+"parent": "J041",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "J04105",
+"name": "미술학원비",
+"parent": "J041",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "J04106",
+"name": "운동학원비",
+"parent": "J041",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "J04107",
+"name": "전산학원비",
+"parent": "J041",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "J04108",
+"name": "가정학습지",
+"parent": "J041",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "J04109",
+"name": "이러닝이용료",
+"parent": "J041",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "J04110",
+"name": "학교보충교육비",
+"parent": "J041",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "J04111",
+"name": "기타학원비",
+"parent": "J041",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "J042",
+"name": "성인학원 및 기타교육",
+"parent": "J04",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "J04201",
+"name": "취업학원비",
+"parent": "J042",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "J04202",
+"name": "외국어학원비",
+"parent": "J042",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "J04203",
+"name": "운동강습료",
+"parent": "J042",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K",
+"name": "음식 및 숙박",
+"parent": "0",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01",
+"name": "음식 서비스",
+"parent": "K",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K011",
+"name": "음식 서비스",
+"parent": "K01",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01101",
+"name": "김치찌개백반",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01102",
+"name": "된장찌개백반",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01103",
+"name": "비빔밥",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01104",
+"name": "설렁탕",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01105",
+"name": "갈비탕",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01106",
+"name": "삼계탕",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01107",
+"name": "해물찜",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01108",
+"name": "해장국",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01109",
+"name": "불고기",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01110",
+"name": "쇠고기(외식)",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01111",
+"name": "돼지갈비(외식)",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01112",
+"name": "삼겹살(외식)",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01113",
+"name": "오리고기(외식)",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01114",
+"name": "냉면",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01115",
+"name": "칼국수",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01116",
+"name": "죽(외식)",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01117",
+"name": "생선초밥",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01118",
+"name": "생선회(외식)",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01119",
+"name": "자장면",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01120",
+"name": "짬뽕",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01121",
+"name": "탕수육",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01122",
+"name": "볶음밥",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01123",
+"name": "돈가스",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01124",
+"name": "스테이크",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01125",
+"name": "스파게티",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01126",
+"name": "라면(외식)",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01127",
+"name": "김밥",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01128",
+"name": "떡볶이",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01129",
+"name": "치킨",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01130",
+"name": "햄버거",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01131",
+"name": "피자",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01132",
+"name": "쌀국수",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01133",
+"name": "커피(외식)",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01134",
+"name": "기타음료(외식)",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01135",
+"name": "소주(외식)",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01136",
+"name": "맥주(외식)",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01137",
+"name": "막걸리(외식)",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01138",
+"name": "구내식당식사비",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K01139",
+"name": "도시락",
+"parent": "K011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K02",
+"name": "숙박 서비스",
+"parent": "K",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K021",
+"name": "숙박 서비스",
+"parent": "K02",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K02101",
+"name": "호텔숙박료",
+"parent": "K021",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K02102",
+"name": "여관숙박료",
+"parent": "K021",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K02103",
+"name": "콘도이용료",
+"parent": "K021",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K02104",
+"name": "학교기숙사비",
+"parent": "K021",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "K02105",
+"name": "휴양시설이용료",
+"parent": "K021",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L",
+"name": "기타 상품 및 서비스",
+"parent": "0",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L01",
+"name": "미용용품 및 미용 서비스",
+"parent": "L",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L011",
+"name": "이미용 및 미용시설",
+"parent": "L01",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L01101",
+"name": "목욕료",
+"parent": "L011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L01102",
+"name": "찜질방이용료",
+"parent": "L011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L01103",
+"name": "이발료",
+"parent": "L011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L01104",
+"name": "미용료",
+"parent": "L011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L01105",
+"name": "뷰티미용료",
+"parent": "L011",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L012",
+"name": "개인용 전기용품 및 미용용품",
+"parent": "L01",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L01201",
+"name": "면도기",
+"parent": "L012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L01202",
+"name": "헤어드라이어",
+"parent": "L012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L01203",
+"name": "칫솔",
+"parent": "L012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L01204",
+"name": "치약",
+"parent": "L012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L01205",
+"name": "비누",
+"parent": "L012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L01206",
+"name": "샴푸",
+"parent": "L012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L01207",
+"name": "바디워시",
+"parent": "L012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L01208",
+"name": "화장지",
+"parent": "L012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L01209",
+"name": "기초화장품",
+"parent": "L012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L01210",
+"name": "기능성화장품",
+"parent": "L012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L01211",
+"name": "색조화장품",
+"parent": "L012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L01212",
+"name": "모발염색약",
+"parent": "L012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L01213",
+"name": "구강세정제",
+"parent": "L012",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L02",
+"name": "기타 개인용품",
+"parent": "L",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L021",
+"name": "기타 개인용품",
+"parent": "L02",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L02101",
+"name": "손목시계",
+"parent": "L021",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L02102",
+"name": "장신구",
+"parent": "L021",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L02103",
+"name": "가방",
+"parent": "L021",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L02104",
+"name": "핸드백",
+"parent": "L021",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L02105",
+"name": "우산",
+"parent": "L021",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L02106",
+"name": "유모차",
+"parent": "L021",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L02107",
+"name": "선글라스",
+"parent": "L021",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L02108",
+"name": "지갑",
+"parent": "L021",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L03",
+"name": "기타서비스",
+"parent": "L",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L031",
+"name": "기타서비스",
+"parent": "L03",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L03101",
+"name": "산후조리원이용료",
+"parent": "L031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L03102",
+"name": "보육시설이용료",
+"parent": "L031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L03103",
+"name": "요양시설이용료",
+"parent": "L031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L03104",
+"name": "보험서비스료",
+"parent": "L031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L03105",
+"name": "자동차보험료",
+"parent": "L031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L03106",
+"name": "금융수수료",
+"parent": "L031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L03107",
+"name": "부동산중개수수료",
+"parent": "L031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L03108",
+"name": "행정수수료",
+"parent": "L031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L03109",
+"name": "대입전형료",
+"parent": "L031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L03110",
+"name": "시험응시료",
+"parent": "L031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "L03111",
+"name": "장례비",
+"parent": "L031",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+}
+]
+},
+{
+"stat_code": "404Y014",
+"stat_name": "4.1.1.1. 생산자물가지수(기본분류)",
+"items": [
+{
+"group": "Group1",
+"code": "*AA",
+"name": "총지수",
+"parent": null,
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "101111AA",
+"name": "곡류",
+"parent": "10111AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "101113AA",
+"name": "콩류",
+"parent": "10111AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "101114AA",
+"name": "감자류",
+"parent": "10111AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10111AA",
+"name": "곡물및식량작물",
+"parent": "1011AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "101121AA",
+"name": "채소",
+"parent": "10112AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "101122AA",
+"name": "과실",
+"parent": "10112AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10112AA",
+"name": "채소및과실",
+"parent": "1011AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "101131AA",
+"name": "화훼작물",
+"parent": "10113AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "101132AA",
+"name": "약용작물",
+"parent": "10113AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "101133AA",
+"name": "잎담배",
+"parent": "10113AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "101135AA",
+"name": "기타식용작물",
+"parent": "10113AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10113AA",
+"name": "기타작물",
+"parent": "1011AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "1011AA",
+"name": "농산물",
+"parent": "101AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "101211AA",
+"name": "낙농",
+"parent": "10121AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "101212AA",
+"name": "도축육",
+"parent": "10121AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "101213AA",
+"name": "가금육",
+"parent": "10121AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10121AA",
+"name": "낙농및육류",
+"parent": "1012AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "101221AA",
+"name": "기타축산",
+"parent": "10122AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10122AA",
+"name": "기타축산",
+"parent": "1012AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "1012AA",
+"name": "축산물",
+"parent": "101AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "101311AA",
+"name": "원목",
+"parent": "10131AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "101312AA",
+"name": "식용임산물",
+"parent": "10131AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10131AA",
+"name": "임산물",
+"parent": "1013AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "1013AA",
+"name": "임산물",
+"parent": "101AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "101411AA",
+"name": "신선어류",
+"parent": "10141AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "101412AA",
+"name": "신선갑각류",
+"parent": "10141AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "101413AA",
+"name": "신선패류",
+"parent": "10141AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "101414AA",
+"name": "신선연체류",
+"parent": "10141AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10141AA",
+"name": "신선수산물",
+"parent": "1014AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "101421AA",
+"name": "냉동수산물",
+"parent": "10142AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "101422AA",
+"name": "건조수산물",
+"parent": "10142AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10142AA",
+"name": "냉동건조수산물",
+"parent": "1014AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "1014AA",
+"name": "수산물",
+"parent": "101AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "101AA",
+"name": "농림수산품",
+"parent": "1AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "1AA",
+"name": "농림수산품",
+"parent": "*AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "201111AA",
+"name": "무연탄",
+"parent": "20111AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "20111AA",
+"name": "석탄",
+"parent": "2011AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "2011AA",
+"name": "석탄,원유및천연가스",
+"parent": "201AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "201221AA",
+"name": "골재및석재",
+"parent": "20122AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "201222AA",
+"name": "석회석",
+"parent": "20122AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "201223AA",
+"name": "기타비금속광물",
+"parent": "20122AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "20122AA",
+"name": "비금속광물",
+"parent": "2012AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "2012AA",
+"name": "금속및비금속광물",
+"parent": "201AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "201AA",
+"name": "광산품",
+"parent": "2AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "2AA",
+"name": "광산품",
+"parent": "*AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "301111AA",
+"name": "육가공품",
+"parent": "30111AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "301112AA",
+"name": "낙농품",
+"parent": "30111AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30111AA",
+"name": "육가공품및낙농품",
+"parent": "3011AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "301121AA",
+"name": "수산물가공품",
+"parent": "30112AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "301122AA",
+"name": "수산동물저장품",
+"parent": "30112AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30112AA",
+"name": "수산가공품",
+"parent": "3011AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "301131AA",
+"name": "제분",
+"parent": "30113AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30113AA",
+"name": "제분",
+"parent": "3011AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "301142AA",
+"name": "정제당",
+"parent": "30114AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "301143AA",
+"name": "전분및당류",
+"parent": "30114AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30114AA",
+"name": "제당및전분",
+"parent": "3011AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "301151AA",
+"name": "떡,빵및과자류",
+"parent": "30115AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "301152AA",
+"name": "면류",
+"parent": "30115AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30115AA",
+"name": "떡,과자및면류",
+"parent": "3011AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "301161AA",
+"name": "조미료및첨가용식품",
+"parent": "30116AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "301162AA",
+"name": "유지",
+"parent": "30116AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30116AA",
+"name": "조미료및유지",
+"parent": "3011AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "301171AA",
+"name": "과실및채소가공품",
+"parent": "30117AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "301172AA",
+"name": "커피및차류",
+"parent": "30117AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "301173AA",
+"name": "인삼및건강보조식품",
+"parent": "30117AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "301174AA",
+"name": "기타식료품",
+"parent": "30117AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30117AA",
+"name": "기타식료품",
+"parent": "3011AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "301181AA",
+"name": "사료",
+"parent": "30118AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30118AA",
+"name": "사료",
+"parent": "3011AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "3011AA",
+"name": "식료품",
+"parent": "301AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "301211AA",
+"name": "주정",
+"parent": "30121AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "301212AA",
+"name": "소주",
+"parent": "30121AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "301213AA",
+"name": "맥주",
+"parent": "30121AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "301214AA",
+"name": "기타주류",
+"parent": "30121AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30121AA",
+"name": "주류",
+"parent": "3012AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "301221AA",
+"name": "비알콜음료및얼음",
+"parent": "30122AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30122AA",
+"name": "비알콜음료및얼음",
+"parent": "3012AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "3012AA",
+"name": "음료품",
+"parent": "301AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "301311AA",
+"name": "담배",
+"parent": "30131AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30131AA",
+"name": "담배",
+"parent": "3013AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "3013AA",
+"name": "담배",
+"parent": "301AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "301AA",
+"name": "음식료품",
+"parent": "3AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "302111AA",
+"name": "천연및화학섬유사",
+"parent": "30211AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "302112AA",
+"name": "기타섬유사",
+"parent": "30211AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30211AA",
+"name": "섬유사",
+"parent": "3021AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "302121AA",
+"name": "천연및화학섬유직물",
+"parent": "30212AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "302122AA",
+"name": "기타섬유직물",
+"parent": "30212AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30212AA",
+"name": "섬유직물",
+"parent": "3021AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "302131AA",
+"name": "직물제품",
+"parent": "30213AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "302132AA",
+"name": "부직포및펠트",
+"parent": "30213AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "302133AA",
+"name": "기타섬유제품",
+"parent": "30213AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30213AA",
+"name": "직물제품",
+"parent": "3021AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "302141AA",
+"name": "봉제의류",
+"parent": "30214AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "302142AA",
+"name": "편조의류",
+"parent": "30214AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "302145AA",
+"name": "의복관련장신품",
+"parent": "30214AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30214AA",
+"name": "의복제품",
+"parent": "3021AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "3021AA",
+"name": "섬유및의복",
+"parent": "302AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "302211AA",
+"name": "가죽",
+"parent": "30221AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "302213AA",
+"name": "가방및핸드백",
+"parent": "30221AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "302214AA",
+"name": "신발",
+"parent": "30221AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30221AA",
+"name": "가죽제품",
+"parent": "3022AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "3022AA",
+"name": "가죽제품",
+"parent": "302AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "302AA",
+"name": "섬유및가죽제품",
+"parent": "3AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "303111AA",
+"name": "제재목",
+"parent": "30311AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "303112AA",
+"name": "합판",
+"parent": "30311AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "303113AA",
+"name": "강화및재생목재",
+"parent": "30311AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30311AA",
+"name": "목재",
+"parent": "3031AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "303121AA",
+"name": "건축용목제품",
+"parent": "30312AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "303122AA",
+"name": "목재용기및적재판",
+"parent": "30312AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30312AA",
+"name": "목제품",
+"parent": "3031AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "3031AA",
+"name": "목재및목제품",
+"parent": "303AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "303211AA",
+"name": "펄프",
+"parent": "30321AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30321AA",
+"name": "펄프",
+"parent": "3032AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "303221AA",
+"name": "인쇄용지",
+"parent": "30322AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "303222AA",
+"name": "기타원지및판지",
+"parent": "30322AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30322AA",
+"name": "종이류",
+"parent": "3032AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "303231AA",
+"name": "골판지및골판지가공품",
+"parent": "30323AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "303232AA",
+"name": "종이용기",
+"parent": "30323AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "303233AA",
+"name": "종이문구및사무용지",
+"parent": "30323AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "303234AA",
+"name": "위생용종이제품",
+"parent": "30323AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "303235AA",
+"name": "기타종이제품",
+"parent": "30323AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30323AA",
+"name": "종이제품",
+"parent": "3032AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "3032AA",
+"name": "펄프및종이제품",
+"parent": "303AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "303AA",
+"name": "목재및종이제품",
+"parent": "3AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "304111AA",
+"name": "석탄코크스및석탄관련제품",
+"parent": "30411AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "304112AA",
+"name": "연탄",
+"parent": "30411AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30411AA",
+"name": "석탄제품",
+"parent": "3041AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "304121AA",
+"name": "나프타",
+"parent": "30412AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "304122AA",
+"name": "휘발유",
+"parent": "30412AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "304123AA",
+"name": "제트유",
+"parent": "30412AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "304124AA",
+"name": "등유",
+"parent": "30412AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "304125AA",
+"name": "경유",
+"parent": "30412AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "304126AA",
+"name": "중유",
+"parent": "30412AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "304127AA",
+"name": "액화석유가스",
+"parent": "30412AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30412AA",
+"name": "원유정제처리제품",
+"parent": "3041AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "304131AA",
+"name": "윤활유및그리스",
+"parent": "30413AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "304132AA",
+"name": "기타석유정제제품",
+"parent": "30413AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30413AA",
+"name": "윤활유및기타석유정제품",
+"parent": "3041AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "3041AA",
+"name": "석탄및석유제품",
+"parent": "304AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "304AA",
+"name": "석탄및석유제품",
+"parent": "3AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "305111AA",
+"name": "지방족기초유분",
+"parent": "30511AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "305112AA",
+"name": "방향족기초유분",
+"parent": "30511AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "305113AA",
+"name": "석유화학중간제품",
+"parent": "30511AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "305114AA",
+"name": "기타기초유기화합물",
+"parent": "30511AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30511AA",
+"name": "기초유기화학물질",
+"parent": "3051AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "305121AA",
+"name": "산업용가스",
+"parent": "30512AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "305122AA",
+"name": "기초무기화합물",
+"parent": "30512AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "305123AA",
+"name": "염료,안료및유연제",
+"parent": "30512AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30512AA",
+"name": "기초무기화학물질",
+"parent": "3051AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "3051AA",
+"name": "기초화학물질",
+"parent": "305AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "305211AA",
+"name": "합성수지",
+"parent": "30521AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "305212AA",
+"name": "합성고무",
+"parent": "30521AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30521AA",
+"name": "합성수지및합성고무",
+"parent": "3052AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "3052AA",
+"name": "합성수지및합성고무",
+"parent": "305AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "305311AA",
+"name": "화학섬유",
+"parent": "30531AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30531AA",
+"name": "화학섬유",
+"parent": "3053AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "3053AA",
+"name": "화학섬유",
+"parent": "305AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "305411AA",
+"name": "의약품",
+"parent": "30541AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30541AA",
+"name": "의약품",
+"parent": "3054AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "3054AA",
+"name": "의약품",
+"parent": "305AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "305511AA",
+"name": "비료및질소화합물",
+"parent": "30551AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "305512AA",
+"name": "살충제및농약",
+"parent": "30551AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30551AA",
+"name": "비료및농약",
+"parent": "3055AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "3055AA",
+"name": "비료및농약",
+"parent": "305AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "305611AA",
+"name": "도료",
+"parent": "30561AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "305612AA",
+"name": "잉크",
+"parent": "30561AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30561AA",
+"name": "도료및잉크",
+"parent": "3056AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "305621AA",
+"name": "비누,세제및치약",
+"parent": "30562AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "305622AA",
+"name": "화장품",
+"parent": "30562AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30562AA",
+"name": "비누및화장품",
+"parent": "3056AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "305631AA",
+"name": "접착제및젤라틴",
+"parent": "30563AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "305632AA",
+"name": "사진용화학제품및감광재료",
+"parent": "30563AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "305633AA",
+"name": "기타화학제품",
+"parent": "30563AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30563AA",
+"name": "기타화학제품",
+"parent": "3056AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "3056AA",
+"name": "기타화학제품",
+"parent": "305AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "305711AA",
+"name": "플라스틱1차제품",
+"parent": "30571AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30571AA",
+"name": "플라스틱1차제품",
+"parent": "3057AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "305721AA",
+"name": "건축용플라스틱제품",
+"parent": "30572AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "305722AA",
+"name": "포장용플라스틱제품",
+"parent": "30572AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "305723AA",
+"name": "운송장비및조립용플라스틱제품",
+"parent": "30572AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "305724AA",
+"name": "기타플라스틱제품",
+"parent": "30572AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30572AA",
+"name": "기타플라스틱제품",
+"parent": "3057AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "3057AA",
+"name": "플라스틱제품",
+"parent": "305AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "305811AA",
+"name": "타이어및튜브",
+"parent": "30581AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30581AA",
+"name": "타이어및튜브",
+"parent": "3058AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "305821AA",
+"name": "산업용고무제품",
+"parent": "30582AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "305822AA",
+"name": "기타고무제품",
+"parent": "30582AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30582AA",
+"name": "기타고무제품",
+"parent": "3058AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "3058AA",
+"name": "고무제품",
+"parent": "305AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "305AA",
+"name": "화학제품",
+"parent": "3AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "306111AA",
+"name": "판유리및1차유리제품",
+"parent": "30611AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "306112AA",
+"name": "전자기기용유리제품",
+"parent": "30611AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "306113AA",
+"name": "산업용유리제품(전자기기용제외)",
+"parent": "30611AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "306114AA",
+"name": "기타유리제품",
+"parent": "30611AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30611AA",
+"name": "유리및유리제품",
+"parent": "3061AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "3061AA",
+"name": "유리및유리제품",
+"parent": "306AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "306211AA",
+"name": "가정용도자기",
+"parent": "30621AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "306212AA",
+"name": "산업용도자기",
+"parent": "30621AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "306213AA",
+"name": "내화요업제품",
+"parent": "30621AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "306214AA",
+"name": "건설용비내화요업제품",
+"parent": "30621AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30621AA",
+"name": "도자기및요업제품",
+"parent": "3062AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "306221AA",
+"name": "시멘트",
+"parent": "30622AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30622AA",
+"name": "시멘트",
+"parent": "3062AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "306231AA",
+"name": "레미콘",
+"parent": "30623AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "306232AA",
+"name": "콘크리트제품",
+"parent": "30623AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30623AA",
+"name": "콘크리트제품",
+"parent": "3062AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "306241AA",
+"name": "석회및석고제품",
+"parent": "30624AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "306242AA",
+"name": "석제품",
+"parent": "30624AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "306243AA",
+"name": "연마재",
+"parent": "30624AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "306244AA",
+"name": "아스콘및아스팔트제품",
+"parent": "30624AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "306245AA",
+"name": "기타비금속광물제품",
+"parent": "30624AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30624AA",
+"name": "기타비금속광물제품",
+"parent": "3062AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "3062AA",
+"name": "기타비금속광물제품",
+"parent": "306AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "306AA",
+"name": "비금속광물제품",
+"parent": "3AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "307111AA",
+"name": "선철",
+"parent": "30711AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "307112AA",
+"name": "합금철",
+"parent": "30711AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "307113AA",
+"name": "조강",
+"parent": "30711AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30711AA",
+"name": "선철및조강",
+"parent": "3071AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "307121AA",
+"name": "철근및봉강",
+"parent": "30712AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "307122AA",
+"name": "형강",
+"parent": "30712AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "307123AA",
+"name": "선재및궤조",
+"parent": "30712AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "307124AA",
+"name": "중후판(두께3mm이상)",
+"parent": "30712AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "307125AA",
+"name": "열연강판",
+"parent": "30712AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "307126AA",
+"name": "강선",
+"parent": "30712AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "307127AA",
+"name": "철강관",
+"parent": "30712AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30712AA",
+"name": "열간압연강재",
+"parent": "3071AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "307131AA",
+"name": "냉간압연강재",
+"parent": "30713AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30713AA",
+"name": "냉간압연강재",
+"parent": "3071AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "307141AA",
+"name": "표면처리강재",
+"parent": "30714AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "307142AA",
+"name": "기타철강1차제품",
+"parent": "30714AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30714AA",
+"name": "기타철강1차제품",
+"parent": "3071AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "3071AA",
+"name": "철강1차제품",
+"parent": "307AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "307211AA",
+"name": "동제련,정련및합금제품",
+"parent": "30721AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "307212AA",
+"name": "알루미늄제련,정련및합금제품",
+"parent": "30721AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "307213AA",
+"name": "연및아연제련,정련및합금제품",
+"parent": "30721AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "307214AA",
+"name": "금은괴",
+"parent": "30721AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "307215AA",
+"name": "기타비철금속제련,정련및합금제품",
+"parent": "30721AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30721AA",
+"name": "비철금속괴",
+"parent": "3072AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "307221AA",
+"name": "동1차제품",
+"parent": "30722AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "307222AA",
+"name": "알루미늄1차제품",
+"parent": "30722AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "307223AA",
+"name": "기타비철금속1차제품",
+"parent": "30722AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30722AA",
+"name": "비철금속1차제품",
+"parent": "3072AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "3072AA",
+"name": "비철금속괴및1차제품",
+"parent": "307AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "307311AA",
+"name": "금속주물",
+"parent": "30731AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30731AA",
+"name": "금속주물",
+"parent": "3073AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "3073AA",
+"name": "금속주물",
+"parent": "307AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "307AA",
+"name": "1차금속제품",
+"parent": "3AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "308111AA",
+"name": "건축용금속제품",
+"parent": "30811AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "308112AA",
+"name": "금속제탱크및압력용기",
+"parent": "30811AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "308113AA",
+"name": "산업용보일러및증기발생기",
+"parent": "30811AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30811AA",
+"name": "구조용금속제품및탱크",
+"parent": "3081AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "308121AA",
+"name": "금속단조및야금제품",
+"parent": "30812AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "308122AA",
+"name": "금속압형제품",
+"parent": "30812AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30812AA",
+"name": "금속단조,야금및압형제품",
+"parent": "3081AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "308141AA",
+"name": "가정용금속제품",
+"parent": "30814AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "308142AA",
+"name": "부착용금속제품",
+"parent": "30814AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "308143AA",
+"name": "공구류",
+"parent": "30814AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "308144AA",
+"name": "나사및철선제품",
+"parent": "30814AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "308145AA",
+"name": "금속포장용기",
+"parent": "30814AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "308146AA",
+"name": "기타금속제품",
+"parent": "30814AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30814AA",
+"name": "기타금속가공제품",
+"parent": "3081AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "3081AA",
+"name": "금속가공제품",
+"parent": "308AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "308AA",
+"name": "금속가공제품",
+"parent": "3AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "309111AA",
+"name": "개별소자",
+"parent": "30911AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "309112AA",
+"name": "집적회로",
+"parent": "30911AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30911AA",
+"name": "반도체",
+"parent": "3091AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "3091AA",
+"name": "반도체",
+"parent": "309AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "309211AA",
+"name": "LCD평판디스플레이",
+"parent": "30921AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "309212AA",
+"name": "기타전자표시장치",
+"parent": "30921AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30921AA",
+"name": "전자표시장치",
+"parent": "3092AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "3092AA",
+"name": "전자표시장치",
+"parent": "309AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "309311AA",
+"name": "인쇄회로기판및실장기판",
+"parent": "30931AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30931AA",
+"name": "인쇄회로기판",
+"parent": "3093AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "309321AA",
+"name": "축전기,저항기,전자코일및변성기",
+"parent": "30932AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "309322AA",
+"name": "기타전자부품",
+"parent": "30932AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30932AA",
+"name": "기타전자부품",
+"parent": "3093AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "3093AA",
+"name": "기타전자부품",
+"parent": "309AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "309411AA",
+"name": "컴퓨터",
+"parent": "30941AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "309412AA",
+"name": "컴퓨터기억장치",
+"parent": "30941AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "309413AA",
+"name": "컴퓨터주변기기",
+"parent": "30941AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30941AA",
+"name": "컴퓨터및주변기기",
+"parent": "3094AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "3094AA",
+"name": "컴퓨터및주변기기",
+"parent": "309AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "309511AA",
+"name": "유선통신기기",
+"parent": "30951AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "309512AA",
+"name": "이동전화기",
+"parent": "30951AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "309513AA",
+"name": "기타무선통신장비및방송장비",
+"parent": "30951AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30951AA",
+"name": "통신및방송장비",
+"parent": "3095AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "309521AA",
+"name": "TV",
+"parent": "30952AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "309522AA",
+"name": "영상기기",
+"parent": "30952AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "309523AA",
+"name": "오디오및음향기기",
+"parent": "30952AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30952AA",
+"name": "영상및음향기기",
+"parent": "3095AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "3095AA",
+"name": "통신,방송및영상,음향기기",
+"parent": "309AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "309611AA",
+"name": "의료용기기",
+"parent": "30961AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "309612AA",
+"name": "측정및분석기기",
+"parent": "30961AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "309613AA",
+"name": "자동조정및제어기기",
+"parent": "30961AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30961AA",
+"name": "의료및측정기기",
+"parent": "3096AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "309621AA",
+"name": "사진기및영사기",
+"parent": "30962AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "309622AA",
+"name": "기타광학기기",
+"parent": "30962AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "30962AA",
+"name": "기타정밀기기",
+"parent": "3096AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "3096AA",
+"name": "정밀기기",
+"parent": "309AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "309AA",
+"name": "컴퓨터,전자및광학기기",
+"parent": "3AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "310111AA",
+"name": "발전기및전동기",
+"parent": "31011AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "31011AA",
+"name": "발전기및전동기",
+"parent": "3101AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "310121AA",
+"name": "변압기",
+"parent": "31012AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "310122AA",
+"name": "전기변환장치",
+"parent": "31012AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "310123AA",
+"name": "전기회로개폐및접속장치",
+"parent": "31012AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "310124AA",
+"name": "배전반및전기자동제어반",
+"parent": "31012AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "31012AA",
+"name": "전기변환.공급제어장치",
+"parent": "3101AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "310131AA",
+"name": "전지",
+"parent": "31013AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "31013AA",
+"name": "전지",
+"parent": "3101AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "310141AA",
+"name": "전선및케이블",
+"parent": "31014AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "31014AA",
+"name": "전선및케이블",
+"parent": "3101AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "310151AA",
+"name": "가정용냉장고및냉동고",
+"parent": "31015AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "310152AA",
+"name": "주방용및난방용전기기기",
+"parent": "31015AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "310153AA",
+"name": "기타가정용전기기기",
+"parent": "31015AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "31015AA",
+"name": "가정용전기기기",
+"parent": "3101AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "310161AA",
+"name": "전구및램프",
+"parent": "31016AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "310162AA",
+"name": "조명장치",
+"parent": "31016AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "310163AA",
+"name": "기타전기장비",
+"parent": "31016AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "31016AA",
+"name": "기타전기장비",
+"parent": "3101AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "3101AA",
+"name": "전기장비",
+"parent": "310AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "310AA",
+"name": "전기장비",
+"parent": "3AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "311111AA",
+"name": "내연기관및터빈",
+"parent": "31111AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "31111AA",
+"name": "내연기관및터빈",
+"parent": "3111AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "311121AA",
+"name": "펌프및압축기",
+"parent": "31112AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "31112AA",
+"name": "펌프및압축기",
+"parent": "3111AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "311131AA",
+"name": "밸브",
+"parent": "31113AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "311132AA",
+"name": "베어링,기어및동력전달장치",
+"parent": "31113AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "31113AA",
+"name": "일반목적용기계부품",
+"parent": "3111AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "311141AA",
+"name": "산업용운반기계",
+"parent": "31114AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "31114AA",
+"name": "산업용운반기계",
+"parent": "3111AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "311151AA",
+"name": "공기조절장치및냉장냉동장비",
+"parent": "31115AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "311152AA",
+"name": "공기및액체여과기",
+"parent": "31115AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "31115AA",
+"name": "공기및액체조절장치",
+"parent": "3111AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "311161AA",
+"name": "사무용기기",
+"parent": "31116AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "311162AA",
+"name": "기타일반목적용기계",
+"parent": "31116AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "31116AA",
+"name": "기타일반목적용기계",
+"parent": "3111AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "3111AA",
+"name": "일반목적용기계",
+"parent": "311AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "311211AA",
+"name": "농업용기계",
+"parent": "31121AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "311212AA",
+"name": "건설및광물처리기계",
+"parent": "31121AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "31121AA",
+"name": "농업및건설용기계",
+"parent": "3112AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "311221AA",
+"name": "금속가공용기계",
+"parent": "31122AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "31122AA",
+"name": "금속가공용기계",
+"parent": "3112AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "311231AA",
+"name": "금형및주형",
+"parent": "31123AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "31123AA",
+"name": "금형및주형",
+"parent": "3112AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "311241AA",
+"name": "반도체제조용기계",
+"parent": "31124AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "311242AA",
+"name": "디스플레이제조용기계",
+"parent": "31124AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "31124AA",
+"name": "반도체및디스플레이제조용기계",
+"parent": "3112AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "311253AA",
+"name": "산업용로봇",
+"parent": "31125AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "311254AA",
+"name": "제지및인쇄기계",
+"parent": "31125AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "311255AA",
+"name": "고무및플라스틱성형기계",
+"parent": "31125AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "311256AA",
+"name": "기타특수목적용기계",
+"parent": "31125AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "31125AA",
+"name": "기타특수목적용기계",
+"parent": "3112AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "3112AA",
+"name": "특수목적용기계",
+"parent": "311AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "311AA",
+"name": "기계및장비",
+"parent": "3AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "312111AA",
+"name": "승용차",
+"parent": "31211AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "312112AA",
+"name": "버스",
+"parent": "31211AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "312113AA",
+"name": "트럭",
+"parent": "31211AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "31211AA",
+"name": "자동차",
+"parent": "3121AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "312121AA",
+"name": "특장차",
+"parent": "31212AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "31212AA",
+"name": "특장차및트레일러",
+"parent": "3121AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "312131AA",
+"name": "자동차용엔진",
+"parent": "31213AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "312132AA",
+"name": "자동차부분품",
+"parent": "31213AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "31213AA",
+"name": "자동차부품",
+"parent": "3121AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "3121AA",
+"name": "자동차및부품",
+"parent": "312AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "312211AA",
+"name": "모터사이클",
+"parent": "31221AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "31221AA",
+"name": "기타운송장비",
+"parent": "3122AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "3122AA",
+"name": "기타운송장비",
+"parent": "312AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "312AA",
+"name": "운송장비",
+"parent": "3AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "313111AA",
+"name": "목재가구",
+"parent": "31311AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "313112AA",
+"name": "금속가구",
+"parent": "31311AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "313113AA",
+"name": "기타가구",
+"parent": "31311AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "31311AA",
+"name": "가구",
+"parent": "3131AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "313121AA",
+"name": "장난감및오락용품",
+"parent": "31312AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "313122AA",
+"name": "운동및경기용품",
+"parent": "31312AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "313124AA",
+"name": "문구용품",
+"parent": "31312AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "313126AA",
+"name": "기타제조업제품",
+"parent": "31312AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "31312AA",
+"name": "기타제조업제품",
+"parent": "3131AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "3131AA",
+"name": "기타제조업제품",
+"parent": "313AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "313AA",
+"name": "기타제조업제품",
+"parent": "3AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "3AA",
+"name": "공산품",
+"parent": "*AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "401111AA",
+"name": "전력",
+"parent": "40111AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "40111AA",
+"name": "전력",
+"parent": "4011AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "4011AA",
+"name": "전력",
+"parent": "401AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "401211AA",
+"name": "도시가스",
+"parent": "40121AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "40121AA",
+"name": "도시가스",
+"parent": "4012AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "401221AA",
+"name": "증기및온수공급",
+"parent": "40122AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "40122AA",
+"name": "증기및온수공급",
+"parent": "4012AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "4012AA",
+"name": "가스,증기및온수",
+"parent": "401AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "401AA",
+"name": "전력,가스및증기",
+"parent": "4AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "402111AA",
+"name": "수도",
+"parent": "40211AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "40211AA",
+"name": "수도",
+"parent": "4021AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "4021AA",
+"name": "수도",
+"parent": "402AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "402211AA",
+"name": "하수,폐수및분뇨처리",
+"parent": "40221AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "40221AA",
+"name": "폐수처리",
+"parent": "4022AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "4022AA",
+"name": "폐수처리",
+"parent": "402AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "402311AA",
+"name": "폐기물수집,운반및처리",
+"parent": "40231AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "40231AA",
+"name": "폐기물처리",
+"parent": "4023AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "4023AA",
+"name": "폐기물처리및자원재활용서비스",
+"parent": "402AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "402AA",
+"name": "수도,폐기물처리및재활용서비스",
+"parent": "4AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "4AA",
+"name": "전력,가스,수도및폐기물",
+"parent": "*AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "501111AA",
+"name": "철도운송서비스",
+"parent": "50111AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "50111AA",
+"name": "철도운송서비스",
+"parent": "5011AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "501121AA",
+"name": "도로여객운송서비스",
+"parent": "50112AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "501122AA",
+"name": "도로화물운송서비스",
+"parent": "50112AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "50112AA",
+"name": "도로운송서비스",
+"parent": "5011AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "5011AA",
+"name": "육상운송서비스",
+"parent": "501AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "501211AA",
+"name": "연안및내륙수상운송서비스",
+"parent": "50121AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "501212AA",
+"name": "외항운송서비스",
+"parent": "50121AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "50121AA",
+"name": "수상운송서비스",
+"parent": "5012AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "5012AA",
+"name": "수상운송서비스",
+"parent": "501AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "501311AA",
+"name": "항공운송서비스",
+"parent": "50131AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "50131AA",
+"name": "항공운송서비스",
+"parent": "5013AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "5013AA",
+"name": "항공운송서비스",
+"parent": "501AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "501411AA",
+"name": "육상운송보조서비스",
+"parent": "50141AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "501412AA",
+"name": "수상운송보조서비스",
+"parent": "50141AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "501413AA",
+"name": "항공운송보조서비스",
+"parent": "50141AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "50141AA",
+"name": "운송보조서비스",
+"parent": "5014AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "501421AA",
+"name": "하역서비스",
+"parent": "50142AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "50142AA",
+"name": "하역서비스",
+"parent": "5014AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "501431AA",
+"name": "보관및창고서비스",
+"parent": "50143AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "50143AA",
+"name": "보관및창고서비스",
+"parent": "5014AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "5014AA",
+"name": "창고및운송보조서비스",
+"parent": "501AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "501511AA",
+"name": "공영우편서비스",
+"parent": "50151AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "50151AA",
+"name": "공영우편서비스",
+"parent": "5015AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "501521AA",
+"name": "소화물전문운송서비스",
+"parent": "50152AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "50152AA",
+"name": "소화물전문운송서비스",
+"parent": "5015AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "5015AA",
+"name": "우편및소화물전문운송서비스",
+"parent": "501AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "501AA",
+"name": "운송서비스",
+"parent": "5AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "502111AA",
+"name": "일반음식점",
+"parent": "50211AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "502112AA",
+"name": "기타음식점",
+"parent": "50211AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "502113AA",
+"name": "비알콜음료점",
+"parent": "50211AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "50211AA",
+"name": "음식점및주점",
+"parent": "5021AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "502121AA",
+"name": "숙박",
+"parent": "50212AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "50212AA",
+"name": "숙박서비스",
+"parent": "5021AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "5021AA",
+"name": "음식점및숙박서비스",
+"parent": "502AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "502AA",
+"name": "음식점및숙박서비스",
+"parent": "5AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "503111AA",
+"name": "유선통신서비스",
+"parent": "50311AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "503112AA",
+"name": "무선및위성통신서비스",
+"parent": "50311AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "50311AA",
+"name": "유,무선및위성통신서비스",
+"parent": "5031AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "503121AA",
+"name": "통신재판매및중개서비스",
+"parent": "50312AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "503122AA",
+"name": "기타전기통신서비스",
+"parent": "50312AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "50312AA",
+"name": "기타전기통신서비스",
+"parent": "5031AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "5031AA",
+"name": "통신서비스",
+"parent": "503AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "503211AA",
+"name": "정보제공서비스",
+"parent": "50321AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "50321AA",
+"name": "정보서비스",
+"parent": "5032AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "5032AA",
+"name": "정보서비스",
+"parent": "503AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "503311AA",
+"name": "소프트웨어개발공급",
+"parent": "50331AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "50331AA",
+"name": "소프트웨어개발공급",
+"parent": "5033AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "503321AA",
+"name": "기타IT서비스",
+"parent": "50332AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "50332AA",
+"name": "기타IT서비스",
+"parent": "5033AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "5033AA",
+"name": "소프트웨어개발공급및기타IT서비스",
+"parent": "503AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "503411AA",
+"name": "신문및출판",
+"parent": "50341AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "50341AA",
+"name": "신문및출판서비스",
+"parent": "5034AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "5034AA",
+"name": "신문및출판서비스",
+"parent": "503AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "503511AA",
+"name": "영화상영",
+"parent": "50351AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "50351AA",
+"name": "영화상영",
+"parent": "5035AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "5035AA",
+"name": "영상·오디오물제작배급",
+"parent": "503AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "503AA",
+"name": "정보통신및방송서비스",
+"parent": "5AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "504111AA",
+"name": "예금취급기관",
+"parent": "50411AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "50411AA",
+"name": "예금취급기관",
+"parent": "5041AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "504121AA",
+"name": "금융투자기관",
+"parent": "50412AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "504122AA",
+"name": "기타금융중개기관",
+"parent": "50412AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "50412AA",
+"name": "기타금융중개기관",
+"parent": "5041AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "5041AA",
+"name": "금융서비스",
+"parent": "504AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "504212AA",
+"name": "비생명보험",
+"parent": "50421AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "50421AA",
+"name": "보험서비스",
+"parent": "5042AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "5042AA",
+"name": "보험서비스",
+"parent": "504AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "504311AA",
+"name": "금융및보험보조서비스",
+"parent": "50431AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "50431AA",
+"name": "금융및보험보조서비스",
+"parent": "5043AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "5043AA",
+"name": "금융및보험보조서비스",
+"parent": "504AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "504AA",
+"name": "금융및보험서비스",
+"parent": "5AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "505111AA",
+"name": "주거서비스",
+"parent": "50511AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "50511AA",
+"name": "주거서비스",
+"parent": "5051AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "5051AA",
+"name": "주거서비스",
+"parent": "505AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "505211AA",
+"name": "비주거용건물임대",
+"parent": "50521AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "50521AA",
+"name": "비주거용건물임대및부동산공급",
+"parent": "5052AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "505221AA",
+"name": "부동산관련서비스",
+"parent": "50522AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "50522AA",
+"name": "부동산관련서비스",
+"parent": "5052AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "5052AA",
+"name": "기타부동산서비스",
+"parent": "505AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "505AA",
+"name": "부동산서비스",
+"parent": "5AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "506111AA",
+"name": "법무및회계서비스",
+"parent": "50611AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "50611AA",
+"name": "법무및경영지원서비스",
+"parent": "5061AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "506121AA",
+"name": "광고",
+"parent": "50612AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "50612AA",
+"name": "광고",
+"parent": "5061AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "5061AA",
+"name": "사업관련전문서비스",
+"parent": "506AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "506211AA",
+"name": "건축·토목관련서비스",
+"parent": "50621AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "50621AA",
+"name": "건축·토목관련서비스",
+"parent": "5062AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "506222AA",
+"name": "과학기술서비스",
+"parent": "50622AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "50622AA",
+"name": "기타과학기술및전문서비스",
+"parent": "5062AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "5062AA",
+"name": "과학기술및기타전문서비스",
+"parent": "506AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "506AA",
+"name": "전문,과학및기술서비스",
+"parent": "5AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "507111AA",
+"name": "장비·용품및지식재산권임대",
+"parent": "50711AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "50711AA",
+"name": "장비·용품및지식재산권임대",
+"parent": "5071AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "5071AA",
+"name": "장비·용품및지식재산권임대",
+"parent": "507AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "507211AA",
+"name": "사업시설유지관리및조경서비스",
+"parent": "50721AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "50721AA",
+"name": "사업시설유지관리및조경서비스",
+"parent": "5072AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "507221AA",
+"name": "인력공급및알선",
+"parent": "50722AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "50722AA",
+"name": "인력공급및알선",
+"parent": "5072AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "507231AA",
+"name": "기타사업지원서비스",
+"parent": "50723AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "50723AA",
+"name": "기타사업지원서비스",
+"parent": "5072AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "5072AA",
+"name": "사업지원서비스",
+"parent": "507AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "507AA",
+"name": "사업지원서비스",
+"parent": "5AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "508111AA",
+"name": "교육서비스",
+"parent": "50811AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "50811AA",
+"name": "교육서비스",
+"parent": "5081AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "5081AA",
+"name": "교육서비스",
+"parent": "508AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "508AA",
+"name": "교육서비스",
+"parent": "5AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "509111AA",
+"name": "여행사및여행보조서비스",
+"parent": "50911AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "50911AA",
+"name": "문화및여행관련서비스",
+"parent": "5091AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "5091AA",
+"name": "문화및여행관련서비스",
+"parent": "509AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "509211AA",
+"name": "스포츠서비스",
+"parent": "50921AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "509212AA",
+"name": "오락서비스",
+"parent": "50921AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "50921AA",
+"name": "스포츠및오락서비스",
+"parent": "5092AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "5092AA",
+"name": "스포츠및오락서비스",
+"parent": "509AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "509AA",
+"name": "예술,스포츠및여가관련서비스",
+"parent": "5AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "510111AA",
+"name": "자동차수리서비스",
+"parent": "51011AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "510112AA",
+"name": "전자통신기기및가정용품수리서비스",
+"parent": "51011AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "51011AA",
+"name": "자동차및소비용품수리서비스",
+"parent": "5101AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "510121AA",
+"name": "미용관련서비스",
+"parent": "51012AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "510122AA",
+"name": "세탁",
+"parent": "51012AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "510123AA",
+"name": "기타개인서비스",
+"parent": "51012AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "51012AA",
+"name": "개인서비스",
+"parent": "5101AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "5101AA",
+"name": "자동차·소비용품수리및개인서비스",
+"parent": "510AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "510AA",
+"name": "기타서비스",
+"parent": "5AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "5AA",
+"name": "서비스",
+"parent": "*AA",
+"unit": "2020=100",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "304128AA",
+"name": "정제혼합용원료유",
+"parent": "30412AA",
+"unit": "2025.12=100",
+"cycles": [
+"M",
+"Q"
+]
+}
+]
+},
+{
+"stat_code": "817Y002",
+"stat_name": "1.3.2.1. 시장금리(일별)",
+"items": [
+{
+"group": "Group1",
+"code": "010101000",
+"name": "콜금리(1일, 전체거래)",
+"parent": "010100000",
+"unit": "연%",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "010102000",
+"name": "콜금리(1일, 중개회사거래)",
+"parent": "010100000",
+"unit": "연%",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "010200001",
+"name": "국고채(5년)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "010260000",
+"name": "산금채(1년)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "010150000",
+"name": "KORIBOR(3개월)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "010151000",
+"name": "KORIBOR(6개월)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "010152000",
+"name": "KORIBOR(12개월)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "010190000",
+"name": "국고채(1년)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "010210000",
+"name": "국고채(10년)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "010220000",
+"name": "국고채(20년)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "010230000",
+"name": "국고채(30년)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "010195000",
+"name": "국고채(2년)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "010200000",
+"name": "국고채(3년)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "010300000",
+"name": "회사채(3년, AA-)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "010310000",
+"name": "회사채(3년, AA-, 민평)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "010320000",
+"name": "회사채(3년, BBB-)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "010400002",
+"name": "통안증권(2년)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "010501000",
+"name": "MMF(7일)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "010502000",
+"name": "CD(91일)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "010503000",
+"name": "CP(91일)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "010503500",
+"name": "국민주택채권1종(5년)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "010504000",
+"name": "CMA(수시형)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "010400000",
+"name": "통안증권(91일)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "010103000",
+"name": "콜금리(1일, 은행증권금융차입)",
+"parent": "010100000",
+"unit": "연%",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "010400001",
+"name": "통안증권(1년)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "010240000",
+"name": "국고채(50년)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "010901000",
+"name": "KOFR(공시RFR)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"D"
+]
+}
+]
+},
+{
+"stat_code": "721Y001",
+"stat_name": "1.3.2.2. 시장금리(월,분기,년)",
+"items": [
+{
+"group": "Group1",
+"code": "1010000",
+"name": "무담보콜금리(1일)",
+"parent": "1020000",
+"unit": "연%",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "1010200",
+"name": "무담보콜금리(1일, 중개거래)",
+"parent": "1010000",
+"unit": "연%",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "101020A",
+"name": "무담보콜금리(1일, 중개거래,투신사연계콜제외)",
+"parent": "1010200",
+"unit": "연%",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "1020000",
+"name": "무담보콜금리 전체",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "1025000",
+"name": "KORIBOR(3개월)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "1026000",
+"name": "KORIBOR(6개월)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "1027000",
+"name": "KORIBOR(12개월)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "2010000",
+"name": "CD(91일)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "4020000",
+"name": "CP(91일)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "5010000",
+"name": "국민주택채권1종(5년)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "5020000",
+"name": "국고채(3년)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "5030000",
+"name": "국고채(1년)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "5040000",
+"name": "국고채(5년)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "5050000",
+"name": "국고채(10년)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "5060000",
+"name": "국고채(20년)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "5070000",
+"name": "국고채(30년)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "5080000",
+"name": "국고채(50년)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "5090000",
+"name": "국고채(2년)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "6010100",
+"name": "통안증권(1년)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "6010200",
+"name": "통안증권(2년)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "6010300",
+"name": "통안증권(91일)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "6050000",
+"name": "산금채(1년)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "7020000",
+"name": "회사채(3년, AA-)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "7030000",
+"name": "회사채(3년, BBB-)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "8010000",
+"name": "회사채(3년, AA-, 민평)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "8020000",
+"name": "MMF(7일)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "8030000",
+"name": "CMA(수시형)",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "101020B",
+"name": "무담보콜금리(1일,은행증권금융차입)",
+"parent": "1010200",
+"unit": "연%",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "1030000",
+"name": "담보콜금리(1일)",
+"parent": "1040000",
+"unit": "연%",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "1040000",
+"name": "담보콜금리전체",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"M",
+"Q"
+]
+}
+]
+},
+{
+"stat_code": "731Y001",
+"stat_name": "3.1.1.1. 주요국 통화의 대원화환율",
+"items": [
+{
+"group": "Group1",
+"code": "0000001",
+"name": "원/미국달러(매매기준율)",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000053",
+"name": "원/위안(매매기준율)",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000002",
+"name": "원/일본엔(100엔)",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000003",
+"name": "원/유로",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000004",
+"name": "원/독일마르크",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000005",
+"name": "원/프랑스프랑",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000006",
+"name": "원/이태리리라(100리라)",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000007",
+"name": "원/벨기에프랑",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000008",
+"name": "원/오스트리아실링",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000009",
+"name": "원/네덜란드길더",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000010",
+"name": "원/스페인페세타(100페세타)",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000011",
+"name": "원/핀란드마르카",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000012",
+"name": "원/영국파운드",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000013",
+"name": "원/캐나다달러",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000014",
+"name": "원/스위스프랑",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000017",
+"name": "원/호주달러",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000026",
+"name": "원/뉴질랜드달러",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000027",
+"name": "원/중국위안",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000030",
+"name": "원/홍콩위안",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000015",
+"name": "원/홍콩달러",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000031",
+"name": "원/대만달러",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000032",
+"name": "원/몽골투그릭",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000033",
+"name": "원/카자흐스탄텡게",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000028",
+"name": "원/태국바트",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000024",
+"name": "원/싱가포르달러",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000029",
+"name": "원/인도네시아루피아(100루피아)",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000025",
+"name": "원/말레이지아링깃",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000034",
+"name": "원/필리핀페소",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000035",
+"name": "원/베트남동(100동)",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000036",
+"name": "원/브루나이달러",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000037",
+"name": "원/인도루피",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000038",
+"name": "원/파키스탄루피",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000039",
+"name": "원/방글라데시타카",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000040",
+"name": "원/멕시코 페소",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000041",
+"name": "원/브라질 헤알",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000042",
+"name": "원/아르헨티나페소",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000016",
+"name": "원/스웨덴크로나",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000018",
+"name": "원/덴마크크로나",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000019",
+"name": "원/노르웨이크로나",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000043",
+"name": "원/러시아루블",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000044",
+"name": "원/헝가리포린트",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000045",
+"name": "원/폴란트즈워티",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000046",
+"name": "원/체코코루나",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000020",
+"name": "원/사우디아라비아리얄",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000047",
+"name": "원/카타르리얄",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000048",
+"name": "원/이스라엘셰켈",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000049",
+"name": "원/요르단디나르",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000021",
+"name": "원/쿠웨이트디나르",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000022",
+"name": "원/바레인디나르",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000023",
+"name": "원/아랍에미리트디르함",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000050",
+"name": "원/튀르키예리라",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000051",
+"name": "원/남아프리카공화국랜드",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+},
+{
+"group": "Group1",
+"code": "0000052",
+"name": "원/이집트파운드",
+"parent": null,
+"unit": "원",
+"cycles": [
+"D"
+]
+}
+]
+},
+{
+"stat_code": "731Y004",
+"stat_name": "3.1.2.1. 주요국 통화의 대원화환율",
+"items": [
+{
+"group": "Group1",
+"code": "0000001",
+"name": "원/미국달러(매매기준율)",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000053",
+"name": "원/위안(매매기준율)",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000002",
+"name": "원/일본엔(100엔)",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000003",
+"name": "원/유로",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000004",
+"name": "원/독일마르크",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000005",
+"name": "원/프랑스프랑",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000006",
+"name": "원/이태리리라(100리라)",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000007",
+"name": "원/벨기에프랑",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000008",
+"name": "원/오스트리아실링",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000009",
+"name": "원/네덜란드길더",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000010",
+"name": "원/스페인페세타(100페세타)",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000011",
+"name": "원/핀란드마르카",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000012",
+"name": "원/영국파운드",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000013",
+"name": "원/캐나다달러",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000014",
+"name": "원/스위스프랑",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000017",
+"name": "원/호주달러",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000026",
+"name": "원/뉴질랜드달러",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000027",
+"name": "원/중국위안",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000030",
+"name": "원/홍콩위안",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000015",
+"name": "원/홍콩달러",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000031",
+"name": "원/대만달러",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000032",
+"name": "원/몽골투그릭",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000033",
+"name": "원/카자흐스탄텡게",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000028",
+"name": "원/태국바트",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000024",
+"name": "원/싱가포르달러",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000029",
+"name": "원/인도네시아루피아(100루피아)",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000025",
+"name": "원/말레이지아링깃",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000034",
+"name": "원/필리핀페소",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000035",
+"name": "원/베트남동(100동)",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000036",
+"name": "원/브루나이달러",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000037",
+"name": "원/인도루피",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000038",
+"name": "원/파키스탄루피",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000039",
+"name": "원/방글라데시타카",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000040",
+"name": "원/멕시코 페소",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000041",
+"name": "원/브라질 헤알",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000042",
+"name": "원/아르헨티나페소",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000016",
+"name": "원/스웨덴크로나",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000018",
+"name": "원/덴마크크로나",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000019",
+"name": "원/노르웨이크로나",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000043",
+"name": "원/러시아루블",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000044",
+"name": "원/헝가리포린트",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000045",
+"name": "원/폴란트즈워티",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000046",
+"name": "원/체코코루나",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000020",
+"name": "원/사우디아라비아리얄",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000047",
+"name": "원/카타르리얄",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000048",
+"name": "원/이스라엘셰켈",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000049",
+"name": "원/요르단디나르",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000021",
+"name": "원/쿠웨이트디나르",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000022",
+"name": "원/바레인디나르",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000023",
+"name": "원/아랍에미리트디르함",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000050",
+"name": "원/튀르키예리라",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000051",
+"name": "원/남아프리카공화국랜드",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group1",
+"code": "0000052",
+"name": "원/이집트파운드",
+"parent": null,
+"unit": "원",
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group2",
+"code": "0000100",
+"name": "평균자료",
+"parent": null,
+"unit": null,
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+},
+{
+"group": "Group2",
+"code": "0000200",
+"name": "말일자료",
+"parent": null,
+"unit": null,
+"cycles": [
+"A",
+"M",
+"Q",
+"S"
+]
+}
+]
+},
+{
+"stat_code": "901Y062",
+"stat_name": "4.4.1.1. 주택매매가격지수(KB)",
+"items": [
+{
+"group": "Group1",
+"code": "P63ACA",
+"name": "아파트(서울)",
+"parent": "P63AC",
+"unit": "2026.01=100",
+"cycles": [
+"M"
+]
+},
+{
+"group": "Group1",
+"code": "P63A",
+"name": "총지수",
+"parent": null,
+"unit": "2026.01=100",
+"cycles": [
+"M"
+]
+},
+{
+"group": "Group1",
+"code": "P63AA",
+"name": "단독주택",
+"parent": "P63A",
+"unit": "2026.01=100",
+"cycles": [
+"M"
+]
+},
+{
+"group": "Group1",
+"code": "P63AB",
+"name": "연립주택",
+"parent": "P63A",
+"unit": "2026.01=100",
+"cycles": [
+"M"
+]
+},
+{
+"group": "Group1",
+"code": "P63AC",
+"name": "아파트",
+"parent": "P63A",
+"unit": "2026.01=100",
+"cycles": [
+"M"
+]
+},
+{
+"group": "Group1",
+"code": "P63AD",
+"name": "총지수(서울)",
+"parent": "P63A",
+"unit": "2026.01=100",
+"cycles": [
+"M"
+]
+}
+]
+},
+{
+"stat_code": "901Y063",
+"stat_name": "4.4.1.2. 주택전세가격지수(KB)",
+"items": [
+{
+"group": "Group1",
+"code": "P64ACA",
+"name": "아파트(서울)",
+"parent": "P64AC",
+"unit": "2026.01=100",
+"cycles": [
+"M"
+]
+},
+{
+"group": "Group1",
+"code": "P64A",
+"name": "총지수",
+"parent": null,
+"unit": "2026.01=100",
+"cycles": [
+"M"
+]
+},
+{
+"group": "Group1",
+"code": "P64AA",
+"name": "단독주택",
+"parent": "P64A",
+"unit": "2026.01=100",
+"cycles": [
+"M"
+]
+},
+{
+"group": "Group1",
+"code": "P64AB",
+"name": "연립주택",
+"parent": "P64A",
+"unit": "2026.01=100",
+"cycles": [
+"M"
+]
+},
+{
+"group": "Group1",
+"code": "P64AC",
+"name": "아파트",
+"parent": null,
+"unit": "2026.01=100",
+"cycles": [
+"M"
+]
+},
+{
+"group": "Group1",
+"code": "P64AD",
+"name": "총지수(서울)",
+"parent": "P64A",
+"unit": "2026.01=100",
+"cycles": [
+"M"
+]
+}
+]
+},
+{
+"stat_code": "722Y001",
+"stat_name": "1.3.1. 한국은행 기준금리 및 여수신금리",
+"items": [
+{
+"group": "Group1",
+"code": "0101000",
+"name": "한국은행 기준금리",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"D",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "0102000",
+"name": "정부대출금금리",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"D",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "0109000",
+"name": "총액한도대출금리",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"D",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "0106000",
+"name": "결제자금지원한도 대출금리",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"D",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "0107000",
+"name": "무역금융지원 프로그램대출금리",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"D",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "0110000",
+"name": "신용대출지원 프로그램대출금리",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"D",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "0111000",
+"name": "영세자영업자지원 프로그램대출금리",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"D",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "0108000",
+"name": "신성장·일자리지원 프로그램대출금리",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"D",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "0113000",
+"name": "설비투자지원 프로그램대출금리",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"D",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "0112000",
+"name": "지방중소기업지원 프로그램대출금리",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"D",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "0104000",
+"name": "자금조정 대출금리",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"D",
+"M",
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "0105000",
+"name": "자금조정 예금금리",
+"parent": null,
+"unit": "연%",
+"cycles": [
+"A",
+"D",
+"M",
+"Q"
+]
+}
+]
+},
+{
+"stat_code": "200Y102",
+"stat_name": "2.1.1.2. 주요지표(분기지표)",
+"items": [
+{
+"group": "Group1",
+"code": "10111",
+"name": "국내총생산(GDP)(실질, 계절조정, 전기비)",
+"parent": "1011",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10112",
+"name": "비농림어업GDP",
+"parent": "1011",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10113",
+"name": "농림어업",
+"parent": "1011",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10114",
+"name": "제조업",
+"parent": "1011",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10115",
+"name": "건설업",
+"parent": "1011",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10116",
+"name": "서비스업",
+"parent": "1011",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10117",
+"name": "ICT산업",
+"parent": "1011",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10118",
+"name": "비ICT산업",
+"parent": "1011",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10121",
+"name": "국내총생산에 대한 지출(실질, 계절조정, 전기비)",
+"parent": "1012",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10122",
+"name": "민간소비",
+"parent": "1012",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10123",
+"name": "설비투자",
+"parent": "1012",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10124",
+"name": "건설투자",
+"parent": "1012",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10125",
+"name": "재화수출",
+"parent": "1012",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10126",
+"name": "재화수입",
+"parent": "1012",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10127",
+"name": "내수(재고제외)",
+"parent": "1012",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10211",
+"name": "국내총생산(GDP)(실질, 원계열, 전년동기비)",
+"parent": "1021",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10212",
+"name": "농림어업",
+"parent": "1021",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10213",
+"name": "제조업",
+"parent": "1021",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10214",
+"name": "전기, 가스 및 수도사업",
+"parent": "1021",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10215",
+"name": "건설업",
+"parent": "1021",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10216",
+"name": "서비스업",
+"parent": "1021",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10221",
+"name": "국내총생산에 대한 지출(실질, 원계열, 전년동기비)",
+"parent": "1022",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10222",
+"name": "민간소비",
+"parent": "1022",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10223",
+"name": "설비투자",
+"parent": "1022",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10224",
+"name": "건설투자",
+"parent": "1022",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10225",
+"name": "재화수출",
+"parent": "1022",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10226",
+"name": "재화수입",
+"parent": "1022",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10227",
+"name": "내수(재고제외)",
+"parent": "1022",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "20111",
+"name": "명목 GNI(전기비)",
+"parent": "2011",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "20112",
+"name": "실질 GNI(전기비)",
+"parent": "2011",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "20121",
+"name": "명목 GNI(전년동기비)",
+"parent": "2012",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "20122",
+"name": "실질 GNI(전년동기비)",
+"parent": "2012",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "301",
+"name": "GDP 디플레이터 등락률(원계열, 전년동기비)",
+"parent": null,
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "40101",
+"name": "총저축률",
+"parent": "401",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "40102",
+"name": "국내총투자율",
+"parent": "401",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "501",
+"name": "수출입의 대 GNI 비율(명목, 계절조정)",
+"parent": null,
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10128",
+"name": "정부소비",
+"parent": "1012",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "10228",
+"name": "정부소비",
+"parent": "1022",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "60111",
+"name": "국내총생산(GDP)(명목, 계절조정, 전기비)",
+"parent": "6011",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "60112",
+"name": "피용자보수",
+"parent": "6011",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "60113",
+"name": "총영업잉여",
+"parent": "6011",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "60114",
+"name": "순생산 및 수입세",
+"parent": "6011",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "60211",
+"name": "국내총생산(GDP)(명목, 원계열, 전년동기비)",
+"parent": "6021",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "60212",
+"name": "피용자보수",
+"parent": "6021",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "60213",
+"name": "총영업잉여",
+"parent": "6021",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "60214",
+"name": "순생산 및 수입세",
+"parent": "6021",
+"unit": "%",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "7011",
+"name": "가계총처분가능소득(계절조정계열)",
+"parent": "701",
+"unit": "십억원",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "7012",
+"name": "가계총처분가능소득(원계열)",
+"parent": "701",
+"unit": "십억원",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "7013",
+"name": "실질가계총처분가능소득(계절조정계열)",
+"parent": "701",
+"unit": "십억원",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "7014",
+"name": "실질가계총처분가능소득(원계열)",
+"parent": "701",
+"unit": "십억원",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "7015",
+"name": "가계총저축(계절조정계열)",
+"parent": "701",
+"unit": "십억원",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "7016",
+"name": "가계총저축(원계열)",
+"parent": "701",
+"unit": "십억원",
+"cycles": [
+"Q"
+]
+},
+{
+"group": "Group1",
+"code": "40103",
+"name": "(가계순저축률)",
+"parent": "401",
+"unit": "%",
+"cycles": [
+"Q"
+]
+}
+]
+}
+]
+}
