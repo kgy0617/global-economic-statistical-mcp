@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import gzip
+import json
 import urllib.parse
 from typing import Any
 
@@ -143,21 +145,26 @@ def item_row(stat_code, group, code, name, cycle="M", unit="원", parent=None, g
     }
 
 
-# ── Fake SDMX providers (OECD / IMF / BIS) ──────────────────────────
+# ── Fake SDMX providers (OECD / IMF / BIS / ECB / Eurostat) ─────────
 
 SDMX_BASES = {
     "OECD": "https://sdmx.oecd.org/public/rest/",
     "IMF": "https://api.imf.org/external/sdmx/3.0/",
     "BIS": "https://stats.bis.org/api/",
+    "ECB": "https://data-api.ecb.europa.eu/service/",
+    "EUROSTAT": "https://ec.europa.eu/eurostat/api/dissemination/sdmx/3.0/",
 }
+DATA360_BASE = "https://data360api.worldbank.org/data360/"
 
 
 class FakeSdmx:
     """Serves registered series as SDMX-JSON AllDimensions messages.
 
-    OECD and IMF answer in SDMX-JSON 2.0 (``data.structures``), BIS in 1.0 (``data.structure``).
-    IMF periods are written as ``2026-M01`` like the real API. Set ``ignore_wildcard_keys`` to
-    reproduce IMF returning every series when the key contains ``*``.
+    OECD and IMF answer in SDMX-JSON 2.0 (``data.structures``), BIS and ECB in 1.0
+    (``data.structure``), Eurostat in gzip-compressed SDMX-CSV 2.0 without a Content-Encoding
+    header, with lower-case dimension ids, like the real APIs. IMF periods are written as
+    ``2026-M01``. Set ``ignore_wildcard_keys`` to reproduce IMF returning every series when the
+    key contains ``*``. A structure registered as a string is served as SDMX-ML.
     """
 
     def __init__(self) -> None:
@@ -174,8 +181,8 @@ class FakeSdmx:
     def _parse(provider: str, url: httpx.URL) -> tuple[str, str, str | None, str | None]:
         path = urllib.parse.unquote(url.path)
         params = dict(url.params)
-        if provider == "IMF":
-            # /external/sdmx/3.0/data/dataflow/{agency}/{flow}/{version}/{key}
+        if provider in ("IMF", "EUROSTAT"):
+            # .../sdmx/3.0/data/dataflow/{agency}/{flow}/{version}/{key}
             parts = path.split("/data/dataflow/")[1].split("/")
             flow, key = parts[1], parts[3]
             bounds = params.get("c[TIME_PERIOD]", "")
@@ -201,7 +208,10 @@ class FakeSdmx:
             return self.forced.pop(0)
         if "/structure/" in request.url.path or "/dataflow/" in request.url.path and "/data/" not in request.url.path:
             flow = next((f for f in self.structures if f"/{f}/" in request.url.path or request.url.path.endswith(f"/{f}")), None)
-            return httpx.Response(200, json=self.structures[flow]) if flow else httpx.Response(404)
+            if not flow:
+                return httpx.Response(404)
+            doc = self.structures[flow]
+            return httpx.Response(200, text=doc) if isinstance(doc, str) else httpx.Response(200, json=doc)
         flow, key, start, end = self._parse(provider, request.url)
         wildcard = "*" in key
         chosen = [
@@ -218,7 +228,17 @@ class FakeSdmx:
                 rows.append((s, period, value))
         if not rows:
             return httpx.Response(404, text="NoResultsFound")
+        if provider == "EUROSTAT":
+            return httpx.Response(200, content=gzip.compress(self._csv(rows).encode()))
         return httpx.Response(200, json=self._message(provider, rows))
+
+    @staticmethod
+    def _csv(rows: list[tuple[dict[str, Any], str, float]]) -> str:
+        dim_ids = list(rows[0][0]["dims"])
+        lines = ["STRUCTURE,STRUCTURE_ID," + ",".join(d.lower() for d in dim_ids) + ",TIME_PERIOD,OBS_VALUE,OBS_FLAG,CONF_STATUS"]
+        for s, period, value in rows:
+            lines.append(f"dataflow,ESTAT:{s['flow']}(1.0)," + ",".join(s["dims"].values()) + f",{period},{value},{s['attrs'].get('OBS_FLAG', '')},")
+        return "\r\n".join(lines) + "\r\n"
 
     def _message(self, provider: str, rows: list[tuple[dict[str, Any], str, float]]) -> dict[str, Any]:
         dim_ids = list(rows[0][0]["dims"])
@@ -257,9 +277,60 @@ class FakeSdmx:
             "attributes": {"observation": [{"id": a, "values": [{"id": v} for v in attr_values[a]]} for a in attr_ids]},
         }
         dataset = {"action": "Information", "observations": observations}
-        if provider == "BIS":
+        if provider in ("BIS", "ECB"):
             return {"meta": {}, "data": {"structure": structure, "dataSets": [dataset]}}
         return {"meta": {}, "data": {"structures": [structure], "dataSets": [{**dataset, "structure": 0}]}}
+
+
+class FakeData360:
+    """World Bank Data360: GET /data (paged with skip/top), POST /metadata and /searchv2."""
+
+    def __init__(self) -> None:
+        self.rows: list[dict[str, Any]] = []
+        self.names: dict[str, str] = {}
+        self.calls: list[str] = []
+
+    def add(self, indicator: str, area: str, points: dict[str, float], unit: str = "PC_A", database: str = "WB_WDI", name: str | None = None) -> None:
+        for period, value in points.items():
+            self.rows.append(
+                {
+                    "DATABASE_ID": database, "INDICATOR": indicator, "REF_AREA": area, "SEX": "_T", "AGE": "_T",
+                    "URBANISATION": "_T", "COMP_BREAKDOWN_1": "_Z", "COMP_BREAKDOWN_2": "_Z", "COMP_BREAKDOWN_3": "_Z",
+                    "TIME_PERIOD": period, "FREQ": "A", "OBS_VALUE": str(value), "UNIT_MEASURE": unit, "UNIT_MULT": 0,
+                    "OBS_STATUS": "A",
+                }
+            )
+        if name:
+            self.names[indicator] = name
+
+    def handler(self, request: httpx.Request) -> httpx.Response:
+        self.calls.append(f"{request.method} {request.url}")
+        path = request.url.path
+        if request.method == "POST":
+            body = json.loads(request.content or b"{}")
+            if path.endswith("/metadata"):
+                indicator = body["query"].split("'")[1]
+                if indicator not in self.names:
+                    return httpx.Response(200, json={"value": []})
+                meta = {"idno": indicator, "name": self.names[indicator], "database_id": "WB_WDI", "periodicity": "Annual",
+                        "measurement_unit": "%", "definition_short": f"{self.names[indicator]} definition"}
+                return httpx.Response(200, json={"value": [{"series_description": meta}]})
+            if path.endswith("/searchv2"):
+                words = body["search"].lower().split()
+                hits = [{"series_description": {"idno": i, "name": n, "database_id": "WB_WDI"}}
+                        for i, n in self.names.items() if all(w in n.lower() for w in words)]
+                return httpx.Response(200, json={"value": hits[: body.get("top", 10)]})
+            return httpx.Response(404)
+        params = dict(request.url.params)
+        areas = set(params.get("REF_AREA", "").split(",")) - {""}
+        rows = [
+            r for r in self.rows
+            if r["INDICATOR"] == params.get("INDICATOR") and r["DATABASE_ID"] == params.get("DATABASE_ID")
+            and (not areas or r["REF_AREA"] in areas)
+            and params.get("timePeriodFrom", "0000") <= r["TIME_PERIOD"] <= params.get("timePeriodTo", "9999")
+        ]
+        skip, top = int(params.get("skip", 0)), int(params.get("top", 1000))
+        return httpx.Response(200, json={"count": len(rows), "value": rows[skip : skip + top]})
 
 
 @pytest.fixture
@@ -273,12 +344,14 @@ def fake_sdmx():
 
 @pytest.fixture
 def fake_all():
-    """ECOS and SDMX fakes behind one respx router."""
-    ecos, sdmx = FakeEcos(), FakeSdmx()
+    """ECOS and SDMX fakes behind one respx router (the World Bank fake is on ``sdmx.wb``)."""
+    ecos, sdmx, wb = FakeEcos(), FakeSdmx(), FakeData360()
+    sdmx.wb = wb
     with respx.mock(assert_all_called=False) as router:
         router.get(url__startswith="https://ecos.bok.or.kr/api/").mock(side_effect=ecos.handler)
         for provider, base in SDMX_BASES.items():
             router.get(url__startswith=base).mock(side_effect=lambda request, p=provider: sdmx.handler(p, request))
+        router.route(url__startswith=DATA360_BASE).mock(side_effect=wb.handler)
         yield ecos, sdmx
 
 

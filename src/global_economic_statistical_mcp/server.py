@@ -7,7 +7,7 @@ macroeconomic statistics across central banks and international organisations.
                                    │
                            Provider Resolver
                  ┌─────────────────┴──────────────────┐
-               ECOS (Bank of Korea REST)     SDMX: OECD · IMF · BIS
+   ECOS (Bank of Korea REST)   SDMX: OECD · IMF · BIS · ECB · Eurostat   World Bank (Data360)
                  └─────────────────┬──────────────────┘
                             Canonical Model
                          (Validation + Provenance)
@@ -15,8 +15,8 @@ macroeconomic statistics across central banks and international organisations.
                                 Analysis
 
 Tools:
-- search_statistics: concepts, ECOS items/tables, OECD·IMF·BIS dataflows, ECOS key statistics
-- get_metadata: structure of an ECOS table (SDMX-mapped) or an OECD·IMF·BIS dataflow (DSD)
+- search_statistics: concepts, ECOS items/tables, SDMX dataflows, World Bank indicators, ECOS key statistics
+- get_metadata: structure of an SDMX dataflow (DSD), a World Bank indicator, or an ECOS table (SDMX-mapped)
 - get_data: one concept for a country (or a direct ECOS/SDMX query), validated, with provenance
 - compare_series: several series/countries/sources aligned, correlated and cross-validated
 - calculate_statistics: descriptive statistics, growth, trend, volatility
@@ -87,11 +87,14 @@ from global_economic_statistical_mcp.formatting import FORMATS, render
 from global_economic_statistical_mcp.model import ecos_to_canonical, to_ecos_period
 from global_economic_statistical_mcp.providers.base import ProviderError
 from global_economic_statistical_mcp.providers.sdmx_rest import SOURCES
+
+DATAFLOW_SOURCES = (*SOURCES, "WB")
 from global_economic_statistical_mcp.service import (
     LoadedSeries,
     ResolutionError,
     ResolvedSource,
     StatService,
+    canonical_provider,
 )
 from global_economic_statistical_mcp.storage import ValidationLedger
 from global_economic_statistical_mcp.timeseries import dumps, to_number
@@ -118,15 +121,18 @@ mcp = MCPServer(
     description=(
         "Global economic statistics infrastructure for AI-powered macro research: discover, retrieve, compare "
         "and analyse trusted macroeconomic statistics from central banks and international organisations "
-        "(Bank of Korea ECOS, OECD, IMF, BIS) through one Concept Catalog and canonical time-series model. "
+        "(Bank of Korea ECOS, OECD, IMF, BIS, ECB, Eurostat, World Bank) through one Concept Catalog and canonical "
+        "time-series model. "
         "Every response carries provenance and validation results."
     ),
     instructions=(
         "Statistics infrastructure for global macroeconomic research. Verified economies: Korea (KR), United States (US), "
         "Japan (JP), China (CN), euro area (EA) and United Kingdom (GB). "
         "1) Ask for a concept and an economy: get_data(indicator='CPI_YOY', country='US'). country is required. "
-        "Korea is served by the Bank of Korea (ECOS) first; other economies by OECD, IMF and BIS. "
-        "2) For statistics without a concept, find an ECOS table or item or an OECD/IMF/BIS dataflow with search_statistics, "
+        "Korea is served by the Bank of Korea (ECOS) first; other economies by OECD, IMF, BIS, ECB and Eurostat, "
+        "and annual development indicators by the World Bank. Not every institution publishes every concept. "
+        "2) For statistics without a concept, find an ECOS table or item, an SDMX dataflow or a World Bank indicator "
+        "with search_statistics, "
         "check its key with get_metadata, then call get_data(stat_code=...) or get_data(source=..., dataflow=..., key=...). "
         "3) Read each response's validation (country, frequency, unit, scale, period, missing, duplicate, revision checks). "
         "For concepts with several sources use cross_validate=True: MATCH means the institutions agree, DIFFER means they "
@@ -190,11 +196,11 @@ async def _default_ecos_cycle(client: EcosClient, stat_code: str | None) -> str 
 
 
 class SeriesSpec(BaseModel):
-    """One series: a concept for a country, an ECOS table, or an OECD/IMF/BIS dataflow."""
+    """One series: a concept for a country, an ECOS table, an SDMX dataflow or a World Bank indicator."""
 
     indicator: str | None = Field(None, description="Concept id or name (e.g. 'CPI_YOY', 'policy rate')")
     country: str | None = Field(None, description="Economy: ISO code or EA for the euro area (required with indicator)")
-    source: str | None = Field(None, description="ECOS | OECD | IMF | BIS (default: catalog priority)")
+    source: str | None = Field(None, description="ECOS | OECD | IMF | BIS | ECB | EUROSTAT | WB (default: catalog priority)")
     stat_code: str | None = Field(None, description="ECOS table code (instead of indicator; Korea)")
     cycle: str | None = Field(None, description="Frequency A/S/Q/M/SM/D")
     item_code1: str | None = None
@@ -238,20 +244,21 @@ async def search_statistics(
     limit: int = 20,
     language: str = "kr",
 ) -> str:
-    """Search concepts, OECD/IMF/BIS dataflows and Bank of Korea (ECOS) tables and items. The first step before retrieval.
+    """Search concepts, SDMX dataflows, World Bank indicators and Bank of Korea (ECOS) tables and items. The first step before retrieval.
 
     scope:
     - "all" (default): concepts + ECOS items + ECOS tables + international dataflows
     - "concepts": country-agnostic concepts mapped across institutions (retrieve with get_data(indicator=..., country=...))
     - "items": ECOS items (e.g. '쌀' rice, '휘발유' gasoline) from an index generated from the ECOS API
     - "tables": ECOS tables (without query: children of the parent_code category)
-    - "dataflows": OECD, IMF and BIS dataflows (every word must match the English name or id; source narrows the institution)
+    - "dataflows": OECD, IMF, BIS, ECB and Eurostat dataflows and World Bank databases (every word must match the
+      English name or id; source narrows the institution), plus a live World Bank Data360 indicator search
     - "key_statistics": latest values of the Bank of Korea's 100 key statistics
 
     Args:
         query: search terms (e.g. "policy rate", "unemployment", "inflation", "물가")
         scope: "all" | "concepts" | "items" | "tables" | "dataflows" | "key_statistics"
-        source: institution for dataflow search (OECD | IMF | BIS)
+        source: institution for dataflow search (OECD | IMF | BIS | ECB | EUROSTAT | WB)
         parent_code: ECOS table category code
         searchable_only: ECOS tables that can be queried only
         limit: maximum results per category
@@ -284,9 +291,15 @@ async def search_statistics(
             ),
         }
     if scope in ("all", "dataflows") and text:
-        if source and source.upper() not in SOURCES:
-            raise ToolError("For dataflow search, source must be OECD, IMF or BIS.")
-        out["dataflows"] = search_dataflows(text, provider=source, limit=limit)
+        provider = canonical_provider(source)
+        if provider and provider not in DATAFLOW_SOURCES:
+            raise ToolError(f"For dataflow search, source must be one of {', '.join(DATAFLOW_SOURCES)}.")
+        out["dataflows"] = search_dataflows(text, provider=provider, limit=limit)
+        if provider in (None, "WB"):
+            try:
+                out["world_bank_indicators"] = await service.providers["WB"].search(text, limit=min(limit, 10))
+            except ProviderError as e:
+                out["world_bank_indicators"] = {"error": str(e)}
     if scope == "key_statistics":
         res = await _guard(service.ecos_client.get_all_key_statistics(language=language))
         rows = res["rows"]
@@ -321,14 +334,16 @@ async def get_metadata(
 ) -> str:
     """Return the structure (dimensions and codelists) of a dataset, to find the codes get_data needs.
 
-    - OECD, IMF, BIS: source + dataflow → the dimensions and codelists of the institution's own DSD.
+    - OECD, IMF, BIS, ECB, EUROSTAT: source + dataflow → the dimensions and codelists of the institution's own DSD.
       A series key is the codes joined with '.' in dimension order (e.g. BIS WS_CBPOL → 'M.US').
+    - WB (World Bank): source="WB" + dataflow=<indicator id> → name, definition, unit, periodicity;
+      data keys are INDICATOR.REF_AREA (e.g. dataflow="WB_WDI", key="WB_WDI_SP_POP_TOTL.USA").
     - ECOS: stat_code → the table's structure mapped to SDMX (FREQ + ITEM_CODE1..4, coverage, units).
       output_format="sdmx" returns an SDMX-JSON structure message.
 
     Args:
         stat_code: ECOS table code (e.g. "901Y009")
-        source: OECD | IMF | BIS (with dataflow)
+        source: OECD | IMF | BIS | ECB | EUROSTAT | WB (with dataflow)
         dataflow: SDMX dataflow (e.g. "BIS:WS_CBPOL(1.0)", "IMF.STA:CPI")
         code_keyword: filter codes by name or value (e.g. "Japan", "JPN", "current account")
         codes_limit: maximum codes per dimension (default 30)
@@ -341,11 +356,11 @@ async def get_metadata(
     fmt = _choice(output_format, {"compact", "sdmx"}, "output_format", "compact")
     service = _service(ctx)
     if dataflow:
-        provider = (source or "").upper()
-        if provider not in SOURCES:
-            raise ToolError("With dataflow, set source to OECD, IMF or BIS.")
+        provider = canonical_provider(source) or ""
+        if provider not in DATAFLOW_SOURCES:
+            raise ToolError(f"With dataflow, set source to one of {', '.join(DATAFLOW_SOURCES)}.")
         if fmt == "sdmx":
-            raise ToolError("The original structure of an OECD/IMF/BIS dataflow is available at structure_url. Use output_format='compact'.")
+            raise ToolError("The original structure of an institution's dataflow is available at structure_url. Use output_format='compact'.")
         summary = await _guard(service.providers[provider].structure(dataflow.strip()))
         keyword = (code_keyword or "").strip().lower()
         for dim in summary["dimensions"]:
@@ -360,7 +375,7 @@ async def get_metadata(
         return dumps(summary)
 
     if not stat_code:
-        raise ToolError("Specify source + dataflow (OECD, IMF, BIS) or stat_code (ECOS).")
+        raise ToolError(f"Specify source + dataflow ({', '.join(DATAFLOW_SOURCES)}) or stat_code (ECOS).")
     client = service.ecos_client
     code = stat_code.strip()
     info = client.table_info(code)
@@ -439,9 +454,10 @@ async def get_data(
 
     Three ways to ask (use one):
     1. Concept: indicator + country (+ source, cycle), e.g. indicator="CPI_YOY", country="US".
-       Korea uses ECOS first; other economies OECD, IMF and BIS. If a source has no data, the next one is tried.
+       Korea uses ECOS first; other economies OECD, IMF, BIS, ECB, Eurostat and the World Bank.
+       If a source has no data, the next one is tried.
     2. ECOS table (Korea): stat_code (+ cycle, item_code1..4)
-    3. SDMX dataflow: source (OECD | IMF | BIS) + dataflow + key + cycle
+    3. Institution dataflow: source (OECD | IMF | BIS | ECB | EUROSTAT | WB) + dataflow + key + cycle
 
     * validation: country, frequency, unit (and index base), scale, period, missing, duplicate and revision checks (pass/info/warn/fail)
     * cross_validate=True: fetch the concept from every source and compare period by period;
@@ -453,11 +469,11 @@ async def get_data(
     Args:
         indicator: concept id or name (see search_statistics(scope="concepts"))
         country: economy, ISO code or EA (required with indicator; with a direct SDMX query it enables the country check)
-        source: ECOS | OECD | IMF | BIS
+        source: ECOS | OECD | IMF | BIS | ECB | EUROSTAT | WB (aliases such as "World Bank" work)
         stat_code: ECOS table code
         cycle: frequency A/S/Q/M/SM/D
         item_code1..4: ECOS item codes
-        dataflow: SDMX dataflow (e.g. "OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0)")
+        dataflow: SDMX dataflow (e.g. "OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0)") or World Bank database ("WB_WDI")
         key: SDMX series key (e.g. "USA.M.IRLT.PA._Z._Z._Z._Z.N")
         start_date: start period
         end_date: end period
@@ -606,7 +622,7 @@ async def compare_series(
             s = loaded.series[0]
             points = [(to_ecos_period(p, s.freq), v) for p, v in s.points()]
             series_how = how or (loaded.source.concept.aggregation if loaded.source.concept else "mean")
-            points = convert_frequency(points, s.freq, target, series_how)
+            points = convert_frequency(points, s.freq, target, series_how, complete_only=True)
             points = normalize([(ecos_to_canonical(p, target), v) for p, v in points], norm)
             label = spec.label or (
                 f"{loaded.source.concept.id}:{s.ref_area}:{s.provider}" if loaded.source.concept else s.title
@@ -654,6 +670,7 @@ async def compare_series(
                         country=country_code,
                         unit=group[0].source.concept.unit,
                         aggregation=group[0].source.concept.aggregation,
+                        rebase=group[0].source.concept.compare_rebased,
                         ledger=service.ledger,
                     )
                 )
@@ -705,7 +722,7 @@ async def calculate_statistics(
     Args:
         indicator: concept id or name
         country: economy, ISO code or EA (required with indicator)
-        source: ECOS | OECD | IMF | BIS
+        source: ECOS | OECD | IMF | BIS | ECB | EUROSTAT | WB
         stat_code: ECOS table code
         cycle: frequency
         item_code1..4: ECOS item codes
@@ -908,7 +925,7 @@ def countries_resource() -> str:
 
 @mcp.resource("gesm://providers")
 def providers_resource() -> str:
-    """Institutions (ECOS, OECD, IMF, BIS): endpoints and formats."""
+    """Institutions (ECOS, OECD, IMF, BIS, ECB, Eurostat, World Bank): endpoints and formats."""
     return dumps(
         {
             "ECOS": {"endpoint": "https://ecos.bok.or.kr/api", "format": "ECOS REST JSON (no SDMX endpoint; mapped to SDMX concepts by this server)", "key": "ECOS_API_KEY"},
@@ -916,6 +933,7 @@ def providers_resource() -> str:
                 k: {"endpoint": v.data_base, "structure": v.structure_base, "sdmx_api": v.api, "format": v.data_accept, "attribution": v.attribution}
                 for k, v in SOURCES.items()
             },
+            "WB": {"endpoint": "https://data360api.worldbank.org/data360", "format": "World Bank Data360 API JSON (not SDMX)", "attribution": "World Bank Data360 (https://data360.worldbank.org/)"},
         }
     )
 
@@ -997,17 +1015,27 @@ async def run_health_check() -> int:
     print("\n[3/3] Provider connectivity (one request each)...")
     service = StatService()
     failures = 0
-    probes = [("ECOS", "POLICY_RATE", "KR"), ("BIS", "POLICY_RATE", "US"), ("IMF", "CPI", "US"), ("OECD", "LONG_TERM_RATE", "US")]
+    probes = [
+        ("ECOS", "POLICY_RATE", "KR", "M"),
+        ("BIS", "POLICY_RATE", "US", "M"),
+        ("IMF", "CPI", "US", "M"),
+        ("OECD", "LONG_TERM_RATE", "US", "M"),
+        ("ECB", "CPI", "EA", "M"),
+        ("EUROSTAT", "UNEMPLOYMENT_RATE", "EA", "M"),
+        ("WB", "POPULATION", "US", "A"),
+    ]
     try:
-        for provider, concept, country in probes:
+        for provider, concept, country, freq in probes:
             try:
-                candidates = service.resolve(indicator=concept, country=country, source=provider, freq="M")
-                loaded = await service.load(candidates[0], *_date_window("M", None, None, 1), record=False)
+                candidates = service.resolve(indicator=concept, country=country, source=provider, freq=freq)
+                loaded = await service.load(candidates[0], *_date_window(freq, None, None, 2), record=False)
                 last = loaded.series[0].observations[-1] if loaded.series and loaded.series[0].observations else None
-                print(f"  ✅ {provider:4} {concept}({country}) latest {last.period if last else '-'} = {last.value if last else '-'}")
+                if last is None:
+                    raise ResolutionError("no data returned")
+                print(f"  ✅ {provider:8} {concept}({country}) latest {last.period} = {last.value}")
             except Exception as e:  # noqa: BLE001 - diagnostics report every failure
                 failures += 1
-                print(f"  ❌ {provider:4} {concept}({country}): {e}")
+                print(f"  ❌ {provider:8} {concept}({country}): {e}")
     finally:
         await service.close()
     print("\n" + "=" * 65)
@@ -1019,8 +1047,9 @@ async def run_health_check() -> int:
 def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(
         prog="global-economic-statistical-mcp",
-        description="Global Economic Statistical MCP server (Bank of Korea ECOS, OECD, IMF, BIS). Without options it runs as a stdio MCP server.",
-        epilog="Set the ECOS key in ECOS_API_KEY (the sample key is used otherwise). OECD, IMF and BIS need no key.",
+        description="Global Economic Statistical MCP server (Bank of Korea ECOS, OECD, IMF, BIS, ECB, Eurostat, World Bank). "
+        "Without options it runs as a stdio MCP server.",
+        epilog="Set the ECOS key in ECOS_API_KEY (the sample key is used otherwise). No other institution needs a key.",
     )
     parser.add_argument("--check", "-c", action="store_true", help="check the API key and provider connectivity, then exit")
     parser.add_argument("--version", "-V", action="version", version=f"%(prog)s {__version__}")

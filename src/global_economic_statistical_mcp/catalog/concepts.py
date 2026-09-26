@@ -5,7 +5,9 @@ Each :class:`SourceMapping` says *where* to get it: provider, dataflow, key temp
 the unit that source publishes. Key templates use ``{ISO2}``, ``{ISO3}`` and ``{CUR}``.
 
 Every mapping below was checked against the live provider API for the default economies
-(KR, US, JP, CN, EA, GB; tests/test_live.py re-verifies them). For Korea the national
+(KR, US, JP, CN, EA, GB; tests/test_live.py re-verifies them). Not every provider serves
+every concept: ECB and Eurostat publish the euro area and EU member states, and the World
+Bank's development indicators are annual. For Korea the national
 source (ECOS) comes first; international sources follow in priority order and are used for
 other economies and for cross-validation. ``excludes`` records economies a provider is known
 not to publish, so the resolver says so instead of returning an empty series.
@@ -17,7 +19,7 @@ import re
 from dataclasses import asdict, dataclass, field
 from typing import Any
 
-from global_economic_statistical_mcp.catalog.countries import Country
+from global_economic_statistical_mcp.catalog.countries import EU_AREAS, Country
 
 OECD_PRICES = "OECD.SDD.TPS:DSD_PRICES@DF_PRICES_ALL(1.0)"
 OECD_FINMARK = "OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0)"
@@ -34,6 +36,19 @@ BIS_CBPOL = "BIS:WS_CBPOL(1.0)"
 BIS_XRU = "BIS:WS_XRU(1.0)"
 BIS_SPP = "BIS:WS_SPP(1.0)"
 BIS_CPI = "BIS:WS_LONG_CPI(1.0)"
+ECB_FM = "ECB:FM(1.0)"
+ECB_HICP = "ECB:HICP(1.0)"  # ECOICOP ver.2, 2025=100; the old ICP dataflow stops at 2025-12
+ECB_EXR = "ECB:EXR(1.0)"
+ECB_IRS = "ECB:IRS(1.0)"
+ESTAT_HICP = "ESTAT:PRC_HICP_MINR(1.0)"  # ECOICOP ver.2; prc_hicp_manr/midx stop at 2025-12
+ESTAT_UNEMP = "ESTAT:UNE_RT_M(1.0)"
+ESTAT_GDP = "ESTAT:NAMQ_10_GDP(1.0)"
+ESTAT_HPI = "ESTAT:PRC_HPI_Q(1.0)"
+WB_WDI = "WB_WDI"  # World Bank Data360: World Development Indicators
+
+# Euro area and the euro-area members in the country list (ECB long-term rates are in EUR).
+EURO = ("EA", "DE", "FR", "IT", "ES", "NL", "BE", "AT", "IE", "PT", "GR", "FI")
+ESTAT_EA = (("EA", "EA"),)  # HICP: the changing-composition euro area, like ECB U2 and BIS XM
 
 
 @dataclass(frozen=True)
@@ -51,6 +66,7 @@ class SourceMapping:
     area_codes: tuple[tuple[str, str], ...] = ()  # (country, code) where this dataflow differs from the provider default
     transform: str | None = None  # computed by this server (e.g. ECOS CPI → yoy)
     changes_only: bool = False
+    invert: bool = False  # the source publishes the reciprocal (ECB: US dollars per euro)
     note: str | None = None
 
     def covers(self, country: Country) -> bool:
@@ -80,6 +96,9 @@ class Concept:
     # How to aggregate to a lower frequency: flows are summed, stocks take the end-of-period
     # value, rates, prices and indices are averaged.
     aggregation: str = "mean"
+    # Levels whose scale depends on a reference year (chain-linked volumes) are compared
+    # after rebasing to a common period, like indices with different base years.
+    compare_rebased: bool = False
 
     def sources_for(self, country: Country, provider: str | None = None, freq: str | None = None) -> list[SourceMapping]:
         return [
@@ -98,6 +117,7 @@ class Concept:
             "category": self.category,
             "unit": self.unit,
             "aggregation": self.aggregation,
+            **({"compare_rebased": True} if self.compare_rebased else {}),
             "providers": sorted({s.provider for s in self.sources}),
             "korea_only": all(s.countries == ("KR",) for s in self.sources),
         }
@@ -138,6 +158,10 @@ CONCEPTS: tuple[Concept, ...] = (
             _ecos("722Y001", "0101000", "M", "PC_PA", note="한국은행 기준금리(월)"),
             SourceMapping("BIS", BIS_CBPOL, "M.{ISO2}", "M", "PC_PA", note="BIS central bank policy rates (monthly)"),
             SourceMapping("BIS", BIS_CBPOL, "D.{ISO2}", "D", "PC_PA", note="BIS central bank policy rates (daily)"),
+            SourceMapping(
+                "ECB", ECB_FM, "D.{ISO2}.EUR.4F.KR.DFR.LEV", "D", "PC_PA", countries=("EA",), changes_only=True,
+                note="ECB deposit facility rate",
+            ),
         ),
     ),
     Concept(
@@ -153,6 +177,10 @@ CONCEPTS: tuple[Concept, ...] = (
         sources=(
             _ecos("721Y001", "5050000", "M", "PC_PA", note="국고채(10년) 월평균"),
             SourceMapping("OECD", OECD_FINMARK, "{ISO3}.M.IRLT.PA._Z._Z._Z._Z.N", "M", "PC_PA"),
+            SourceMapping(
+                "ECB", ECB_IRS, "M.{ISO2}.L.L40.CI.0000.EUR.N.Z", "M", "PC_PA", countries=EURO,
+                note="long-term interest rate for convergence purposes (10-year government bonds)",
+            ),
         ),
     ),
     Concept(
@@ -167,6 +195,9 @@ CONCEPTS: tuple[Concept, ...] = (
         sources=(
             _ecos("721Y001", "2010000", "M", "PC_PA", note="CD(91일) 월평균"),
             SourceMapping("OECD", OECD_FINMARK, "{ISO3}.M.IR3TIB.PA._Z._Z._Z._Z.N", "M", "PC_PA"),
+            SourceMapping(
+                "ECB", ECB_FM, "M.{ISO2}.EUR.RT.MM.EURIBOR3MD_.HSTA", "M", "PC_PA", countries=("EA",), note="3-month Euribor"
+            ),
         ),
     ),
     Concept(
@@ -200,6 +231,11 @@ CONCEPTS: tuple[Concept, ...] = (
             SourceMapping(
                 "IMF", IMF_CPI, "{ISO3}.CPI._T.IX.M", "M", "IX", excludes=("EA",), note="기준연도는 국가마다 다름(한국 2020, 미국 2010)"
             ),
+            SourceMapping(
+                "EUROSTAT", ESTAT_HICP, "M.I25.TOTAL.{ISO2}", "M", "IX", base_period="2025", countries=EU_AREAS,
+                area_codes=ESTAT_EA, note="HICP",
+            ),
+            SourceMapping("ECB", ECB_HICP, "M.{ISO2}.N.000000.4D0.INX", "M", "IX", base_period="2025", countries=EU_AREAS, note="HICP"),
             SourceMapping("BIS", BIS_CPI, "M.{ISO2}.628", "M", "IX", base_period="2010"),
             # OECD publishes no CPI for Japan, and its euro-area series stopped at the 2026 enlargement.
             SourceMapping("OECD", OECD_PRICES, "{ISO3}.M.N.CPI.IX._T.N._Z", "M", "IX", base_period="2015", excludes=("JP", "EA")),
@@ -218,6 +254,10 @@ CONCEPTS: tuple[Concept, ...] = (
         sources=(
             _ecos("901Y009", "0", "M", "PC_YOY", transform="yoy"),
             SourceMapping("IMF", IMF_CPI, "{ISO3}.CPI._T.YOY_PCH_PA_PT.M", "M", "PC_YOY", excludes=("EA",)),
+            SourceMapping(
+                "EUROSTAT", ESTAT_HICP, "M.RCH_A.TOTAL.{ISO2}", "M", "PC_YOY", countries=EU_AREAS, area_codes=ESTAT_EA, note="HICP"
+            ),
+            SourceMapping("ECB", ECB_HICP, "M.{ISO2}.N.000000.4D0.ANR", "M", "PC_YOY", countries=EU_AREAS, note="HICP"),
             SourceMapping("BIS", BIS_CPI, "M.{ISO2}.771", "M", "PC_YOY"),
             SourceMapping("OECD", OECD_PRICES, "{ISO3}.M.N.CPI.PA._T.N.GY", "M", "PC_YOY", excludes=("JP", "EA")),
         ),
@@ -254,6 +294,7 @@ CONCEPTS: tuple[Concept, ...] = (
                 "OECD", OECD_QNA_GROWTH, "Q.Y.{ISO3}.S1.S1.B1GQ._Z._Z._Z.PC.L.G1.T0102", "Q", "PC_POP",
                 adjustment="SA", area_codes=(("EA", "EA"),),
             ),
+            SourceMapping("EUROSTAT", ESTAT_GDP, "Q.CLV_PCH_PRE.SCA.B1GQ.{ISO2}", "Q", "PC_POP", adjustment="SA", countries=EU_AREAS),
         ),
     ),
     Concept(
@@ -271,6 +312,7 @@ CONCEPTS: tuple[Concept, ...] = (
                 "OECD", OECD_QNA_GROWTH, "Q.Y.{ISO3}.S1.S1.B1GQ._Z._Z._Z.PC.L.GY.T0102", "Q", "PC_YOY",
                 adjustment="SA", area_codes=(("EA", "EA"),),
             ),
+            SourceMapping("EUROSTAT", ESTAT_GDP, "Q.CLV_PCH_SM.SCA.B1GQ.{ISO2}", "Q", "PC_YOY", adjustment="SA", countries=EU_AREAS),
         ),
     ),
     Concept(
@@ -284,10 +326,16 @@ CONCEPTS: tuple[Concept, ...] = (
         synonyms=("실질gdp", "국내총생산", "gdp", "real gdp"),
         aliases=("gdp",),
         aggregation="sum",
+        compare_rebased=True,
         sources=(
             _ecos("200Y108", "10601", "Q", "XDC", unit_mult=9, adjustment="SA"),
             SourceMapping("IMF", IMF_QNEA, "{ISO3}.B1GQ.Q.SA.XDC.Q", "Q", "XDC", adjustment="SA", excludes=("CN",)),
             SourceMapping("IMF", IMF_QNEA, "{ISO3}.B1GQ.Q.NSA.XDC.Q", "Q", "XDC", adjustment="NSA", countries=("CN",)),
+            SourceMapping(
+                "EUROSTAT", ESTAT_GDP, "Q.CLV20_MNAC.SCA.B1GQ.{ISO2}", "Q", "XDC", unit_mult=6, adjustment="SA", countries=EU_AREAS,
+                note="chain-linked volumes (2020), million national currency",
+            ),
+            SourceMapping("WB", WB_WDI, "WB_WDI_NY_GDP_MKTP_KN.{ISO3}", "A", "XDC", excludes=("EA",), note="constant LCU, annual"),
         ),
     ),
     Concept(
@@ -304,6 +352,11 @@ CONCEPTS: tuple[Concept, ...] = (
             _ecos("200Y107", "10601", "Q", "XDC", unit_mult=9, adjustment="SA"),
             SourceMapping("IMF", IMF_QNEA, "{ISO3}.B1GQ.V.SA.XDC.Q", "Q", "XDC", adjustment="SA", excludes=("CN",)),
             SourceMapping("IMF", IMF_QNEA, "{ISO3}.B1GQ.V.NSA.XDC.Q", "Q", "XDC", adjustment="NSA", countries=("CN",)),
+            SourceMapping(
+                "EUROSTAT", ESTAT_GDP, "Q.CP_MNAC.SCA.B1GQ.{ISO2}", "Q", "XDC", unit_mult=6, adjustment="SA", countries=EU_AREAS,
+                note="current prices, million national currency",
+            ),
+            SourceMapping("WB", WB_WDI, "WB_WDI_NY_GDP_MKTP_CN.{ISO3}", "A", "XDC", excludes=("EA",), note="current LCU, annual"),
         ),
     ),
     # ── Labour ──────────────────────────────────────────────────────
@@ -323,6 +376,9 @@ CONCEPTS: tuple[Concept, ...] = (
                 "OECD", OECD_UNEMP, "{ISO3}.UNE_LF_M.PT_LF_SUB._Z.N._T.Y_GE15._Z.M", "M", "PC", adjustment="NSA",
                 excludes=("CN",), area_codes=(("EA", "EA"),),
             ),
+            SourceMapping(
+                "EUROSTAT", ESTAT_UNEMP, "M.NSA.TOTAL.PC_ACT.T.{ISO2}", "M", "PC", adjustment="NSA", countries=EU_AREAS
+            ),
         ),
     ),
     Concept(
@@ -339,6 +395,9 @@ CONCEPTS: tuple[Concept, ...] = (
             SourceMapping(
                 "OECD", OECD_UNEMP, "{ISO3}.UNE_LF_M.PT_LF_SUB._Z.Y._T.Y_GE15._Z.M", "M", "PC", adjustment="SA",
                 excludes=("CN",), area_codes=(("EA", "EA"),),
+            ),
+            SourceMapping(
+                "EUROSTAT", ESTAT_UNEMP, "M.SA.TOTAL.PC_ACT.T.{ISO2}", "M", "PC", adjustment="SA", countries=EU_AREAS
             ),
         ),
     ),
@@ -358,6 +417,11 @@ CONCEPTS: tuple[Concept, ...] = (
             SourceMapping("IMF", IMF_ER, "{ISO3}.XDC_USD.PA_RT.M", "M", "XDC_USD", excludes=NO_USD),
             SourceMapping("BIS", BIS_XRU, "M.{ISO2}.{CUR}.A", "M", "XDC_USD", excludes=NO_USD),
             SourceMapping("OECD", OECD_FINMARK, "{ISO3}.M.CC.XDC_USD._Z._Z._Z._Z.N", "M", "XDC_USD", excludes=NO_USD),
+            SourceMapping(
+                "ECB", ECB_EXR, "M.USD.EUR.SP00.A", "M", "XDC_USD", countries=("EA",), invert=True,
+                note="ECB reference rate, published as US dollars per euro",
+            ),
+            SourceMapping("WB", WB_WDI, "WB_WDI_PA_NUS_FCRF.{ISO3}", "A", "XDC_USD", excludes=NO_USD, note="official rate, annual average"),
         ),
     ),
     Concept(
@@ -373,6 +437,10 @@ CONCEPTS: tuple[Concept, ...] = (
         sources=(
             _ecos("731Y001", "0000001", "D", "XDC_USD"),
             SourceMapping("BIS", BIS_XRU, "D.{ISO2}.{CUR}.A", "D", "XDC_USD", excludes=NO_USD),
+            SourceMapping(
+                "ECB", ECB_EXR, "D.USD.EUR.SP00.A", "D", "XDC_USD", countries=("EA",), invert=True,
+                note="ECB reference rate, published as US dollars per euro",
+            ),
         ),
     ),
     # ── Money, external, markets, sentiment, housing ────────────────
@@ -414,6 +482,7 @@ CONCEPTS: tuple[Concept, ...] = (
         sources=(
             _ecos("301Y013", "000000", "M", "USD", unit_mult=6),
             SourceMapping("IMF", IMF_BOP, "{ISO3}.NETCD_T.CAB.USD.Q", "Q", "USD"),
+            SourceMapping("WB", WB_WDI, "WB_WDI_BN_CAB_XOKA_CD.{ISO3}", "A", "USD", note="annual"),
         ),
     ),
     Concept(
@@ -446,6 +515,7 @@ CONCEPTS: tuple[Concept, ...] = (
         sources=(
             _ecos("732Y001", "99", "M", "USD", unit_mult=3),
             SourceMapping("IMF", IMF_IRFCL, "{ISO3}.IRFCLDT1_IRFCL65_USD.S1XS1311.M", "M", "USD"),
+            SourceMapping("WB", WB_WDI, "WB_WDI_FI_RES_TOTL_CD.{ISO3}", "A", "USD", note="total reserves including gold, end of year"),
         ),
     ),
     Concept(
@@ -514,6 +584,7 @@ CONCEPTS: tuple[Concept, ...] = (
         sources=(
             _ecos("901Y062", "P63A", "M", "IX", base_period="202601"),
             SourceMapping("BIS", BIS_SPP, "Q.{ISO2}.N.628", "Q", "IX", base_period="2010"),
+            SourceMapping("EUROSTAT", ESTAT_HPI, "Q.TOTAL.I25_Q.{ISO2}", "Q", "IX", base_period="2025", countries=EU_AREAS),
         ),
     ),
     Concept(
@@ -527,7 +598,65 @@ CONCEPTS: tuple[Concept, ...] = (
         synonyms=("전세", "전세가격", "jeonse"),
         sources=(_ecos("901Y063", "P64A", "M", "IX", base_period="202601"),),
     ),
+    # ── Annual development indicators (World Bank) ─────────────────
+    Concept(
+        id="GDP_REAL_GROWTH_ANNUAL",
+        name_ko="실질 경제성장률(연간)",
+        name_en="Real GDP growth (annual)",
+        category="national_accounts",
+        unit="PC_YOY",
+        description_ko="실질 GDP의 연간 성장률(%)입니다(세계은행 WDI, 불변가격 기준).",
+        description_en="Annual growth of real GDP at constant prices (%), World Bank WDI.",
+        synonyms=("연간성장률", "연간 경제성장률", "annual gdp growth", "annual growth"),
+        sources=(SourceMapping("WB", WB_WDI, "WB_WDI_NY_GDP_MKTP_KD_ZG.{ISO3}", "A", "PC_YOY"),),
+    ),
+    Concept(
+        id="CPI_INFLATION_ANNUAL",
+        name_ko="소비자물가상승률(연평균)",
+        name_en="Consumer price inflation (annual average)",
+        category="price",
+        unit="PC_YOY",
+        description_ko="연평균 소비자물가의 전년 대비 상승률(%)입니다(세계은행 WDI). 월별 전년동월비의 평균과는 조금 다를 수 있습니다.",
+        description_en="Change in the annual average consumer price index (%), World Bank WDI. It can differ slightly from the average of monthly year-on-year rates.",
+        synonyms=("연평균 물가상승률", "연간 물가상승률", "annual inflation", "inflation annual average"),
+        sources=(SourceMapping("WB", WB_WDI, "WB_WDI_FP_CPI_TOTL_ZG.{ISO3}", "A", "PC_YOY"),),
+    ),
+    Concept(
+        id="POPULATION",
+        name_ko="인구",
+        name_en="Population",
+        category="demography",
+        unit="PS",
+        description_ko="연앙 총인구(명)입니다(세계은행 WDI).",
+        description_en="Total mid-year population (persons), World Bank WDI.",
+        synonyms=("인구", "총인구", "population"),
+        aggregation="last",
+        sources=(SourceMapping("WB", WB_WDI, "WB_WDI_SP_POP_TOTL.{ISO3}", "A", "PS"),),
+    ),
+    Concept(
+        id="GDP_PER_CAPITA_PPP",
+        name_ko="1인당 GDP(구매력평가, 불변 국제달러)",
+        name_en="GDP per capita, PPP (constant international dollars)",
+        category="national_accounts",
+        unit="USD_PPP",
+        description_ko="구매력평가(PPP)로 환산한 1인당 GDP(2021년 불변 국제달러)입니다(세계은행 WDI).",
+        description_en="GDP per capita at purchasing power parity, constant 2021 international dollars, World Bank WDI.",
+        synonyms=("1인당 gdp", "1인당 국민소득", "gdp per capita", "income per capita", "ppp"),
+        sources=(SourceMapping("WB", WB_WDI, "WB_WDI_NY_GDP_PCAP_PP_KD.{ISO3}", "A", "USD_PPP"),),
+    ),
+    Concept(
+        id="CURRENT_ACCOUNT_GDP",
+        name_ko="경상수지/GDP",
+        name_en="Current account balance (% of GDP)",
+        category="external",
+        unit="PC_GDP",
+        description_ko="GDP 대비 경상수지 비율(%)입니다(세계은행 WDI, 연간).",
+        description_en="Current account balance as a share of GDP (%), World Bank WDI, annual.",
+        synonyms=("경상수지 비율", "경상수지/gdp", "current account to gdp", "current account % gdp"),
+        sources=(SourceMapping("WB", WB_WDI, "WB_WDI_BN_CAB_XOKA_GD_ZS.{ISO3}", "A", "PC_GDP", excludes=("EA",)),),
+    ),
 )
+
 
 @dataclass(frozen=True)
 class KnownDifference:
@@ -543,6 +672,13 @@ class KnownDifference:
 # Cross-validation marks a mismatch DIFFER only when a verifiable cause explains it, and
 # UNRESOLVED otherwise. Add an entry here only with evidence; never to silence a mismatch.
 KNOWN_DIFFERENCES: tuple[KnownDifference, ...] = (
+    KnownDifference(
+        "POLICY_RATE", "EA", "ECB",
+        "BIS's euro-area policy rate followed the main refinancing operations rate until the ECB's operational "
+        "framework change and the deposit facility rate since; the ECB mapping is the deposit facility rate",
+        "ledger 2026-09-26: BIS minus ECB DFR = 0.50 (the MRO-DFR spread) on every day through 2024-09-17, "
+        "identical from 2024-09-18",
+    ),
     KnownDifference(
         "CONSUMER_SENTIMENT", "KR", "OECD",
         "different construction: the OECD indicator is amplitude-adjusted to a long-run average of 100, "

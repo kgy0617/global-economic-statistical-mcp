@@ -251,3 +251,27 @@ def test_ledger_deletes_history_beyond_retention(tmp_path):
     days = sorted(p.stem for p in old.parent.glob("*.jsonl"))
     assert "2000-01-01" not in days and len(days) == 1
 
+
+def test_chain_linked_levels_are_compared_after_rebasing():
+    # Same growth, different reference year (e.g. Eurostat 2020 vs IMF 2015 prices): not a real difference.
+    a = make("EUROSTAT", {"2026-01": 3314.6, "2026-02": 3315.7, "2026-03": 3326.1}, unit="XDC")
+    b = make("IMF", {"2026-01": 2879.1, "2026-02": 2880.1, "2026-03": 2889.1}, unit="XDC")
+    assert cross_validate([a, b], concept_id="GDP_REAL", country="EA", unit="XDC")["validation_status"] == "UNRESOLVED"
+    rebased = cross_validate([a, b], concept_id="GDP_REAL", country="EA", unit="XDC", rebase=True)
+    assert rebased["validation_status"] == "MATCH" and rebased["method"].startswith("rebased:")
+
+
+def test_sources_without_common_periods_are_not_compared():
+    out = cross_validate([make("A", {"2026-01": 1.0}), make("B", {"2026-02": 1.0})], concept_id="X", country="KR")
+    assert out["validation_status"] == "NOT_COMPARED"
+    assert out["agreement"]["B"]["validation_status"] == "NOT_COMPARED"
+    assert out["agreement"]["B"]["investigation"]["status"] == "not_compared"
+
+
+def test_documented_bis_policy_rate_switch_is_a_known_difference():
+    bis = make("BIS", {"2024-09-16": 4.25, "2024-09-17": 4.25}, freq="D", unit="PC_PA", area="EA")
+    ecb = make("ECB", {"2024-09-16": 3.75, "2024-09-17": 3.75}, freq="D", unit="PC_PA", area="EA")
+    out = cross_validate([bis, ecb], concept_id="POLICY_RATE", country="EA", unit="PC_PA")
+    assert out["validation_status"] == "DIFFER"
+    assert "main refinancing" in out["agreement"]["ECB"]["investigation"]["explanations"][0]
+

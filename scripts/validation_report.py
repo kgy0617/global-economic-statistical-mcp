@@ -1,7 +1,8 @@
 """Daily cross-validation report for the default economies.
 
 Runs cross-validation for every concept that at least two institutions publish for each of
-KR, US, JP, CN, EA and GB (last 12 months or quarters), and writes a small summary:
+KR, US, JP, CN, EA and GB over the last three years (so annual sources have complete years to
+compare with), and writes a small summary:
 
     <out>/summary.json   one entry per concept and economy: MATCH / DIFFER / UNRESOLVED / NOT_COMPARED,
                          differences and the investigation status per institution
@@ -34,7 +35,7 @@ STATUSES = ("MATCH", "DIFFER", "UNRESOLVED", "NOT_COMPARED")
 
 
 def window(src):
-    start, end = get_default_date_range(src.freq, recent_years=1)
+    start, end = get_default_date_range(src.freq, recent_years=3)
     return ecos_to_canonical(start, src.freq), ecos_to_canonical(end, src.freq)
 
 

@@ -1,7 +1,7 @@
 [project]
 name = "global-economic-statistical-mcp"
-version = "0.4.0"
-description = "AI-native MCP interface for discovering, retrieving, comparing and analysing trusted macroeconomic statistics across central banks and international organisations (Bank of Korea ECOS, OECD, IMF, BIS)"
+version = "0.5.0"
+description = "AI-native MCP interface for discovering, retrieving, comparing and analysing trusted macroeconomic statistics across central banks and international organisations (Bank of Korea ECOS, OECD, IMF, BIS, ECB, Eurostat, World Bank)"
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
@@ -9,7 +9,7 @@ authors = [
     { name = "kgy0617", email = "35395723+kgy0617@users.noreply.github.com" }
 ]
 requires-python = ">=3.11"
-keywords = ["mcp", "model-context-protocol", "macroeconomics", "economic-research", "sdmx", "oecd", "imf", "bis", "ecos", "bank-of-korea", "statistics"]
+keywords = ["mcp", "model-context-protocol", "macroeconomics", "economic-research", "sdmx", "oecd", "imf", "bis", "ecb", "eurostat", "world-bank", "ecos", "bank-of-korea", "statistics"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
@@ -46,7 +46,7 @@ dev = [
 testpaths = ["tests"]
 addopts = "-m 'not live'"
 markers = [
-    "live: calls the real ECOS, OECD, IMF and BIS APIs (run with: uv run pytest -m live)",
+    "live: calls the real ECOS, OECD, IMF, BIS, ECB, Eurostat and World Bank APIs (run with: uv run pytest -m live)",
 ]
 
 [build-system]

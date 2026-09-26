@@ -12,6 +12,9 @@ from dataclasses import dataclass
 # Economies whose every Concept Catalog mapping is re-verified by the live test suite.
 DEFAULT_COUNTRIES = ("KR", "US", "JP", "CN", "EA", "GB")
 
+# The euro area and the EU member states in this list (ECB and Eurostat publish only these).
+EU_AREAS = ("EA", "DE", "FR", "IT", "ES", "NL", "BE", "AT", "IE", "PT", "GR", "FI", "PL", "CZ", "HU", "SE", "DK")
+
 
 @dataclass(frozen=True)
 class Country:
@@ -34,10 +37,10 @@ _COUNTRIES = [
     Country("CN", "CHN", "CNY", "중국", "China"),
     Country(
         "EA", "EMU", "EUR", "유로지역", "Euro area",
-        provider_codes=(("BIS", "XM"), ("IMF", "G163"), ("OECD", "EA20")),
+        provider_codes=(("BIS", "XM"), ("IMF", "G163"), ("OECD", "EA20"), ("ECB", "U2"), ("EUROSTAT", "EA21"), ("WB", "EMU")),
         aliases=("XM", "G163", "EA20", "EA21", "EA19", "U2", "EURO AREA", "EUROZONE", "EURO ZONE", "유로존"),
     ),
-    Country("GB", "GBR", "GBP", "영국", "United Kingdom", aliases=("UK", "BRITAIN")),
+    Country("GB", "GBR", "GBP", "영국", "United Kingdom", provider_codes=(("EUROSTAT", "UK"),), aliases=("UK", "BRITAIN")),
     Country("DE", "DEU", "EUR", "독일", "Germany"),
     Country("FR", "FRA", "EUR", "프랑스", "France"),
     Country("IT", "ITA", "EUR", "이탈리아", "Italy"),
@@ -47,7 +50,7 @@ _COUNTRIES = [
     Country("AT", "AUT", "EUR", "오스트리아", "Austria"),
     Country("IE", "IRL", "EUR", "아일랜드", "Ireland"),
     Country("PT", "PRT", "EUR", "포르투갈", "Portugal"),
-    Country("GR", "GRC", "EUR", "그리스", "Greece"),
+    Country("GR", "GRC", "EUR", "그리스", "Greece", provider_codes=(("EUROSTAT", "EL"),), aliases=("EL",)),
     Country("FI", "FIN", "EUR", "핀란드", "Finland"),
     Country("CA", "CAN", "CAD", "캐나다", "Canada"),
     Country("AU", "AUS", "AUD", "호주", "Australia"),

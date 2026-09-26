@@ -33,11 +33,21 @@ async def test_resolution_orders_sources_by_country(service):
 
 async def test_euro_area_uses_each_providers_own_area_code(service):
     keys = {s.provider: s.key for s in service.resolve(indicator="USD_EXCHANGE_RATE", country="유로존")}
-    assert keys == {"IMF": "G163.XDC_USD.PA_RT.M", "BIS": "M.XM.EUR.A", "OECD": "EA20.M.CC.XDC_USD._Z._Z._Z._Z.N"}
+    assert keys == {
+        "IMF": "G163.XDC_USD.PA_RT.M",
+        "BIS": "M.XM.EUR.A",
+        "OECD": "EA20.M.CC.XDC_USD._Z._Z._Z._Z.N",
+        "ECB": "M.USD.EUR.SP00.A",
+        "WB": "WB_WDI_PA_NUS_FCRF.EMU",
+    }
     # A dataflow can override the provider default (OECD national accounts use "EA", not "EA20").
     assert service.resolve(indicator="GDP_REAL_GROWTH_QOQ", country="EA")[0].key.startswith("Q.Y.EA.S1.")
     # Sources known not to publish the euro area are skipped (OECD CPI stopped at the enlargement).
-    assert [s.provider for s in service.resolve(indicator="CPI", country="EA")] == ["BIS"]
+    assert [s.provider for s in service.resolve(indicator="CPI", country="EA")] == ["EUROSTAT", "ECB", "BIS"]
+    # Eurostat's HICP uses the changing-composition euro area; its other dataflows EA21.
+    cpi = {s.provider: s.key for s in service.resolve(indicator="CPI", country="EA")}
+    assert (cpi["EUROSTAT"], cpi["ECB"]) == ("M.I25.TOTAL.EA", "M.U2.N.000000.4D0.INX")
+    assert service.resolve(indicator="UNEMPLOYMENT_RATE", country="EA", source="Eurostat")[0].key == "M.NSA.TOTAL.PC_ACT.T.EA21"
 
 
 @pytest.mark.parametrize(
@@ -62,7 +72,7 @@ async def test_unpublished_combinations_are_reported_not_fetched(service, indica
         ({"indicator": "M2", "country": "US"}, "No source for M2"),
         ({"indicator": "CPI", "source": "FRED"}, "Unsupported source"),
         ({"indicator": "CPI", "stat_code": "901Y009"}, "cannot be combined"),
-        ({"dataflow": "BIS:WS_CBPOL(1.0)", "key": "M.KR"}, "set source to OECD"),
+        ({"dataflow": "BIS:WS_CBPOL(1.0)", "key": "M.KR"}, "set source to one of OECD"),
         ({"source": "BIS", "dataflow": "BIS:WS_CBPOL(1.0)", "key": "M.KR"}, "cycle"),
         ({"source": "BIS", "dataflow": "BIS:WS_CBPOL(1.0)", "freq": "M"}, "need a key"),
         ({}, "indicator"),

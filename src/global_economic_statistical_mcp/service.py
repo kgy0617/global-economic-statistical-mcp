@@ -34,14 +34,18 @@ from global_economic_statistical_mcp.model import (
     period_index,
 )
 from global_economic_statistical_mcp.providers.base import ProviderError, SeriesRequest
+from global_economic_statistical_mcp.providers.data360 import Data360Provider
 from global_economic_statistical_mcp.providers.ecos import EcosProvider
 from global_economic_statistical_mcp.providers.sdmx_rest import (
+    SOURCE_ALIASES,
     SOURCES,
     SdmxHttp,
     SdmxProvider,
 )
 from global_economic_statistical_mcp.storage import RevisionStore, ValidationLedger
 from global_economic_statistical_mcp.validation import (
+    NOT_COMPARED,
+    SEVERITY,
     Expectation,
     ValidationReport,
     cross_validate,
@@ -49,7 +53,16 @@ from global_economic_statistical_mcp.validation import (
     validate_series,
 )
 
-PROVIDERS = ("ECOS", *SOURCES)
+PROVIDERS = ("ECOS", *SOURCES, "WB")
+# Other names people use for a provider ("World Bank", "ESTAT", ...).
+PROVIDER_ALIASES = {**SOURCE_ALIASES, "WORLD BANK": "WB", "WORLDBANK": "WB", "DATA360": "WB", "BOK": "ECOS"}
+
+
+def canonical_provider(source: str | None) -> str | None:
+    if not source or not source.strip():
+        return None
+    name = source.strip().upper().replace("_", " ")
+    return PROVIDER_ALIASES.get(name, name)
 TRANSFORM_UNITS = {"yoy": "PC_YOY", "pop": "PC_POP"}
 
 
@@ -159,6 +172,17 @@ def apply_transform(series: CanonicalSeries, transform: str, base: list[Observat
     )
 
 
+def invert(series: CanonicalSeries, unit: str) -> None:
+    """Replace values with their reciprocal (ECB publishes US dollars per euro; the concept is euros per dollar)."""
+    for obs in series.observations:
+        if isinstance(obs.value, int | float) and obs.value:
+            obs.source_value = obs.value
+            obs.value = round(1 / obs.value, 8)
+    published = series.unit
+    series.unit, series.unit_label = unit, None
+    series.provenance.transformations.append(f"invert: 1/value (the source publishes {published or 'the reciprocal'}; original in source_value)")
+
+
 def drop_unchanged(observations: list[Observation]) -> list[Observation]:
     """Keep the first/last observation and every value change (for step-like series)."""
     kept = []
@@ -184,6 +208,7 @@ class StatService:
         self.http = SdmxHttp()
         self.providers: dict[str, Any] = {"ECOS": EcosProvider(self.ecos_client)}
         self.providers.update({k: SdmxProvider(v, self.http) for k, v in SOURCES.items()})
+        self.providers["WB"] = Data360Provider(self.http)
         self.revisions = revisions or RevisionStore()
         self.ledger = ledger or ValidationLedger()
 
@@ -233,7 +258,7 @@ class StatService:
         default_ecos_cycle: str | None = None,
     ) -> list[ResolvedSource]:
         """Candidate sources in priority order (the first one that returns data is used)."""
-        provider = source.strip().upper() if source else None
+        provider = canonical_provider(source)
         if provider and provider not in PROVIDERS:
             raise ResolutionError(f"Unsupported source '{source}'. Use one of {', '.join(PROVIDERS)}.")
         freq = freq.strip().upper() if freq else None
@@ -320,8 +345,8 @@ class StatService:
                 )
             ]
         if dataflow and dataflow.strip():
-            if provider not in SOURCES:
-                raise ResolutionError("With dataflow, set source to OECD, IMF or BIS.")
+            if provider not in (*SOURCES, "WB"):
+                raise ResolutionError(f"With dataflow, set source to one of {', '.join((*SOURCES, 'WB'))}.")
             if not freq:
                 raise ResolutionError("Direct SDMX queries need cycle (the frequency determines the period format).")
             if not (key or "").strip() or key.strip().lower() == "all":
@@ -350,8 +375,15 @@ class StatService:
     # ── Loading ─────────────────────────────────────────────────────
 
     async def _fetch(self, src: ResolvedSource, start: str, end: str, **ecos_kw: Any) -> list[CanonicalSeries]:
-        request = SeriesRequest(src.provider, src.dataflow, src.key, src.freq, start, end, **ecos_kw)
-        return await self.providers[src.provider].fetch(request)
+        request = SeriesRequest(
+            src.provider, src.dataflow, src.key, src.freq, start, end, **ecos_kw,
+            ref_area=src.country.iso2 if src.country else None,
+        )
+        series_list = await self.providers[src.provider].fetch(request)
+        if src.mapping and src.mapping.invert:
+            for series in series_list:
+                invert(series, src.mapping.unit)
+        return series_list
 
     async def load(
         self,
@@ -442,13 +474,15 @@ class StatService:
             mappings = [m for m in mappings if m.provider in wanted]
         # One mapping per provider, preferring the requested or the most common frequency.
         freqs = [m.freq for m in mappings]
-        target = freq or max(set(freqs), key=lambda f: (freqs.count(f), f != "D")) if freqs else None
+        # Most common frequency; ties go to the one listed first (catalog priority), never daily.
+        target = freq or max(dict.fromkeys(freqs), key=lambda f: (freqs.count(f), f != "D", -freqs.index(f))) if freqs else None
         chosen: dict[str, SourceMapping] = {}
         for m in sorted(mappings, key=lambda m: m.freq != target):
             chosen.setdefault(m.provider, m)
         if len(chosen) < 2:
             return {
                 "status": "not_enough_sources",
+                "validation_status": NOT_COMPARED,
                 "concept_id": concept.id,
                 "country": country.iso2,
                 "sources": [m.provider for m in chosen.values()],
@@ -469,14 +503,37 @@ class StatService:
         results = await asyncio.gather(*(load(r) for r in resolved))
         loaded = [r for r in results if isinstance(r, LoadedSeries) and r.series]
         errors = [r for r in results if isinstance(r, dict)]
-        result = cross_validate(
-            [ls.series[0] for ls in loaded],
-            concept_id=concept.id,
-            country=country.iso2,
-            unit=concept.unit,
-            aggregation=concept.aggregation,
-            ledger=self.ledger,
-        )
+
+        def compare(group: list[LoadedSeries]) -> dict[str, Any]:
+            return cross_validate(
+                [ls.series[0] for ls in group],
+                concept_id=concept.id,
+                country=country.iso2,
+                unit=concept.unit,
+                aggregation=concept.aggregation,
+                rebase=concept.compare_rebased,
+                ledger=self.ledger,
+            )
+
+        # Compare at the most common frequency; sources published only at another frequency
+        # (e.g. annual World Bank data next to quarterly sources) are compared with the
+        # reference separately, so a finer comparison is never collapsed to annual points.
+        main = [ls for ls in loaded if ls.source.freq == target] or loaded[:1]
+        others = [ls for ls in loaded if ls not in main]
+        groups = [main] if len(main) >= 2 else []
+        groups += [[main[0], *(ls for ls in others if ls.source.freq == f)] for f in dict.fromkeys(ls.source.freq for ls in others)]
+        if not groups:
+            groups = [loaded]
+        results_by_group = [compare(g) for g in groups]
+        result, extra = results_by_group[0], []
+        for extra_result in results_by_group[1:]:
+            extra.append({k: extra_result.get(k) for k in ("frequency", "validation_status", "status", "method", "notes", "reason")})
+            result.setdefault("agreement", {}).update(extra_result.get("agreement") or {})
+        if extra:
+            result["other_frequencies"] = extra
+            statuses = [s for s in (result.get("validation_status"), *(e["validation_status"] for e in extra)) if s in SEVERITY]
+            if statuses:
+                result["validation_status"] = max(statuses, key=SEVERITY.__getitem__)
         result["source_validation"] = {ls.source.provider: ls.reports[0].compact() for ls in loaded if ls.reports}
         result["provenance"] = [ls.series[0].provenance.citation(ls.series[0].title) for ls in loaded]
         if errors:

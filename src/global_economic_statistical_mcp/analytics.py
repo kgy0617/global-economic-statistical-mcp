@@ -148,17 +148,29 @@ def can_convert(from_cycle: str, to_cycle: str) -> bool:
 
 
 def convert_frequency(
-    points: list[Point], from_cycle: str, to_cycle: str, how: str = "mean"
+    points: list[Point], from_cycle: str, to_cycle: str, how: str = "mean", complete_only: bool = False
 ) -> list[Point]:
-    """Aggregate (time, value) points to a lower frequency."""
+    """Aggregate (time, value) points to a lower frequency.
+
+    With ``complete_only`` a target period is kept only when every sub-period is present
+    (3 months for a quarter, 4 quarters for a year): the sum of two quarters is not a year.
+    Daily data has no fixed count and is never dropped.
+    """
     if from_cycle == to_cycle:
         return points
     buckets: dict[str, list[float]] = {}
     for time, value in points:
         buckets.setdefault(convert_period(time, from_cycle, to_cycle), []).append(value)
+    expected = (
+        PERIODS_PER_YEAR[from_cycle] // PERIODS_PER_YEAR[to_cycle]
+        if complete_only and from_cycle in PERIODS_PER_YEAR and to_cycle in PERIODS_PER_YEAR
+        else 0
+    )
     out = []
     for period in sorted(buckets):
         values = buckets[period]
+        if len(values) < expected:
+            continue
         if how == "last":
             agg = values[-1]
         elif how == "first":

@@ -38,6 +38,8 @@ UNIT_LABELS: dict[str, str] = {
     "KRW": "Korean won",
     "USD": "US dollar",
     "PS": "persons",
+    "PC_GDP": "percent of GDP",
+    "USD_PPP": "international dollars (PPP, constant prices)",
 }
 
 # Units that describe the same quantity under different provider codes.
@@ -55,6 +57,13 @@ UNIT_EQUIVALENTS: dict[str, str] = {
     "KRW": "XDC",
     "XDC": "XDC",
     "USD": "USD",
+    "PCPA": "PC_PA",  # ECB: percent per annum
+    "PCCH": "PC",  # ECB: percentage change (the series suffix says which one)
+    "PC_ACT": "PC",  # Eurostat: percent of the active population
+    "PT_GDP": "PC_GDP",  # World Bank
+    "PC_GDP": "PC_GDP",
+    "USD_PPP": "USD_PPP",
+    "PS": "PS",
 }
 
 
@@ -143,7 +152,7 @@ class Observation:
 class Provenance:
     """Where a series came from and what was done to it."""
 
-    provider: str  # ECOS | OECD | IMF | BIS
+    provider: str  # ECOS | OECD | IMF | BIS | ECB | EUROSTAT | WB
     agency: str
     dataflow: str
     series_key: str
@@ -169,6 +178,7 @@ class CanonicalSeries:
     observations: list[Observation]
     provenance: Provenance
     ref_area: str | None = None
+    ref_area_declared: bool = False  # the dataflow has no area dimension; ref_area comes from the catalog
     unit: str | None = None
     unit_label: str | None = None
     unit_mult: int = 0

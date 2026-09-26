@@ -32,14 +32,16 @@ def test_concepts_are_well_formed():
         assert c.unit in UNIT_LABELS, c.id
         assert c.sources, c.id
         for s in c.sources:
-            assert s.provider in ("ECOS", *SOURCES), (c.id, s)
+            assert s.provider in ("ECOS", *SOURCES, "WB"), (c.id, s)
             assert s.freq in VALID_CYCLES, (c.id, s)
             assert s.transform in (None, "yoy", "pop")
             if s.provider == "ECOS":
                 assert s.countries == ("KR",), "ECOS only covers Korea"
             else:
-                parse_flow_ref(s.dataflow)
-                assert "{" in s.key, "international keys must be templated by country"
+                if s.provider != "WB":
+                    parse_flow_ref(s.dataflow)
+                single_economy = s.countries is not None and len(s.countries) == 1
+                assert "{" in s.key or single_economy, "international keys must be templated by country"
                 for country in DEFAULT_COUNTRIES:
                     assert "{" not in s.render_key(get_country(country)), (c.id, country)
             assert "{" not in s.render_key(korea)
@@ -149,4 +151,4 @@ def test_every_default_economy_has_international_coverage_of_core_concepts():
 
 def test_flows_are_summed_and_stocks_take_the_period_end():
     assert {c.id for c in CONCEPTS if c.aggregation == "sum"} == {"GDP_REAL", "GDP_NOMINAL", "CURRENT_ACCOUNT", "GOODS_BALANCE"}
-    assert {c.id for c in CONCEPTS if c.aggregation == "last"} == {"FX_RESERVES"}
+    assert {c.id for c in CONCEPTS if c.aggregation == "last"} == {"FX_RESERVES", "POPULATION"}

@@ -54,7 +54,7 @@ STATUS_ORDER = {"pass": 0, "info": 1, "warn": 2, "fail": 3}
 
 # Provider unit codes that are a less specific form of the expected unit.
 _COMPATIBLE_UNITS: dict[str, set[str]] = {
-    "PC": {"PC_YOY", "PC_POP", "PC"},
+    "PC": {"PC_YOY", "PC_POP", "PC", "PC_PA"},
     "XDC": {"XDC_USD", "XDC"},
 }
 
@@ -64,6 +64,7 @@ _TOLERANCES: dict[str, tuple[float, float]] = {
     "PC": (0.05, 0.0),
     "PC_YOY": (0.05, 0.0),
     "PC_POP": (0.05, 0.0),
+    "PC_GDP": (0.05, 0.0),
     "IX": (0.0, 0.001),
     "XDC_USD": (0.0, 0.005),
 }
@@ -109,7 +110,7 @@ class ValidationReport:
         issues = [
             {"check": c.check, "status": c.status, "message": c.message}
             for c in self.checks
-            if c.status in ("warn", "fail") or (c.status == "info" and c.check in ("revision", "unit", "missing"))
+            if c.status in ("warn", "fail") or (c.status == "info" and c.check in ("revision", "unit", "missing", "country"))
         ]
         if issues:
             out["issues"] = issues
@@ -130,6 +131,11 @@ class ValidationReport:
 def _check_country(series: CanonicalSeries, exp: Expectation) -> Check:
     if not exp.country:
         return Check("country", "pass", "no country requested", {"ref_area": series.ref_area})
+    if series.ref_area_declared:
+        return Check(
+            "country", "info", f"the dataflow has no area dimension; {series.ref_area} is declared by the catalog",
+            {"expected": exp.country, "declared": series.ref_area},
+        )
     if series.ref_area is None:
         return Check("country", "warn", "the provider publishes no country dimension, so it cannot be checked", {"expected": exp.country})
     if series.ref_area != exp.country:
@@ -314,7 +320,7 @@ def report_records(report: ValidationReport, series: CanonicalSeries, run_id: st
 
 
 MATCH, DIFFER, UNRESOLVED, NOT_COMPARED = "MATCH", "DIFFER", "UNRESOLVED", "NOT_COMPARED"
-_SEVERITY = {MATCH: 0, DIFFER: 1, UNRESOLVED: 2}
+SEVERITY = {MATCH: 0, DIFFER: 1, UNRESOLVED: 2}
 
 
 def _not_comparable(reason: str) -> dict[str, Any]:
@@ -346,12 +352,15 @@ def cross_validate(
     country: str | None,
     unit: str | None = None,
     aggregation: str = "mean",
+    rebase: bool = False,
     ledger: ValidationLedger | None = None,
 ) -> dict[str, Any]:
     """Compare the same concept for one country across providers, period by period.
 
     ``aggregation`` is how a higher-frequency source is brought to the common frequency:
     ``sum`` for flows (a monthly current account against a quarterly one), ``last`` for stocks.
+    ``rebase`` compares levels after rebasing to the first common period (chain-linked volumes
+    with different reference years); indices with different base periods are always rebased.
     """
     series_list = [s for s in series_list if s.points()]
     if len(series_list) < 2:
@@ -377,7 +386,7 @@ def cross_validate(
             if not can_convert(s.freq, target):
                 return _not_comparable(f"cannot convert {s.provider} frequency {s.freq} to {target}")
             ecos_points = [(to_ecos_period(p, s.freq), v) for p, v in points]
-            points = [(ecos_to_canonical(p, target), v) for p, v in convert_frequency(ecos_points, s.freq, target, aggregation)]
+            points = [(ecos_to_canonical(p, target), v) for p, v in convert_frequency(ecos_points, s.freq, target, aggregation, complete_only=True)]
             notes.append(f"{s.provider}: {s.freq} → {target} by {AGGREGATION_LABELS.get(aggregation, aggregation)}")
         converted[s.provider] = _rescale(points, s.unit_mult, series_list[0].unit_mult)
         if s.unit_mult != series_list[0].unit_mult:
@@ -386,7 +395,7 @@ def cross_validate(
     method = "direct"
     tolerance = _TOLERANCES.get(concept_unit or "", _DEFAULT_TOLERANCE)
     bases = {s.provider: s.base_period for s in series_list}
-    if concept_unit == "IX" and len({b for b in bases.values()}) > 1:
+    if rebase or (concept_unit == "IX" and len({b for b in bases.values()}) > 1):
         common = sorted(set.intersection(*(set(dict(p)) for p in converted.values())))
         if not common:
             return _not_comparable("no common period to rebase on")
@@ -396,7 +405,11 @@ def cross_validate(
             converted[provider] = [(p, v / base_value * 100) for p, v in points] if base_value else points
         method = f"rebased:{anchor}=100"
         tolerance = _REBASED_INDEX_TOLERANCE
-        notes.append(f"index base periods differ ({bases}); rebased to {anchor}=100 for comparison")
+        notes.append(
+            f"index base periods differ ({bases}); rebased to {anchor}=100 for comparison"
+            if not rebase
+            else f"levels depend on each source's reference year; rebased to {anchor}=100 for comparison"
+        )
 
     adjustments = {s.provider: s.adjustment for s in series_list if s.adjustment}
     if len(set(adjustments.values())) > 1:
@@ -483,7 +496,7 @@ def cross_validate(
             continue
         stats = [r["by_provider"][provider] for r in records]
         classes = [x["validation_status"] for x in stats]
-        worst = max(classes, key=_SEVERITY.__getitem__, default=MATCH)
+        worst = max(classes, key=SEVERITY.__getitem__) if classes else NOT_COMPARED
         explanations = sorted({x["explanation"] for x in stats if "explanation" in x})
         rels = [x["rel_difference_pct"] for x in stats if x["rel_difference_pct"] is not None]
         agreement[provider] = {
@@ -496,7 +509,7 @@ def cross_validate(
                 "relative_max_pct": max(rels, default=None),
             },
             "investigation": {
-                "status": {MATCH: "not_needed", DIFFER: "explained", UNRESOLVED: "unresolved"}[worst],
+                "status": {MATCH: "not_needed", DIFFER: "explained", UNRESOLVED: "unresolved", NOT_COMPARED: "not_compared"}[worst],
                 **({"explanations": explanations} if explanations else {}),
                 **(
                     {"unresolved_periods": [r["period"] for r, x in zip(records, stats) if x["validation_status"] == UNRESOLVED]}
@@ -513,7 +526,8 @@ def cross_validate(
         verdict = "minor_differences"
     else:
         verdict = "inconsistent"
-    overall = max((a["validation_status"] for a in agreement.values()), key=_SEVERITY.__getitem__, default=MATCH)
+    compared = [a["validation_status"] for a in agreement.values() if a["validation_status"] in SEVERITY]
+    overall = max(compared, key=SEVERITY.__getitem__) if compared else NOT_COMPARED
     return {
         "status": verdict,
         "validation_status": overall if records else NOT_COMPARED,

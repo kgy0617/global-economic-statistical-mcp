@@ -5,6 +5,57 @@ All notable changes to this project are documented here. The format follows
 [Semantic Versioning](https://semver.org/). It is distributed from GitHub only; nothing is
 published to PyPI.
 
+## [0.5.0] — 2026-09-26
+
+**Global provider expansion**: SDMX 2.1 (ECB), SDMX 3.0 with SDMX-CSV (Eurostat) and a non-SDMX API
+(World Bank Data360) now feed the same Canonical Model, validation and provenance. Seven institutions
+in total.
+
+### Added
+
+- **ECB** (SDMX 2.1, SDMX-JSON 1.0; structures in SDMX-ML): deposit facility rate, 3-month Euribor,
+  long-term convergence rates, HICP and inflation, and EUR/USD. ECB publishes US dollars per euro,
+  so an `invert` mapping option turns it into euros per dollar and records the inversion in
+  provenance.
+- **Eurostat** (SDMX 3.0, SDMX-CSV 2.0; structures in SDMX-ML): HICP, unemployment (SA and NSA),
+  GDP growth and levels, and house prices for the euro area and EU member states.
+- **World Bank** through the Data360 API: a new provider adapter rather than a chained MCP server,
+  plus live indicator search and indicator metadata. New annual concepts cover real GDP growth,
+  CPI inflation (annual average), population, GDP per capita (PPP) and current account as % of
+  GDP. Annual mappings were added to GDP levels, current account, reserves and exchange rates.
+- SDMX-CSV 1.0/2.0 and SDMX-ML 2.1/3.0 structure parsers, and an HTTP layer that returns text and
+  sends read-only POSTs.
+- Provider aliases: `ESTAT`, `World Bank`, `WorldBank` and `Data360`.
+- A declared reference area for dataflows without an area dimension (ECB exchange rates). The
+  country check reports `info`, and provenance says the area comes from the catalog.
+- Documented known difference: BIS's euro-area policy rate followed the MRO rate until 2024-09-17
+  and the deposit facility rate since.
+- Search catalogs now list 9,387 dataflows (ECB 104, Eurostat 7,603) and 170 World Bank databases.
+
+### Changed
+
+- Cross-validation compares sources at their most common frequency, and the reference separately
+  with each source at another frequency. Only complete periods are aggregated, and chain-linked
+  real GDP levels are rebased to a common period (`compare_rebased`).
+- The daily cross-validation report covers 62 multi-institution concept–economy pairs over three
+  years.
+- Live tests verify 250 series across the six default economies. World Bank mappings are batched
+  like OECD's.
+- IMF requests time out after 120 seconds instead of 60. Balance-of-payments queries have taken
+  close to a minute.
+
+### Fixed
+
+- An institution with no comparable periods was reported as `MATCH`; it is now `NOT_COMPARED`.
+- The comparison frequency was chosen nondeterministically when two frequencies tied.
+
+### Found while adding the institutions
+
+- Euro-area HICP moved to new ECOICOP ver.2 dataflows in 2026 (ECB `HICP`, Eurostat
+  `PRC_HICP_MINR`, 2025=100). The old ones, and OECD's EA20 CPI, stop at 2025-12.
+- The euro area is EA21 from 2026-01. Codes now differ by institution and dataflow: BIS `XM`,
+  IMF `G163`, OECD `EA20`/`EA`, ECB `U2`, Eurostat `EA21`/`EA`, World Bank `EMU`.
+
 ## [0.4.0] — 2026-09-26
 
 First public release as **Global Economic Statistical MCP**: global economic statistics

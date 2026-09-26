@@ -2,10 +2,11 @@
 
     uv run pytest -m live
 
-Every Concept Catalog mapping is re-verified here for the default economies (KR, US, JP,
-CN, EA, GB), so a provider changing a dataflow or key is caught instead of silently
-returning nothing. OECD enforces a strict per-IP quota, so each OECD mapping is checked for
-all economies in one request, and a rate-limited request waits out the cooldown once.
+Every Concept Catalog mapping (ECOS, OECD, IMF, BIS, ECB, Eurostat, World Bank) is re-verified
+here for the default economies (KR, US, JP, CN, EA, GB), so a provider changing a dataflow or
+key is caught instead of silently returning nothing. OECD enforces a strict per-IP quota, so
+each OECD mapping is checked for all economies in one request, and a rate-limited request
+waits out the cooldown once.
 """
 
 import asyncio
@@ -35,12 +36,14 @@ pytestmark = [pytest.mark.live, pytest.mark.anyio]
 SDMX_JSON_COMMIT = "faa661d2247b9914052c76a5dabafd5990493f5a"
 SCHEMA_URL = f"https://raw.githubusercontent.com/sdmx-twg/sdmx-json/{SDMX_JSON_COMMIT}/{{}}/tools/schemas/sdmx-json-{{}}-schema.json"
 
-# One case per (mapping, economy); OECD mappings are one case for all economies they cover.
+# One case per (mapping, economy); OECD (strict quota) and World Bank mappings are one case
+# for all economies they cover, since both accept several areas in one request.
+BATCHED = ("OECD", "WB")
 MAPPINGS: list[tuple] = []
 for _concept in CONCEPTS:
     for _mapping in _concept.sources:
         _covered = tuple(c for c in DEFAULT_COUNTRIES if _mapping.covers(get_country(c)))
-        if _mapping.provider == "OECD":
+        if _mapping.provider in BATCHED:
             MAPPINGS += [(_concept, _mapping, _covered)] if _covered else []
         else:
             MAPPINGS += [(_concept, _mapping, (c,)) for c in _covered]
@@ -103,7 +106,8 @@ async def load_patiently(service, src, start, end):
     ids=[f"{c.id}-{m.provider}-{m.freq}{'-' + m.adjustment if m.adjustment else ''}-{'+'.join(k)}" for c, m, k in MAPPINGS],
 )
 async def test_catalog_mapping_returns_valid_data(service, concept, mapping, countries):
-    start, end = get_default_date_range(mapping.freq, recent_years=1)
+    # Annual indicators are published with a lag (e.g. US CPI inflation for 2025 comes in late 2026).
+    start, end = get_default_date_range(mapping.freq, recent_years=3 if mapping.freq == "A" else 1)
     single = get_country(countries[0]) if len(countries) == 1 else None
     key = mapping.render_key(single) if single else combined_key(mapping, countries)
     src = ResolvedSource(mapping.provider, mapping.dataflow, key, mapping.freq, concept, single, mapping, mapping.transform, False, concept.name_ko)

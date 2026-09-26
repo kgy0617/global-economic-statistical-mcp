@@ -21,7 +21,7 @@ class ProviderError(Exception):
 @dataclass
 class SeriesRequest:
     provider: str
-    dataflow: str  # ECOS stat code, or SDMX "AGENCY:ID(VERSION)"
+    dataflow: str  # ECOS stat code, SDMX "AGENCY:ID(VERSION)", or a World Bank Data360 database id
     key: str  # ECOS: dot-joined item codes ("0000001.0000100"); SDMX: series key
     freq: str
     start: str  # canonical period
@@ -30,6 +30,7 @@ class SeriesRequest:
     start_count: int = 1  # ECOS paging
     end_count: int = 1000
     prefer_latest: bool = True
+    ref_area: str | None = None  # economy the request is for; used when a dataflow has no area dimension
 
 
 class Provider(Protocol):
