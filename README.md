@@ -386,4 +386,4 @@ The priority is to make what exists trustworthy, not to add breadth. Planned nex
 
 ## 📝 License
 
-MIT License. Release notes are in [CHANGELOG.md](CHANGELOG.md).
+MIT License.
