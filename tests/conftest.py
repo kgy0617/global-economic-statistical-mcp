@@ -27,6 +27,9 @@ class FakeEcos:
         self.keyed: dict[tuple[str, str], list[dict[str, Any]]] = {}
         self.calls: list[list[str]] = []
         self.forced: list[httpx.Response | Exception] = []
+        # 1-based request number → response to return instead (e.g. fail only the 2nd request)
+        self.fail_on: dict[int, httpx.Response] = {}
+        self._count = 0
 
     def add_series(
         self,
@@ -62,6 +65,9 @@ class FakeEcos:
             )
 
     def handler(self, request: httpx.Request) -> httpx.Response:
+        self._count += 1
+        if self._count in self.fail_on:
+            return self.fail_on[self._count]
         if self.forced:
             outcome = self.forced.pop(0)
             if isinstance(outcome, Exception):

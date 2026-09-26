@@ -14,6 +14,8 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
+_MEMORY_LIMIT = 1000  # series snapshots kept in memory per process
+
 
 def data_dir() -> Path:
     explicit = os.getenv("GESM_DATA_DIR")
@@ -56,6 +58,9 @@ class RevisionStore:
         previous = self.load(series_id) or {"values": {}}
         merged = {**previous.get("values", {}), **values}
         snapshot = {"series_id": series_id, "retrieved_at": retrieved_at, "values": merged}
+        self._memory.pop(series_id, None)
+        if len(self._memory) >= _MEMORY_LIMIT:
+            self._memory.pop(next(iter(self._memory)))  # oldest; the disk copy remains
         self._memory[series_id] = snapshot
         if self.persist:
             try:

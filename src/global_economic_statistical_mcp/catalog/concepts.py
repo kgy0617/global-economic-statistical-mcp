@@ -497,7 +497,7 @@ def rank_concepts(query: str) -> list[tuple[int, Concept]]:
             score = 100 + max(contained)
         elif any(q in k for k in keys):
             score = 10
-        elif any(len(w) >= 3 and w in c.name_en.lower() for w in query.lower().split()):
+        elif any(len(w) >= 3 and re.search(rf"\b{re.escape(w)}\b", c.name_en.lower()) for w in query.lower().split()):
             score = 1
         else:
             continue

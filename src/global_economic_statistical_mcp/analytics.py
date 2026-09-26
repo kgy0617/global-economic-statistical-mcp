@@ -65,8 +65,16 @@ def _max_drawdown_pct(values: list[float]) -> float | None:
     return worst if peak and peak > 0 else None
 
 
-def describe(cycle: str, points: list[Point], yoy: list[Point] | None = None) -> dict[str, Any]:
-    """Summary statistics for one series of (time, value) points in time order."""
+def describe(
+    cycle: str, points: list[Point], yoy: list[Point] | None = None, *, is_rate: bool = False
+) -> dict[str, Any]:
+    """Summary statistics for one series of (time, value) points in time order.
+
+    For rates and percentages (``is_rate``: interest rates, inflation, growth, unemployment)
+    changes are reported in percentage points; percent changes of a percentage would mislead
+    (2.45% → 3.09% is +0.64pp, not "+26%"). CAGR is only given for spans of at least a year
+    with positive endpoints, and percent changes only from a positive base.
+    """
     points = [(t, v) for t, v in points if isinstance(v, int | float)]
     if not points:
         return {"count": 0}
@@ -84,30 +92,41 @@ def describe(cycle: str, points: list[Point], yoy: list[Point] | None = None) ->
         "mean": _round(statistics.fmean(values)),
         "median": _round(statistics.median(values)),
         "std": _round(statistics.stdev(values)) if len(values) > 1 else None,
-        "change": _round(last[1] - first[1]),
-        "change_pct": _round((last[1] / first[1] - 1) * 100, 2) if first[1] else None,
     }
 
-    years = years_between(cycle, first[0], last[0])
-    if years > 0 and first[1] > 0 and last[1] > 0:
-        out["cagr_pct"] = _round(((last[1] / first[1]) ** (1 / years) - 1) * 100, 2)
-
     slope, r2 = _linear_trend(cycle, points)
+    diffs = [b - a for (_, a), (_, b) in pairwise(points)]
+
+    if is_rate:
+        out["change_pp"] = _round(last[1] - first[1])
+        if diffs:
+            out["latest_change_pp"] = _round(diffs[-1])
+        if len(diffs) > 1:
+            out["change_pp_std"] = _round(statistics.stdev(diffs), 4)
+        if slope is not None:
+            out["trend_pp_per_year"] = _round(slope)
+            out["trend_r2"] = _round(r2, 3)
+        return out
+
+    out["change"] = _round(last[1] - first[1])
+    out["change_pct"] = _round((last[1] / first[1] - 1) * 100, 2) if first[1] > 0 else None
+    years = years_between(cycle, first[0], last[0])
+    if years >= 1 and first[1] > 0 and last[1] > 0:
+        out["cagr_pct"] = _round(((last[1] / first[1]) ** (1 / years) - 1) * 100, 2)
     if slope is not None:
         out["trend_per_year"] = _round(slope)
         out["trend_r2"] = _round(r2, 3)
 
-    changes = [
-        (b / a - 1) * 100 for (_, a), (_, b) in pairwise(points) if a
-    ]
+    changes = [(b / a - 1) * 100 for (_, a), (_, b) in pairwise(points) if a > 0]
     if len(changes) > 1:
         out["pop_pct_std"] = _round(statistics.stdev(changes), 3)
     if changes:
         out["latest_pop_pct"] = _round(changes[-1], 2)
 
-    drawdown = _max_drawdown_pct(values)
-    if drawdown is not None:
-        out["max_drawdown_pct"] = _round(drawdown, 2)
+    if all(v > 0 for v in values):
+        drawdown = _max_drawdown_pct(values)
+        if drawdown is not None:
+            out["max_drawdown_pct"] = _round(drawdown, 2)
 
     yoy_values = [(t, v) for t, v in (yoy or []) if isinstance(v, int | float)]
     if yoy_values:
@@ -153,45 +172,6 @@ def convert_frequency(
 
 
 # Multiplier mapping for currency and quantity units
-UNIT_MULTIPLIER_MAP: dict[str, int] = {
-    "조원": 12,
-    "조달러": 12,
-    "십억원": 9,
-    "십억달러": 9,
-    "백억원": 10,
-    "백만원": 6,
-    "백만달러": 6,
-    "천만원": 7,
-    "천원": 3,
-    "천달러": 3,
-    "천명": 3,
-    "만명": 4,
-    "천건": 3,
-    "원": 0,
-    "KRW": 0,
-    "달러": 0,
-    "USD": 0,
-    "명": 0,
-    "건": 0,
-    "호": 0,
-    "%": 0,
-    "연%": 0,
-    "p": 0,
-    "pt": 0,
-}
-
-
-def unit_multiplier_from_name(unit_name: str | None) -> int:
-    """Infer the SDMX unit multiplier (power of 10) from an ECOS unit string."""
-    if not unit_name:
-        return 0
-    clean = unit_name.strip()
-    for name, mult in UNIT_MULTIPLIER_MAP.items():
-        if name in clean:
-            return mult
-    return 0
-
-
 def scale_multiplier(points: list[Point], from_mult: int, to_mult: int) -> list[Point]:
     """Scale observation values between decimal multipliers.
 

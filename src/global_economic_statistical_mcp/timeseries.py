@@ -1,4 +1,4 @@
-"""Time-series post-processing and token-efficient formatting for StatisticSearch rows."""
+"""Helpers for ECOS StatisticSearch rows (grouping, labels, numbers) and compact JSON."""
 
 from __future__ import annotations
 
@@ -9,7 +9,6 @@ TRANSFORMS = {
     "yoy": "yoy_pct",  # 전년동기대비 증감률(%)
     "pop": "pop_pct",  # 직전 관측치 대비 증감률(%)
 }
-OUTPUT_FORMATS = {"compact", "csv", "json"}
 
 
 def dumps(data: Any) -> str:

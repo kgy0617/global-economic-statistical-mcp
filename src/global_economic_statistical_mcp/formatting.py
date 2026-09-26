@@ -125,7 +125,7 @@ def render(
     if fmt == "csv":
         buffer = io.StringIO()
         for key, value in header.items():
-            buffer.write(f"# {key}: {value}\n")
+            buffer.write(f"# {key}: {dumps(value) if isinstance(value, dict | list) else value}\n")
         for s, r in zip(series_list, reports):
             buffer.write(f"# source {s.series_id}: {s.provenance.citation(s.title)}\n")
             buffer.write(f"# validation {s.series_id}: {r.status} {r.compact().get('issues', '')}\n")

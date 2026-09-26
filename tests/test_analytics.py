@@ -18,6 +18,16 @@ def test_years_between():
     assert years_between("D", "20240101", "20250101") == pytest.approx(366 / 365.25)
 
 
+def test_describe_rates_use_percentage_points_and_short_spans_have_no_cagr():
+    stats = describe("M", [("202511", 2.45), ("202601", 2.0), ("202608", 3.09)], is_rate=True)
+    assert stats["change_pp"] == 0.64
+    assert "change_pct" not in stats and "cagr_pct" not in stats and "max_drawdown_pct" not in stats
+    short = describe("D", [("20260910", 3.93), ("20260923", 4.006)])
+    assert "cagr_pct" not in short
+    negative = describe("M", [("202601", -5.0), ("202602", 10.0)])
+    assert negative["change_pct"] is None and "max_drawdown_pct" not in negative
+
+
 def test_describe_basic_statistics():
     points = [("2020", 100.0), ("2021", 110.0), ("2022", 121.0)]
     stats = describe("A", points)
@@ -63,17 +73,8 @@ def test_normalize():
     assert [v for _, v in z] == pytest.approx([-0.7071, 0.7071], abs=1e-4)
 
 
-def test_unit_multiplier_and_scaling():
-    from global_economic_statistical_mcp.analytics import (
-        scale_multiplier,
-        unit_multiplier_from_name,
-    )
-
-    assert unit_multiplier_from_name("십억원") == 9
-    assert unit_multiplier_from_name("원") == 0
-    assert unit_multiplier_from_name("백만원") == 6
-    assert unit_multiplier_from_name("연%") == 0
-    assert unit_multiplier_from_name(None) == 0
+def test_scale_multiplier():
+    from global_economic_statistical_mcp.analytics import scale_multiplier
 
     points = [("202401", 5.0), ("202402", 10.0)]
     # Scale from 십억원 (9) to 백만원 (6): 5 * 10^3 = 5000

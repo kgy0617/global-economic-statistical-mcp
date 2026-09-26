@@ -42,6 +42,7 @@ async def test_resolution_orders_sources_by_country(service):
         ({"indicator": "CPI", "stat_code": "901Y009"}, "함께 쓸 수 없습니다"),
         ({"dataflow": "BIS:WS_CBPOL(1.0)", "key": "M.KR"}, "source를 OECD"),
         ({"source": "BIS", "dataflow": "BIS:WS_CBPOL(1.0)", "key": "M.KR"}, "cycle"),
+        ({"source": "BIS", "dataflow": "BIS:WS_CBPOL(1.0)", "freq": "M"}, "key를 지정"),
         ({}, "indicator"),
     ],
 )

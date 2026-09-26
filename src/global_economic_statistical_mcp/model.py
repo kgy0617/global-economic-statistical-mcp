@@ -156,10 +156,7 @@ class Provenance:
 
     def citation(self, title: str | None = None) -> str:
         name = f"'{title}'" if title else self.dataflow_name or self.dataflow
-        return (
-            f"출처: {self.agency} ({self.provider}), {name}, 데이터셋 {self.dataflow}, "
-            f"시계열 {self.series_key}, 조회 {self.retrieved_at}"
-        )
+        return f"출처: {self.agency}, {name}, 데이터셋 {self.dataflow}, 시계열 {self.series_key}, 조회 {self.retrieved_at}"
 
 
 @dataclass

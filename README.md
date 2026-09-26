@@ -63,7 +63,7 @@ LLM이 경제통계를 **발견**하고, **의미를 해석**하고, 여러 기�
 | `get_metadata` | ECOS 통계표 구조(SDMX 매핑, 연결된 표준 개념과 해외 출처 포함)나 OECD·IMF·BIS가 발행한 실제 DSD와 코드목록을 조회합니다. |
 | `get_data` | 개념+국가(`indicator="CPI_YOY", country="US"`), ECOS 통계표, SDMX 데이터플로를 조회합니다. 검증과 출처가 붙고, `cross_validate=True`면 기관 간 교차검증도 합니다. |
 | `compare_series` | 여러 국가·기관·지표를 같은 주기로 맞춰 정렬하고 상관계수를 계산합니다. 같은 개념을 다른 기관에서 가져오면 교차검증도 자동으로 합니다. |
-| `calculate_statistics` | 기술통계, 증감률, CAGR, 추세, 변동성, 최대낙폭을 계산합니다. |
+| `calculate_statistics` | 기술통계, 증감률, CAGR(1년 이상일 때), 추세, 변동성, 최대낙폭을 계산합니다. 금리·물가상승률 같은 비율 지표는 %p 기준으로 계산합니다. |
 | `explain_indicator` | 개념 정의(한/영), 국가별 출처와 키, 한국은행 용어사전과 통계 설명자료를 보여줍니다. |
 
 데이터는 세 가지 방법으로 조회할 수 있습니다.
@@ -72,6 +72,8 @@ LLM이 경제통계를 **발견**하고, **의미를 해석**하고, 여러 기�
    - 한국은 ECOS가 1순위이고, 다른 나라는 카탈로그의 우선순위를 따릅니다.
 2. **ECOS 직접 조회**: `get_data(stat_code="901Y009", item_code1="A01101")`
 3. **SDMX 직접 조회**: `get_data(source="OECD", dataflow="OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0)", key="JPN.M.IRLT.PA._Z._Z._Z._Z.N", cycle="M")`
+
+값을 맞추는 옵션도 있습니다: `transform`(yoy/pop 증감률), `rebase_period`(지수 재기준), `unit_mult`(배수 환산, 예: 십억원 → 조원은 `12`), `changes_only`(값이 바뀐 시점만).
 
 첫 출처에 데이터가 없거나 오류(호출 한도 초과 포함)가 나면 다음 출처로 자동 전환하고, 그 시도 기록을 응답에 남깁니다.
 

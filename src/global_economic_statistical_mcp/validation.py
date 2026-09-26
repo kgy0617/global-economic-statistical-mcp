@@ -153,7 +153,9 @@ def _check_unit(series: CanonicalSeries, exp: Expectation) -> Check:
     expected = canonical_unit(exp.unit)
     details = {"expected": expected, "actual": observed, "label": series.unit_label}
     if not expected:
-        return Check("unit", "info", f"기대 단위 없음(관측 단위 {observed})", details)
+        if observed is None:
+            return Check("unit", "info", "공급자가 단위를 명시하지 않았고 비교할 기대 단위도 없습니다", details)
+        return Check("unit", "pass", f"단위 {observed} (기대 단위 미지정)", details)
     if observed is None:
         return Check("unit", "info", f"공급자가 단위를 명시하지 않아 카탈로그 선언({expected})을 따릅니다", details)
     if observed != expected and expected not in _COMPATIBLE_UNITS.get(observed, set()):

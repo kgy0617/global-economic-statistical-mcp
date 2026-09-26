@@ -47,10 +47,11 @@ from global_economic_statistical_mcp.analytics import (
     describe,
     normalize,
     rebase_index,
+    scale_multiplier,
 )
 from global_economic_statistical_mcp.catalog.concepts import (
     CONCEPTS,
-    get_concept,
+    find_concept,
     search_concepts,
 )
 from global_economic_statistical_mcp.catalog.countries import all_countries
@@ -363,7 +364,17 @@ async def get_metadata(
 
 # ── Tool 3: data ────────────────────────────────────────────────────
 
-def _harmonize(loaded: LoadedSeries, rebase_period: str | None) -> None:
+def _harmonize(loaded: LoadedSeries, rebase_period: str | None, unit_mult: int | None = None) -> None:
+    if unit_mult is not None:
+        for series in loaded.series:
+            if series.unit_mult == unit_mult:
+                continue
+            factor = 10 ** (series.unit_mult - unit_mult)
+            scaled = scale_multiplier([(o.period, o.value) for o in series.observations], series.unit_mult, unit_mult)
+            for obs, (_, value) in zip(series.observations, scaled):
+                obs.value = value
+            series.provenance.transformations.append(f"scale: 10^{series.unit_mult} → 10^{unit_mult} (×{factor:g})")
+            series.unit_mult = unit_mult
     if not rebase_period:
         return
     for series in loaded.series:
@@ -383,7 +394,7 @@ def _harmonize(loaded: LoadedSeries, rebase_period: str | None) -> None:
 async def get_data(
     ctx: Context,
     indicator: str | None = None,
-    country: str = "KR",
+    country: str | None = None,
     source: str | None = None,
     stat_code: str | None = None,
     cycle: str | None = None,
@@ -399,6 +410,7 @@ async def get_data(
     transform: str | None = None,
     changes_only: bool | None = None,
     rebase_period: str | None = None,
+    unit_mult: int | None = None,
     cross_validate: bool = False,
     output_format: str = "compact",
     prefer_latest: bool = True,
@@ -422,7 +434,7 @@ async def get_data(
 
     Args:
         indicator: 표준 개념 id/이름 (search_statistics(scope="concepts")로 확인)
-        country: 국가 ISO 코드 (기본값 KR)
+        country: 국가 ISO 코드 (표준 개념 조회 시 기본값 KR; SDMX 직접 조회 시 지정하면 국가 검증에 사용)
         source: ECOS | OECD | IMF | BIS
         stat_code: ECOS 통계표코드
         cycle: 주기 A/S/Q/M/SM/D
@@ -435,6 +447,7 @@ async def get_data(
         transform: "yoy" | "pop" | "none"
         changes_only: 값이 바뀐 시점만 표시 (기준금리 개념은 기본 적용)
         rebase_period: 지수 재기준 시점
+        unit_mult: 값의 배수를 10^unit_mult 단위로 환산 (예: 십억원(9) 시계열에 12 → 조 단위)
         cross_validate: 기관 간 교차검증 결과 포함
         output_format: "compact" | "csv" | "json" | "sdmx"
         prefer_latest: ECOS 결과가 잘릴 때 최신 구간 우선
@@ -463,7 +476,7 @@ async def get_data(
             end_count=end_count,
             prefer_latest=prefer_latest,
         )
-        _harmonize(loaded, rebase_period)
+        _harmonize(loaded, rebase_period, unit_mult)
         src = loaded.source
         header: dict[str, Any] = {
             "concept": {"id": src.concept.id, "name": src.concept.name_ko} if src.concept else None,
@@ -647,7 +660,7 @@ async def compare_series(
 async def calculate_statistics(
     ctx: Context,
     indicator: str | None = None,
-    country: str = "KR",
+    country: str | None = None,
     source: str | None = None,
     stat_code: str | None = None,
     cycle: str | None = None,
@@ -669,7 +682,7 @@ async def calculate_statistics(
 
     Args:
         indicator: 표준 개념 id/이름
-        country: 국가 ISO 코드 (기본값 KR)
+        country: 국가 ISO 코드 (표준 개념 조회 시 기본값 KR)
         source: ECOS | OECD | IMF | BIS
         stat_code: ECOS 통계표코드
         cycle: 주기
@@ -707,22 +720,27 @@ async def calculate_statistics(
                     if i - lag in by_index and by_index[i - lag][1]
                 ]
             ecos_points = [(to_ecos_period(p, s.freq), v) for p, v in points]
-            stats = describe(s.freq, ecos_points, yoy)
+            stats = describe(s.freq, ecos_points, yoy, is_rate=is_rate)
             for k in ("first", "last", "min", "max"):
                 if k in stats:
                     stats[k]["time"] = ecos_to_canonical(stats[k]["time"], s.freq)
-            results.append(
-                {
-                    "series_id": s.series_id,
-                    "title": s.title,
-                    "country": s.ref_area,
-                    "unit": s.unit or loaded.source.expected_unit,
-                    "freq": s.freq,
-                    "stats": stats,
-                    "validation": report.compact(),
-                    "citation": s.provenance.citation(s.title),
-                }
-            )
+            entry = {
+                "series_id": s.series_id,
+                "title": s.title,
+                "country": s.ref_area,
+                "unit": s.unit or loaded.source.expected_unit,
+                "freq": s.freq,
+                "stats": stats,
+                "validation": report.compact(),
+                "citation": s.provenance.citation(s.title),
+            }
+            if is_rate:
+                entry["note_units"] = "비율 지표라 변화는 %p(퍼센트포인트)로 계산했습니다"
+            if s.truncated:
+                entry["truncated"] = True
+            if s.notes:
+                entry["notes"] = s.notes
+            results.append(entry)
         src = loaded.source
         return dumps(
             {
@@ -776,8 +794,11 @@ async def explain_indicator(
         raise ToolError("term을 입력하세요.")
     out: dict[str, Any] = {"term": term}
 
-    concept = get_concept(term) or next(iter(search_concepts(term, limit=1)), None)
-    ctry = service.resolve_country(country) if country else None
+    concept = find_concept(term)
+    try:
+        ctry = service.resolve_country(country) if country else None
+    except ResolutionError as e:
+        raise ToolError(str(e)) from e
     if concept:
         out["concept"] = concept.to_dict()
         if ctry:
