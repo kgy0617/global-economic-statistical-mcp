@@ -9,7 +9,11 @@ from global_economic_statistical_mcp.catalog.concepts import (
     get_concept,
     rank_concepts,
 )
-from global_economic_statistical_mcp.catalog.countries import get_country, iso2
+from global_economic_statistical_mcp.catalog.countries import (
+    DEFAULT_COUNTRIES,
+    get_country,
+    iso2,
+)
 from global_economic_statistical_mcp.config import VALID_CYCLES
 from global_economic_statistical_mcp.model import UNIT_LABELS
 from global_economic_statistical_mcp.providers.sdmx_rest import SOURCES, parse_flow_ref
@@ -23,7 +27,7 @@ def test_concepts_are_well_formed():
         for a in (c.id, *c.aliases):
             owners.setdefault(a.upper(), set()).add(c.id)
     assert all(len(v) == 1 for v in owners.values()), {k: v for k, v in owners.items() if len(v) > 1}
-    korea, usa = get_country("KR"), get_country("US")
+    korea = get_country("KR")
     for c in CONCEPTS:
         assert c.unit in UNIT_LABELS, c.id
         assert c.sources, c.id
@@ -36,7 +40,8 @@ def test_concepts_are_well_formed():
             else:
                 parse_flow_ref(s.dataflow)
                 assert "{" in s.key, "international keys must be templated by country"
-                assert "{" not in s.render_key(usa)
+                for country in DEFAULT_COUNTRIES:
+                    assert "{" not in s.render_key(get_country(country)), (c.id, country)
             assert "{" not in s.render_key(korea)
 
 
@@ -111,6 +116,8 @@ def test_sources_for_country_and_filters():
 
 def test_countries():
     assert iso2("KOR") == "KR" and iso2("usa") == "US" and iso2("XX") == "XX"
+    assert {iso2(c) for c in ("XM", "G163", "EA20", "EA", "eurozone", "유로존")} == {"EA"}
+    assert get_country("UK").iso2 == "GB"
     assert get_country("한국").iso3 == "KOR"
     assert get_country("japan").currency == "JPY"
 
@@ -127,3 +134,19 @@ def test_dataflow_search():
     res = search.search_dataflows("policy rates", provider="BIS")
     assert any(r["dataflow"].startswith("BIS:WS_CBPOL") for r in res["data"])
     assert search.dataflow_name("IMF", "IMF.STA:CPI") == "Consumer Price Index (CPI)"
+
+
+def test_every_default_economy_has_international_coverage_of_core_concepts():
+    """Research use needs the core macro concepts for every default economy (re-verified by the live suite)."""
+    core = (
+        "POLICY_RATE", "LONG_TERM_RATE", "SHORT_TERM_RATE", "CPI", "CPI_YOY", "GDP_REAL_GROWTH_QOQ", "GDP_REAL_GROWTH_YOY",
+        "GDP_REAL", "GDP_NOMINAL", "CURRENT_ACCOUNT", "GOODS_BALANCE", "FX_RESERVES", "SHARE_PRICE_INDEX",
+        "CONSUMER_SENTIMENT", "BUSINESS_CONFIDENCE", "HOUSE_PRICE_INDEX",
+    )
+    missing = [(c.id, k) for c in CONCEPTS if c.id in core for k in DEFAULT_COUNTRIES if not c.sources_for(get_country(k))]
+    assert not missing, missing
+
+
+def test_flows_are_summed_and_stocks_take_the_period_end():
+    assert {c.id for c in CONCEPTS if c.aggregation == "sum"} == {"GDP_REAL", "GDP_NOMINAL", "CURRENT_ACCOUNT", "GOODS_BALANCE"}
+    assert {c.id for c in CONCEPTS if c.aggregation == "last"} == {"FX_RESERVES"}

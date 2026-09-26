@@ -25,8 +25,8 @@ from global_economic_statistical_mcp.timeseries import (
     to_number,
 )
 
-AGENCY = "한국은행 (Bank of Korea)"
-ATTRIBUTION = "한국은행 경제통계시스템(ECOS) Open API"
+AGENCY = "Bank of Korea (BOK)"
+ATTRIBUTION = "Bank of Korea Economic Statistics System (ECOS) Open API"
 WEB_URL = "https://ecos.bok.or.kr/"
 
 # ECOS unit label → (canonical unit, unit_mult)

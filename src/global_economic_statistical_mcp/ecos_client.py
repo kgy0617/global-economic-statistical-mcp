@@ -148,7 +148,7 @@ class EcosClient:
         if service_data is None:
             raise EcosApiError(
                 code="PARSE_ERROR",
-                message=f"예상치 못한 응답 구조입니다. '{service_name}' 키가 누락되었습니다.",
+                message=f"Unexpected response structure: the '{service_name}' key is missing.",
             )
 
         # Check for nested error
@@ -173,21 +173,21 @@ class EcosClient:
             raise _RetryableError(
                 EcosApiError(
                     code="TIMEOUT",
-                    message=f"ECOS API 서버 응답 시간 초과 ({self.timeout:g}초)",
+                    message=f"ECOS API timed out ({self.timeout:g} s)",
                 )
             ) from e
         except httpx.RequestError as e:
             raise _RetryableError(
                 EcosApiError(
                     code="NETWORK_ERROR",
-                    message=f"ECOS 서버와 통신할 수 없습니다: {type(e).__name__}",
+                    message=f"Cannot reach the ECOS server: {type(e).__name__}",
                 )
             ) from e
 
         if response.status_code >= 400:
             error = EcosApiError(
                 code=f"HTTP_{response.status_code}",
-                message=f"ECOS 서버 HTTP 에러: {response.status_code} {response.reason_phrase}",
+                message=f"ECOS HTTP error: {response.status_code} {response.reason_phrase}",
             )
             if response.status_code >= 500 or response.status_code == 429:
                 raise _RetryableError(error)
@@ -198,7 +198,7 @@ class EcosClient:
         except ValueError as e:
             raise EcosApiError(
                 code="PARSE_ERROR",
-                message="ECOS 응답을 JSON으로 해석할 수 없습니다.",
+                message="Cannot parse the ECOS response as JSON.",
             ) from e
 
     async def _get_json(self, url: str) -> dict[str, Any]:
@@ -267,11 +267,11 @@ class EcosClient:
         }
         notes: list[str] = []
         if total_count == 0:
-            notes.append("조건에 맞는 데이터가 없습니다. 기간, 주기, 항목코드를 확인하세요.")
+            notes.append("No data matches the request. Check the dates, frequency and item codes.")
         if clamped and result["has_more"]:
             notes.append(
-                "API 인증키가 'sample'이므로 1회 최대 조회 한도(10건)로 자동 제한되었습니다. "
-                "전체 조회를 원하시면 ECOS에서 무료 인증키를 발급받아 ECOS_API_KEY에 설정하세요."
+                "The API key is 'sample', so results are limited to 10 rows per call. "
+                "Register a free key at ECOS and set ECOS_API_KEY for full results."
             )
         if notes:
             result["note"] = " ".join(notes)
@@ -480,7 +480,7 @@ class EcosClient:
         return {"total_count": total, "rows": rows, "complete": len(rows) >= total}
 
     async def get_all_key_statistics(self, language: str = "kr") -> dict[str, Any]:
-        """The full 100대 주요 경제지표 list (cached for an hour; values change daily)."""
+        """The full list of the Bank of Korea's 100 key statistics (cached for an hour; values change daily)."""
         rows, total = await self._fetch_all_pages(
             "KeyStatisticList",
             language,
@@ -587,13 +587,13 @@ class EcosClient:
                 "StatisticSearch", language, tail_start, total, *extra
             )
             truncation_note = (
-                f"전체 {total}건 중 가장 최근 {result['count']}건만 반환했습니다. "
-                "전체가 필요하면 기간을 줄이거나 prefer_latest=False와 start_count/end_count로 나눠 조회하세요."
+                f"Returned the latest {result['count']} of {total} rows. "
+                "For all of them, narrow the dates or page with prefer_latest=False and start_count/end_count."
             )
         else:
             truncation_note = (
-                f"전체 {total}건 중 {result['start_count']}~{result['start_count'] + result['count'] - 1}번째만 "
-                "반환했습니다. 나머지는 start_count/end_count를 조정해 조회하세요."
+                f"Returned rows {result['start_count']}-{result['start_count'] + result['count'] - 1} of {total}. "
+                "Adjust start_count/end_count for the rest."
             )
         result["truncated"] = True
         result["note"] = " ".join(n for n in (truncation_note, result.get("note")) if n)

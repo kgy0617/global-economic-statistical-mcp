@@ -1,8 +1,16 @@
-"""Country codes used to fill provider key templates ({ISO2}, {ISO3}, {CUR})."""
+"""Country codes used to fill provider key templates ({ISO2}, {ISO3}, {CUR}).
+
+Economies that are not ISO countries (the euro area) carry the code each provider uses
+instead; every such code is also accepted as an alias, so a provider's ``XM`` or ``G163``
+comes back as the canonical ``EA``.
+"""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
+
+# Economies whose every Concept Catalog mapping is re-verified by the live test suite.
+DEFAULT_COUNTRIES = ("KR", "US", "JP", "CN", "EA", "GB")
 
 
 @dataclass(frozen=True)
@@ -12,6 +20,11 @@ class Country:
     currency: str
     name_ko: str
     name_en: str
+    provider_codes: tuple[tuple[str, str], ...] = ()  # (provider, area code) where it is not ISO
+    aliases: tuple[str, ...] = ()
+
+    def code_for(self, provider: str) -> str | None:
+        return dict(self.provider_codes).get(provider.upper())
 
 
 _COUNTRIES = [
@@ -19,7 +32,12 @@ _COUNTRIES = [
     Country("US", "USA", "USD", "미국", "United States"),
     Country("JP", "JPN", "JPY", "일본", "Japan"),
     Country("CN", "CHN", "CNY", "중국", "China"),
-    Country("GB", "GBR", "GBP", "영국", "United Kingdom"),
+    Country(
+        "EA", "EMU", "EUR", "유로지역", "Euro area",
+        provider_codes=(("BIS", "XM"), ("IMF", "G163"), ("OECD", "EA20")),
+        aliases=("XM", "G163", "EA20", "EA21", "EA19", "U2", "EURO AREA", "EUROZONE", "EURO ZONE", "유로존"),
+    ),
+    Country("GB", "GBR", "GBP", "영국", "United Kingdom", aliases=("UK", "BRITAIN")),
     Country("DE", "DEU", "EUR", "독일", "Germany"),
     Country("FR", "FRA", "EUR", "프랑스", "France"),
     Country("IT", "ITA", "EUR", "이탈리아", "Italy"),
@@ -63,19 +81,20 @@ _COUNTRIES = [
 
 _BY_CODE: dict[str, Country] = {}
 for _c in _COUNTRIES:
-    for _key in (_c.iso2, _c.iso3, _c.name_ko, _c.name_en.upper()):
+    for _key in (_c.iso2, _c.iso3, _c.name_ko, _c.name_en.upper(), *_c.aliases):
         _BY_CODE[_key.upper()] = _c
 _BY_CODE.update({"KOREA": _BY_CODE["KR"], "SOUTH KOREA": _BY_CODE["KR"], "USA": _BY_CODE["US"], "대한민국": _BY_CODE["KR"]})
 
 
 def get_country(code_or_name: str | None) -> Country | None:
+    """Look up by ISO2, ISO3, Korean or English name, or a provider's own area code."""
     if not code_or_name:
         return None
     return _BY_CODE.get(code_or_name.strip().upper())
 
 
 def iso2(code: str | None) -> str | None:
-    """Normalise ISO2/ISO3 codes to ISO2; unknown codes are returned unchanged."""
+    """Normalise ISO2/ISO3/provider area codes to the canonical code; unknown codes are returned unchanged."""
     if not code:
         return None
     country = get_country(code)

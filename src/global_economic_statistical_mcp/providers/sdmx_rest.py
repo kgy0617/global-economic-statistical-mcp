@@ -18,6 +18,7 @@ least one provider (IMF) silently ignores the whole key when it contains a wildc
 from __future__ import annotations
 
 import asyncio
+import math
 import re
 import time
 import urllib.parse
@@ -115,6 +116,8 @@ _IMPLIED_UNITS: dict[str, tuple[str, str | None]] = {
     "YOY_PCH_PA_PT": ("PC_YOY", None),
     "POP_PCH_PA_PT": ("PC_POP", None),
     "XDC_USD": ("XDC_USD", None),
+    "XDC": ("XDC", None),  # IMF TYPE_OF_TRANSFORMATION / UNIT: domestic currency
+    "USD": ("USD", None),
     "628": ("IX", "2010"),  # BIS: Index, 2010 = 100
     "771": ("PC_YOY", None),  # BIS: Year-on-year changes, in per cent
 }
@@ -130,7 +133,7 @@ def parse_flow_ref(ref: str) -> tuple[str, str, str]:
     """'OECD.SDD.TPS:DSD_PRICES@DF_PRICES_ALL(1.0)' → (agency, id, version)."""
     match = _FLOW_REF.match(ref.strip())
     if not match:
-        raise ProviderError("SDMX", "BAD_DATAFLOW", f"데이터플로 참조 형식이 올바르지 않습니다: '{ref}' (예: 'BIS:WS_CBPOL(1.0)')")
+        raise ProviderError("SDMX", "BAD_DATAFLOW", f"Invalid dataflow reference '{ref}' (expected e.g. 'BIS:WS_CBPOL(1.0)')")
     return match["agency"], match["id"], match["version"] or "latest"
 
 
@@ -149,6 +152,8 @@ def _number(value: Any) -> float | None:
     try:
         number = float(value)
     except (TypeError, ValueError):
+        return None
+    if not math.isfinite(number):  # "NaN" is how some providers publish a missing value
         return None
     return int(number) if number.is_integer() and "." not in str(value) else number
 
@@ -283,7 +288,7 @@ def rows_to_series(
         observations.sort(key=lambda o: o.period)
 
         first = group[0]
-        unit_code = dims.get("UNIT_MEASURE") or first.get("@UNIT_MEASURE")
+        unit_code = dims.get("UNIT_MEASURE") or dims.get("UNIT") or first.get("@UNIT_MEASURE")
         unit, implied_base = None, None
         # A growth-rate transformation outranks the unit code (OECD: UNIT_MEASURE=PA + GY is a
         # year-on-year change, not an interest rate).
@@ -331,7 +336,7 @@ def rows_to_series(
                 ),
                 ref_area=iso2(area),
                 unit=unit,
-                unit_label=names.get("UNIT_MEASURE", {}).get(unit_code) if unit_code else None,
+                unit_label=(names.get("UNIT_MEASURE") or names.get("UNIT") or {}).get(unit_code) if unit_code else None,
                 unit_mult=int(mult) if mult not in (None, "") and str(mult).lstrip("-").isdigit() else 0,
                 base_period=base,
                 adjustment=_ADJUSTMENT.get(dims.get("ADJUSTMENT", ""), None),
@@ -375,7 +380,7 @@ class SdmxHttp:
         return ProviderError(
             provider,
             "RATE_LIMITED",
-            f"{provider} API 호출 한도를 초과했습니다. 약 {int(seconds) + 1}초 후 다시 시도하거나 다른 출처(source)를 사용하세요.",
+            f"{provider} rate limit exceeded. Retry in about {int(seconds) + 1} s or use another source.",
         )
 
     async def get_json(self, provider: str, url: str, accept: str, ttl: float) -> Any:
@@ -400,10 +405,10 @@ class SdmxHttp:
             try:
                 response = await self._http.get(url, headers={"Accept": accept})
             except httpx.TimeoutException as e:
-                error = ProviderError(provider, "TIMEOUT", "응답 시간 초과")
+                error = ProviderError(provider, "TIMEOUT", "Request timed out")
                 cause: Exception = e
             except httpx.RequestError as e:
-                error = ProviderError(provider, "NETWORK_ERROR", f"통신 실패: {type(e).__name__}")
+                error = ProviderError(provider, "NETWORK_ERROR", f"Network error: {type(e).__name__}")
                 cause = e
             else:
                 if response.status_code == 404:
@@ -421,7 +426,7 @@ class SdmxHttp:
                     try:
                         return response.json()
                     except ValueError as e:
-                        raise ProviderError(provider, "PARSE_ERROR", "JSON 응답을 해석할 수 없습니다") from e
+                        raise ProviderError(provider, "PARSE_ERROR", "Cannot parse the JSON response") from e
                 error = ProviderError(provider, f"HTTP_{response.status_code}", response.text[:200].strip() or response.reason_phrase)
                 cause = error
                 if response.status_code < 500:
@@ -454,8 +459,8 @@ class SdmxProvider:
         )
         if dropped:
             note = (
-                f"{self.id}가 요청 키 '{request.key}'와 다른 관측치 {dropped}건을 함께 반환해 제외했습니다 "
-                "(공급자가 키 필터를 무시함)."
+                f"{self.id} returned {dropped} observations outside the requested key '{request.key}'; "
+                "they were dropped (the provider ignored the key filter)."
             )
             for s in series:
                 s.notes.append(note)
@@ -465,7 +470,7 @@ class SdmxProvider:
         url = structure_url(self.source, flow_ref)
         doc = await self.http.get_json(self.id, url, self.source.structure_accept, ttl=6 * 60 * 60)
         if not doc:
-            raise ProviderError(self.id, "NOT_FOUND", f"데이터플로 '{flow_ref}'를 찾을 수 없습니다")
+            raise ProviderError(self.id, "NOT_FOUND", f"Dataflow '{flow_ref}' not found")
         return summarize_structure(doc, flow_ref, url)
 
 

@@ -1,167 +1,245 @@
 # 🌏 Global Economic Statistical MCP
 
-한국은행 **ECOS**와 **OECD · IMF · BIS**(SDMX)의 거시경제 통계를 하나의 개념 체계로 묶는 MCP 서버입니다.
+**Global economic statistics infrastructure for AI-powered macro research.**
 
-LLM이 경제통계를 **발견**하고, **의미를 해석**하고, 여러 기관의 통계를 **같은 모델로 조회·검증·비교**할 수 있게 합니다. 모든 응답에는 출처(provenance)와 검증 결과(validation)가 붙습니다.
+Global Economic Statistical MCP is an AI-native interface for discovering, retrieving, comparing, and analyzing trusted macroeconomic statistics across central banks and international organizations.
+
+It is built for macroeconomic research and analysis, not for trading signals. An LLM agent asks for a *concept*, such as the policy rate, CPI inflation, real GDP or the current account, for an *economy*. The server resolves it to the right official series at the Bank of Korea (ECOS), OECD, IMF or BIS, converts the result to one canonical time-series model, validates it and cross-checks it against other institutions. Every number it returns carries its provenance.
 
 ```
-                 ┌────────────────────┐
-                 │        LLM         │
-                 └─────────┬──────────┘
+                          LLM
+                           │
                            ▼
-                 ┌────────────────────┐
-                 │  Statistical MCP   │   6 MCP tools
-                 └─────────┬──────────┘
-                  ┌────────▼────────┐
+                  ┌─────────────────┐
+                  │ Statistical MCP │
+                  │    6 Tools      │
+                  └────────┬────────┘
+                           │
+                           ▼
+                  ┌─────────────────┐
                   │ Concept Resolver│
                   └────────┬────────┘
+                           │
              ┌─────────────┴─────────────┐
-       Concept Catalog             Provider Catalog
+             ▼                           ▼
+      Concept Catalog             Provider Catalog
+             │                           │
              └─────────────┬─────────────┘
+                           ▼
                   Provider Resolver
-          ┌────────────────┼────────────────┐
-        ECOS             SDMX            (Future)
-     (REST, 한국)    ┌─────┼─────┐
-                    OECD   IMF   BIS
-                          ▼
-                   Canonical Model
-                          ▼
-                     Validation
-                          ▼
-                      Analysis
-                          ▼
-                     Provenance
+                           │
+             ┌─────────────┼─────────────┐
+             ▼             ▼             ▼
+           ECOS          SDMX          Future
+             │        ┌────┼────┐
+             │        ▼    ▼    ▼
+             │       OECD IMF  BIS
+             │        │    │    │
+             └────────┴────┴────┘
+                           │
+                           ▼
+                  ┌─────────────────┐
+                  │ Canonical Model │
+                  └────────┬────────┘
+                           │
+                    ┌──────┴──────┐
+                    ▼             ▼
+               Validation     Provenance
+                    │             │
+                    └──────┬──────┘
+                           ▼
+                       Analysis
 ```
 
-이 프로젝트에서 가장 중요한 것은 MCP 서버 자체가 아니라 아래 네 가지입니다. MCP는 이것들을 LLM에 노출하는 인터페이스 역할을 합니다.
+Every adapter converts its response into the Canonical Model and attaches provenance at that moment. Validation checks the same canonical series, and analysis (`compare_series`, `calculate_statistics`) works on series that carry both.
 
-- **Concept Catalog**: 국가와 무관한 표준 개념과, 기관별 시계열 매핑
-- **Canonical Model**: 모든 기관의 데이터를 담는 공통 시계열 모델
-- **Validation**: 검증 계층과 검증 원장(ledger)
-- **Provenance**: 출처와 가공 이력
+The MCP tools are only the interface. What the project really delivers is four things behind them:
 
----
-
-## 🏛️ 연동 기관
-
-한국은행은 SDMX 엔드포인트가 없어 ECOS REST API로 연동하고, 나머지 기관은 SDMX로 연동합니다. 한국은행 외에는 모두 키가 필요 없습니다.
-
-| 기관 | 엔드포인트 | 방식 | 확인된 특이사항 |
-|---|---|---|---|
-| **ECOS** (한국은행) | `ecos.bok.or.kr/api` | ECOS REST | `ECOS_API_KEY`가 필요합니다(없으면 sample 키, 1회 10건). 구조는 서버가 SDMX 개념으로 매핑합니다. |
-| **OECD** | `sdmx.oecd.org/public/rest` | SDMX 2.1 · JSON 2.0 | **IP당 호출 한도(HTTP 429)가 엄격합니다.** 그래서 동시 요청을 1개로 제한하고, 한도를 넘으면 해당 기관을 잠시 차단한 뒤 다른 출처로 자동 전환합니다. |
-| **IMF** | `api.imf.org/external/sdmx/3.0` | SDMX 3.0 · JSON 2.0 | 예전 API(dataservices.imf.org)는 폐기되었습니다. **키에 `*`가 있으면 국가 필터까지 무시**하므로 받은 결과를 다시 걸러냅니다. 기준연도는 국가마다 다릅니다(한국 2020, 미국 2010). |
-| **BIS** | `stats.bis.org/api/v1`(데이터) · `/v2`(구조) | SDMX 2.1 · 3.0 | 정책금리와 환율에는 단위가 표기되지 않아 카탈로그에 선언한 단위를 씁니다(검증 결과에 `info`로 표시). |
+- **Concept Catalog**: country-agnostic economic concepts, each mapped to the series every institution publishes for it.
+- **Canonical Model**: one time-series model (period, frequency, unit, scale, base period, adjustment) for data from every provider.
+- **Validation**: checks on every series, cross-validation between institutions, and a ledger of the results.
+- **Provenance**: the agency, dataset, series key, retrieval time, query URL, transformations and a citation for every series.
 
 ---
 
-## 🧰 MCP Tools (6개)
+## 🌐 Coverage
 
-| 도구 | 역할 |
-|---|---|
-| `search_statistics` | 표준 개념, ECOS 통계표와 세부 품목, OECD·IMF·BIS 데이터플로, 한국은행 100대 지표를 검색합니다. |
-| `get_metadata` | ECOS 통계표 구조(SDMX 매핑, 연결된 표준 개념과 해외 출처 포함)나 OECD·IMF·BIS가 발행한 실제 DSD와 코드목록을 조회합니다. |
-| `get_data` | 개념+국가(`indicator="CPI_YOY", country="US"`), ECOS 통계표, SDMX 데이터플로를 조회합니다. 검증과 출처가 붙고, `cross_validate=True`면 기관 간 교차검증도 합니다. |
-| `compare_series` | 여러 국가·기관·지표를 같은 주기로 맞춰 정렬하고 상관계수를 계산합니다. 같은 개념을 다른 기관에서 가져오면 교차검증도 자동으로 합니다. |
-| `calculate_statistics` | 기술통계, 증감률, CAGR(1년 이상일 때), 추세, 변동성, 최대낙폭을 계산합니다. 금리·물가상승률 같은 비율 지표는 %p 기준으로 계산합니다. |
-| `explain_indicator` | 개념 정의(한/영), 국가별 출처와 키, 한국은행 용어사전과 통계 설명자료를 보여줍니다. |
+### Default economies (verified)
 
-데이터는 세 가지 방법으로 조회할 수 있습니다.
+Every Concept Catalog mapping is re-verified against the live APIs for these six economies by `uv run pytest -m live`, and daily in CI.
 
-1. **표준 개념**: `get_data(indicator="POLICY_RATE", country="US")`
-   - 한국은 ECOS가 1순위이고, 다른 나라는 카탈로그의 우선순위를 따릅니다.
-2. **ECOS 직접 조회**: `get_data(stat_code="901Y009", item_code1="A01101")`
-3. **SDMX 직접 조회**: `get_data(source="OECD", dataflow="OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0)", key="JPN.M.IRLT.PA._Z._Z._Z._Z.N", cycle="M")`
-
-값을 맞추는 옵션도 있습니다: `transform`(yoy/pop 증감률), `rebase_period`(지수 재기준), `unit_mult`(배수 환산, 예: 십억원 → 조원은 `12`), `changes_only`(값이 바뀐 시점만).
-
-첫 출처에 데이터가 없거나 오류(호출 한도 초과 포함)가 나면 다음 출처로 자동 전환하고, 그 시도 기록을 응답에 남깁니다.
-
----
-
-## 📚 Concept Catalog (25개 개념)
-
-- **개념**은 *무엇을* *어떤 단위로* 재는지를 정의합니다.
-- **매핑**은 *어디서* 가져오는지를 정의합니다: 데이터플로, `{ISO2}`·`{ISO3}`·`{CUR}` 키 템플릿, 공급자가 발표하는 단위와 기준.
-- **모든 매핑은 실제 API로 검증했습니다.** `uv run pytest -m live`를 실행하면 한국과 미국에 대해 매번 다시 확인합니다.
-
-| 개념 | 한국 | 다른 국가 |
+| Code | Economy | Area codes the server translates to |
 |---|---|---|
-| `POLICY_RATE` 정책금리 | ECOS(일·월) | BIS(일·월) |
-| `CPI` 소비자물가지수 | ECOS | IMF, OECD |
-| `CPI_YOY` 물가상승률 | ECOS(서버 계산) | IMF, OECD |
-| `GDP_REAL_GROWTH_QOQ` / `_YOY` 성장률 | ECOS | OECD |
-| `UNEMPLOYMENT_RATE` / `_SA` 실업률 | ECOS | OECD |
-| `USD_EXCHANGE_RATE` 대미달러 환율(월평균) | ECOS | IMF, BIS, OECD |
-| `LONG_TERM_RATE` 10년 국채 · `SHORT_TERM_RATE` 3개월 금리 | ECOS | OECD |
-| `SHARE_PRICE_INDEX` 주가지수 | ECOS(KOSPI) | OECD |
-| `HOUSE_PRICE_INDEX` 주택가격 | ECOS(KB) | BIS |
+| `KR` | Korea | ECOS (national source) · `KOR` / `KR` |
+| `US` | United States | `USA` / `US` |
+| `JP` | Japan | `JPN` / `JP` |
+| `CN` | China | `CHN` / `CN` |
+| `EA` | Euro area | BIS `XM` · IMF `G163` · OECD `EA20` (national accounts and labour: `EA`) |
+| `GB` | United Kingdom | `GBR` / `GB` |
 
-한국 전용 개념(ECOS)도 있습니다: `PPI`, `GDP_REAL`, `GDP_NOMINAL`, `M2`, `MONETARY_BASE`, `CURRENT_ACCOUNT`, `GOODS_BALANCE`, `FX_RESERVES`, `CONSUMER_SENTIMENT`, `ECONOMIC_SENTIMENT`, `KTB_3Y`, `JEONSE_PRICE_INDEX`, `USD_EXCHANGE_RATE_DAILY`. 전체 목록은 리소스 `gesm://concepts`에서 볼 수 있습니다.
+About 40 more economies (G20 and OECD members, major emerging markets) resolve through the same key templates. They are not re-verified: each response's validation report shows whether the data came back as expected. The full list is in the `gesm://countries` resource.
 
-검색에 쓰는 카탈로그(`catalog/data/`)는 모두 API에서 생성합니다(`scripts/build_catalogs.py`). 사람이 직접 입력한 코드는 없습니다.
+When an institution does not publish a concept for an economy, the catalog records that. For example, OECD has no CPI for Japan and no unemployment rate for China, and a US-dollar exchange rate means nothing for the United States. In those cases the resolver skips that source or names the sources that are available, instead of returning an empty series.
 
-- OECD·IMF·BIS 데이터플로 1,680개
-- 자주 쓰는 ECOS 통계표의 세부 품목 1,349개 (예: 쌀 `A01101`, 휘발유 `G02101`)
+### Institutions
+
+Korea's central bank has no SDMX endpoint, so ECOS is connected through its REST API. The other institutions are connected through SDMX. Only ECOS needs a key.
+
+| Institution | Endpoint | Protocol | Notes from the live APIs |
+|---|---|---|---|
+| **ECOS** (Bank of Korea) | `ecos.bok.or.kr/api` | ECOS REST | Needs `ECOS_API_KEY` (without one, the sample key returns 10 rows per call). The server maps ECOS table structures to SDMX concepts. |
+| **OECD** | `sdmx.oecd.org/public/rest` | SDMX 2.1 · JSON 2.0 | **Strict per-IP rate limit (HTTP 429).** The server sends one request at a time. On a 429 it puts OECD on cooldown and falls back to the next source. |
+| **IMF** | `api.imf.org/external/sdmx/3.0` | SDMX 3.0 · JSON 2.0 | The old API (dataservices.imf.org) is retired. **A key containing `*` makes the API ignore even the country filter**, so results are filtered again on arrival. CPI base years differ by country (KR 2020, US 2010). |
+| **BIS** | `stats.bis.org/api/v1` (data) · `/v2` (structure) | SDMX 2.1 · 3.0 | Policy and exchange rates carry no unit attribute. For those series the unit declared in the catalog is used, and the validation report marks it as `info`. |
 
 ---
 
-## 🔎 Validation Layer
+## 🧰 MCP tools
 
-### 단일 시계열 검사
-
-모든 응답에 포함되며, 각 검사 결과는 `pass` / `info` / `warn` / `fail` 중 하나입니다.
-
-| 검사 | 내용 |
+| Tool | What it does |
 |---|---|
-| `country` | 요청한 국가의 데이터인지 확인합니다. 공급자가 필터를 무시한 경우도 잡아냅니다. |
-| `frequency` | 주기가 일치하고, 모든 시점을 해석할 수 있는지 확인합니다. |
-| `unit` | 단위가 개념과 호환되는지, 지수의 기준시점이 기대와 같은지 확인합니다. |
-| `scale` | 단위 배수(10^n)가 기대와 같은지 확인합니다. |
-| `period` | 시점이 시간순이고 요청 기간 안에 있는지 확인합니다. |
-| `missing` | 결측값, 중간 누락 시점, 아직 발표되지 않은 시점을 찾습니다. |
-| `duplicate` | 같은 시점이 두 번 나오지 않는지 확인합니다. |
-| `revision` | 지난 조회 이후 공급자가 값을 개정했는지 확인합니다(원자료 기준으로 비교). |
+| `search_statistics` | Searches concepts, OECD/IMF/BIS dataflows, ECOS tables and items, and the Bank of Korea's 100 key statistics. |
+| `get_metadata` | Returns the real DSD and codelists of an OECD, IMF or BIS dataflow, or an ECOS table's structure mapped to SDMX, with its linked concepts and international sources. |
+| `get_data` | Retrieves a concept for an economy (`indicator="CPI_YOY", country="EA"`), an ECOS table or an SDMX dataflow, with validation and provenance. With `cross_validate=True` it also compares institutions. |
+| `compare_series` | Aligns several economies, institutions or concepts to a common frequency and computes correlations. When the same concept comes from different institutions, it cross-validates them automatically. |
+| `calculate_statistics` | Computes descriptive statistics, growth, CAGR (for spans of a year or more), trend, volatility and maximum drawdown. Rates such as interest rates and inflation are compared in percentage points. |
+| `explain_indicator` | Explains a concept and lists its sources and keys for one economy, or for all six default economies when none is given. For Korean statistics it adds the Bank of Korea glossary and methodology notes. |
 
-### 기관 간 교차검증
+There are three ways to ask for data:
 
-`get_data(..., cross_validate=True)`나 `compare_series`로 실행합니다. 같은 개념·국가를 여러 기관에서 가져와 주기, 배수, 지수 기준을 맞춘 뒤, 시점별 값과 차이를 기록합니다. 아래는 2026-09-26 실제 결과입니다.
+1. **By concept**: `get_data(indicator="POLICY_RATE", country="US")`.
+   - Sources are tried in catalog priority order. Korea uses ECOS first. If a source fails, returns nothing or hits a rate limit, the next one is used, and the attempts are recorded in the response.
+   - `country` is required. Use an ISO code (`US`, `JPN`) or `EA` for the euro area.
+2. **ECOS directly** (Korea only, so no `country` is needed): `get_data(stat_code="901Y009", item_code1="A01101")`
+3. **SDMX directly**: `get_data(source="OECD", dataflow="OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0)", key="JPN.M.IRLT.PA._Z._Z._Z._Z.N", cycle="M")`
+
+Harmonisation options: `transform` (`yoy`/`pop` growth), `rebase_period` (rebase an index), `unit_mult` (rescale, e.g. `12` for trillions), `changes_only` (only the periods where the value changed).
+
+---
+
+## 📚 Concept Catalog (26 concepts)
+
+- A **concept** defines *what* is measured and in *which canonical unit*.
+- A **mapping** defines *where* it comes from: the dataflow, a key template (`{ISO2}`, `{ISO3}`, `{CUR}`), and the unit, scale and base period the source publishes. Mappings also record economies the source does not publish and dataflow-specific area codes.
+- **No code was typed in by hand.** Every mapping was checked against the live API, and the search catalogs in `catalog/data/` are generated from the APIs (`scripts/build_catalogs.py`): 1,680 OECD/IMF/BIS dataflows and 1,349 ECOS items (e.g. rice `A01101`, gasoline `G02101`).
+
+| Concept | Korea | JP · CN · EA · GB · US |
+|---|---|---|
+| `POLICY_RATE` policy rate | ECOS (daily, monthly) | BIS (daily, monthly) |
+| `LONG_TERM_RATE` 10-year government bond yield | ECOS | OECD |
+| `SHORT_TERM_RATE` 3-month rate | ECOS | OECD |
+| `CPI` consumer price index | ECOS | IMF, BIS, OECD |
+| `CPI_YOY` CPI inflation | ECOS (computed by the server) | IMF, BIS, OECD |
+| `GDP_REAL_GROWTH_QOQ` / `_YOY` real GDP growth | ECOS | OECD |
+| `GDP_REAL` / `GDP_NOMINAL` GDP level | ECOS | IMF (China: not seasonally adjusted) |
+| `UNEMPLOYMENT_RATE` / `_SA` unemployment rate | ECOS | OECD (not China) |
+| `CURRENT_ACCOUNT` / `GOODS_BALANCE` | ECOS (monthly) | IMF (quarterly) |
+| `FX_RESERVES` official reserve assets | ECOS | IMF |
+| `USD_EXCHANGE_RATE` per US dollar, monthly average | ECOS | IMF, BIS, OECD (not the US) |
+| `USD_EXCHANGE_RATE_DAILY` per US dollar, daily | ECOS | BIS (not the US) |
+| `SHARE_PRICE_INDEX` share prices | ECOS (KOSPI) | OECD |
+| `CONSUMER_SENTIMENT` consumer confidence | ECOS (CCSI) | OECD (long-run average = 100) |
+| `BUSINESS_CONFIDENCE` business confidence | OECD | OECD (long-run average = 100) |
+| `HOUSE_PRICE_INDEX` residential property prices | ECOS (KB) | BIS |
+| `PPI` producer price index | ECOS | IMF (US only among the defaults) |
+
+Korea-only concepts keep national definitions that do not travel across countries: `M2`, `MONETARY_BASE`, `KTB_3Y`, `ECONOMIC_SENTIMENT` and `JEONSE_PRICE_INDEX`. Browse the full catalog in the `gesm://concepts` resource.
+
+---
+
+## 🔎 Validation layer
+
+### Checks on every series
+
+Every response carries these checks. Each result is `pass`, `info`, `warn` or `fail`.
+
+| Check | What it verifies |
+|---|---|
+| `country` | The data is for the requested economy, which also catches providers that ignore a key filter. |
+| `frequency` | The frequency matches and every period can be parsed. |
+| `unit` | The unit is compatible with the concept, and an index has the expected base period. |
+| `scale` | The unit multiplier (10^n) is as expected. |
+| `period` | Periods are in order and inside the requested window. |
+| `missing` | Missing values, gaps and periods not yet published. |
+| `duplicate` | No period appears twice. |
+| `revision` | Whether the provider revised values since the last retrieval (compared on raw values). |
+
+### Cross-validation between institutions
+
+Run it with `get_data(..., cross_validate=True)` or `compare_series`. The server fetches the same concept for the same economy from every institution. It aligns the frequency, scale and index base, then records each period's values and differences per institution.
+
+When aligning frequencies, each concept aggregates the way its economics require: flows (current account, goods balance, GDP) are summed, stocks (FX reserves) take the end-of-period value, and rates, prices and indices are averaged. Averaging a monthly current account would understate the quarterly figure threefold. That bug was found by cross-validation and fixed.
+
+Every comparison ends in one of three statuses. The system does not assume that official sources agree, and it records what nobody has explained yet:
+
+| Status | Meaning |
+|---|---|
+| `MATCH` | Identical, or within tolerance (0.05pp for rates, 0.1% for indices or 1% after rebasing, 0.5% otherwise). |
+| `DIFFER` | A real difference with a verifiable cause: different seasonal adjustment, the precision a provider publishes, or a documented known difference (`KNOWN_DIFFERENCES` in the catalog, added only with evidence). |
+| `UNRESOLVED` | A real difference that nobody has explained yet. It is reported, never hidden and never silently resolved by picking one source. |
+| `NOT_COMPARED` | Fewer than two sources, or no common unit, frequency or period. |
+
+Each institution's result carries the difference and the investigation status:
 
 ```json
-{"concept_id":"CPI","country":"KR","period":"2026-08","unit":"IX","frequency":"M",
- "method":"rebased:2025-11=100",
- "values":{"ECOS":102.431741,"IMF":102.431741,"OECD":102.431742},
- "by_provider":{"IMF":{"difference":0.0,"status":"match"},"OECD":{"difference":1e-06,"status":"within_tolerance"}}}
+"OECD": {"vs": "IMF", "validation_status": "UNRESOLVED",
+         "difference": {"absolute_max": 0.06751, "absolute_mean": 0.0225, "relative_max_pct": 2.2263},
+         "investigation": {"status": "unresolved", "unresolved_periods": ["2026-01"]}}
 ```
 
-| 개념(한국) | 결과 |
-|---|---|
-| 정책금리: ECOS vs BIS | 7개월 모두 **일치** |
-| 실업률(계절조정): ECOS vs OECD | 6개월 모두 **일치** |
-| 10년 국채: ECOS vs OECD | 6개월 모두 **일치** |
-| 소비자물가지수: ECOS vs IMF | **일치**. OECD는 2015 기준이라 재기준화한 뒤 비교했고, 허용 오차 이내 |
-| 물가상승률: ECOS(서버 계산) vs IMF·OECD | 차이 약 0.00004%p |
-| 원/달러 월평균: ECOS vs IMF | **일치**. BIS·OECD는 집계 방식이 달라 최대 0.44% 차이 |
+Report of 2026-09-26 for the six default economies (last 12 months or quarters): **MATCH 25 · DIFFER 2 · UNRESOLVED 3 · NOT_COMPARED 1** out of 31 concept–economy pairs with two or more institutions.
 
-- **검증 원장**: 결과는 `$GESM_DATA_DIR/validation_ledger.jsonl`에 쌓이고, 리소스 `gesm://validation/summary`에서 기관 쌍별 일치율을 볼 수 있습니다.
-- **개정 이력**: 스냅샷이 `revisions/`에 저장됩니다.
+| Concept · economy | Institutions | Status |
+|---|---|---|
+| Policy rate, 10-year and 3-month rates, unemployment (NSA and SA) · KR | ECOS vs BIS / OECD | MATCH, identical |
+| Current account, goods balance, nominal GDP · KR | ECOS (monthly, summed) vs IMF (quarterly) | MATCH, identical |
+| Real GDP, FX reserves, house prices · KR | ECOS vs IMF / BIS | MATCH |
+| CPI · KR, US, JP, CN, GB | ECOS / IMF vs BIS vs OECD | MATCH after rebasing to a common period |
+| CPI inflation · KR, US, CN | ECOS / IMF vs BIS vs OECD | MATCH |
+| Exchange rate per USD, monthly · KR, JP, CN, EA, GB | ECOS / IMF vs BIS vs OECD | MATCH |
+| Real GDP growth, year on year · KR | ECOS vs OECD | **DIFFER**: seasonal adjustment differs (ECOS NSA, OECD SA) |
+| Consumer sentiment · KR | ECOS vs OECD | **DIFFER**: documented known difference (OECD amplitude-adjusted, CCSI not) |
+| CPI inflation · GB | IMF vs BIS (vs OECD) | **UNRESOLVED**: BIS up to 0.32pp lower; an earlier run also had OECD up to 0.07pp apart |
+| CPI inflation · JP | IMF vs BIS | **UNRESOLVED**: up to 0.16pp apart in 4 of 10 months |
+| KRW per USD, daily · KR | ECOS vs BIS | **UNRESOLVED**: up to 28 won (2%) apart in recent days; not a one-day lag |
+| KOSPI · KR | ECOS vs OECD | NOT_COMPARED: with the ECOS sample key only the latest 10 days come back, so there is no month in common |
+
+Cross-validation also found two bugs before release. Averaging monthly flows understated quarterly current accounts, and a provider's `NaN` entered the canonical series as a number instead of a missing value. Both are fixed and covered by tests.
+
+UNRESOLVED results are the kind of case the layer exists for: several official sources, different numbers, no documented reason yet. Each is recorded rather than silently picked.
+
+### Validation ledger
+
+Results are kept locally, bounded, and never committed:
+
+```
+$GESM_DATA_DIR/validation/
+├── current/latest.json          latest status per institution pair and per series
+└── history/YYYY-MM-DD.jsonl     every record of that day; deleted after GESM_LEDGER_RETENTION_DAYS (default 90)
+```
+
+The `gesm://validation/summary` resource shows, per concept, economy and institution pair, the agreement rate and the MATCH / DIFFER / UNRESOLVED counts over the retention window, plus the latest status. This is the basis for evaluating how reliable a statistical MCP is. Revision snapshots are kept under `revisions/`.
+
+### Daily cross-validation report
+
+`scripts/validation_report.py` cross-validates every concept that two or more institutions publish for the six default economies (31 concept–economy pairs) over the last 12 months or quarters. It writes `summary.json` and `summary.md`. CI runs it daily, shows the table in the job summary and keeps it as a 90-day artifact; raw records are not uploaded.
 
 ## 🧾 Provenance
 
-모든 시계열에는 다음 정보가 붙습니다.
+Every series carries:
 
-- 기관, 데이터셋, 시계열 키, 조회 시각
-- 조회 URL (ECOS 키는 `{API_KEY}`로 가려짐)
-- 가공 이력 (예: yoy 계산, 재기준화, 단위 선언)
-- 인용문(`citation`)
+- agency, dataset, series key and retrieval time
+- the query URL (the ECOS key is masked as `{API_KEY}`)
+- the transformations applied (e.g. a computed yoy, a rebase, a declared unit)
+- a ready-to-use `citation`
 
-`output_format="sdmx"`는 SDMX-JSON 2.1 data message를 반환하며, 공식 스키마로 검증하는 테스트가 있습니다.
+`output_format="sdmx"` returns an SDMX-JSON 2.1 data message; a test validates it against the official schema.
 
 ---
 
-## 🚀 설치와 설정
+## 🚀 Installation
 
-먼저 진단 명령으로 연결 상태를 확인합니다([uv](https://docs.astral.sh/uv/) 필요).
+Check connectivity first ([uv](https://docs.astral.sh/uv/) required):
 
 ```bash
 ECOS_API_KEY=your_key uvx --from git+https://github.com/kgy0617/global-economic-statistical-mcp global-economic-statistical-mcp --check
@@ -187,27 +265,33 @@ ECOS_API_KEY=your_key uvx --from git+https://github.com/kgy0617/global-economic-
 claude mcp add global-econ-stats -e ECOS_API_KEY=your_key -- uvx --from git+https://github.com/kgy0617/global-economic-statistical-mcp global-economic-statistical-mcp
 ```
 
-| 환경변수 | 설명 |
+| Environment variable | Description |
 |---|---|
-| `ECOS_API_KEY` | ECOS 인증키([무료 발급](https://ecos.bok.or.kr/api/#/)). 없으면 sample 키(1회 10건)를 씁니다. |
-| `GESM_DATA_DIR` | 검증 원장과 개정 스냅샷을 저장할 위치 (기본값 `~/.cache/global-economic-statistical-mcp`) |
-| `GESM_PERSIST` | `0`이면 디스크에 기록하지 않습니다. |
+| `ECOS_API_KEY` | ECOS key ([free registration](https://ecos.bok.or.kr/api/#/)). Without it the sample key is used (10 rows per call). OECD, IMF and BIS need no key. |
+| `GESM_DATA_DIR` | Where the validation ledger and revision snapshots are stored (default `~/.cache/global-economic-statistical-mcp`). |
+| `GESM_PERSIST` | Set to `0` to write nothing to disk. |
+| `GESM_LEDGER_RETENTION_DAYS` | Days of validation history to keep (default 90). |
 
 ---
 
-## 📖 사용 예시
+## 📖 Research examples
 
-- "미국 기준금리 알려줘" → `get_data(indicator="POLICY_RATE", country="US")` (BIS `M.US`)
-- "한국 물가 통계가 기관마다 같아?" → `get_data(indicator="CPI", cross_validate=True)`
-- "한·미·일 장기금리 비교" → `compare_series(series=[{"indicator":"LONG_TERM_RATE","country":"KR"}, {"indicator":"LONG_TERM_RATE","country":"US"}, {"indicator":"LONG_TERM_RATE","country":"JP"}])`
-- "쌀값 상승률" → `search_statistics(query="쌀", scope="items")`로 코드를 찾은 뒤 `get_data(stat_code="901Y009", item_code1="A01101", transform="yoy")`
-- "IMF CPI 데이터셋 구조" → `get_metadata(source="IMF", dataflow="IMF.STA:CPI", code_keyword="KOR")`
+- "How has monetary policy diverged across the US, the euro area and Japan?" → `compare_series(series=[{"indicator":"POLICY_RATE","country":"US"}, {"indicator":"POLICY_RATE","country":"EA"}, {"indicator":"POLICY_RATE","country":"JP"}])`
+- "Is inflation in the UK still above the euro area?" → `compare_series(series=[{"indicator":"CPI_YOY","country":"GB"}, {"indicator":"CPI_YOY","country":"EA"}])`
+- "Do the IMF, BIS and OECD agree on China's CPI?" → `get_data(indicator="CPI", country="CN", cross_validate=True)`
+- "Current-account balances of the six largest economies" → `get_data(indicator="CURRENT_ACCOUNT", country=...)` for each, or `compare_series`
+- "Trend and volatility of Japanese 10-year yields" → `calculate_statistics(indicator="LONG_TERM_RATE", country="JP")`
+- "What exactly is the OECD consumer confidence indicator?" → `explain_indicator(term="CONSUMER_SENTIMENT", country="GB")`
+- "Structure of the IMF balance of payments dataset" → `get_metadata(source="IMF", dataflow="IMF.STA:BOP", code_keyword="current account")`
+- Korean micro-data such as the price of rice → `search_statistics(query="쌀", scope="items")`, then `get_data(stat_code="901Y009", item_code1="A01101", transform="yoy")`
 
-제공 프롬프트: `macro-economic-briefing`, `compare-countries`, `analyze-economic-trend`
+Prompts: `macro-economic-briefing`, `compare-countries`, `analyze-economic-trend`.
+
+Tool descriptions, errors and field names are in English. Korean appears only where it is data: Korean statistic names (`name_ko`), ECOS labels, and Korean search terms, which work as queries.
 
 ---
 
-## 🧪 개발
+## 🧪 Development
 
 ```bash
 git clone https://github.com/kgy0617/global-economic-statistical-mcp.git
@@ -215,30 +299,50 @@ cd global-economic-statistical-mcp
 uv sync
 ```
 
-| 명령 | 설명 |
+| Command | Description |
 |---|---|
-| `uv run pytest` | 오프라인 테스트. ECOS·OECD·IMF·BIS를 모두 가짜 서버로 대체합니다. |
-| `uv run pytest -m live` | 실제 API로 카탈로그 매핑 전체를 다시 검증하고, SDMX-JSON 출력을 공식 스키마로 검증합니다. OECD 호출 한도를 넘으면 해당 테스트는 사유와 함께 skip됩니다. |
-| `uv run python scripts/build_catalogs.py` | 데이터플로 색인과 ECOS 품목 색인을 다시 만듭니다. |
-| `uv run python scripts/update_tables.py` | ECOS 통계표 목록을 다시 만듭니다. |
+| `uv run pytest` | Offline tests. ECOS, OECD, IMF and BIS are all replaced by fake servers. |
+| `uv run pytest -m live` | Re-verifies every catalog mapping for KR, US, JP, CN, EA and GB against the live APIs, and validates SDMX-JSON output against the official schema. OECD mappings are checked for all six economies in one request each; a rate-limited request waits out the cooldown once, then is skipped with the reason. |
+| `uv run python scripts/validation_report.py` | Cross-validates all 31 multi-institution concept–economy pairs and writes the summary report. |
+| `uv run python scripts/build_catalogs.py` | Regenerates the dataflow and ECOS item indexes from the APIs. |
+| `uv run python scripts/update_tables.py` | Regenerates the ECOS table list. |
 
-소스 구조 (`src/global_economic_statistical_mcp/`)
+Source layout (`src/global_economic_statistical_mcp/`)
 
-| 파일 | 역할 |
+| File | Role |
 |---|---|
 | `catalog/concepts.py` | Concept Catalog |
-| `catalog/search.py` | 검색 카탈로그 |
-| `catalog/countries.py` | 국가 코드 |
-| `providers/ecos.py` | ECOS 어댑터 |
-| `providers/sdmx_rest.py` | OECD·IMF·BIS 어댑터 |
+| `catalog/countries.py` | Economies, provider area codes, default set |
+| `catalog/search.py` | Search catalogs |
+| `providers/ecos.py` | ECOS adapter |
+| `providers/sdmx_rest.py` | OECD, IMF and BIS adapter |
 | `model.py` | Canonical Model |
-| `validation.py` | Validation 계층 |
-| `storage.py` | 검증 원장과 개정 스냅샷 |
-| `service.py` | 개념·출처 리졸버와 전체 흐름 조율 |
-| `formatting.py` | 출력 형식과 Provenance |
-| `ecos_sdmx.py` | ECOS → SDMX 매핑 |
-| `server.py` | MCP 도구 |
+| `validation.py` | Validation layer |
+| `storage.py` | Validation ledger and revision snapshots |
+| `service.py` | Concept and provider resolution, orchestration |
+| `formatting.py` | Output formats and provenance |
+| `ecos_sdmx.py` | ECOS → SDMX mapping |
+| `server.py` | MCP tools, resources and prompts |
 
-## 📝 라이선스
+Adding an institution means implementing the `Provider` protocol in `providers/base.py` (or adding an `SdmxSource` for another SDMX endpoint) and mapping concepts to it in the catalog.
 
-MIT License
+## 🗺️ Roadmap
+
+The priority is to make what exists trustworthy, not to add breadth. Planned next:
+
+- **Second-tier indicators**: PPI beyond Korea and the US, core CPI, industrial production, retail sales, PMI.
+- **Investigate UNRESOLVED differences** and record confirmed causes as documented known differences.
+- **More institutions** when a concept needs them: ECB and Eurostat (SDMX-CSV), World Bank (SDMX-ML).
+- **Currency normalisation** designed as a feature (spot vs period average vs period end, PPP), rather than a helper function.
+
+## ⚠️ Limitations
+
+- Only the six default economies are re-verified. Others resolve through the same templates, and their validation reports show the outcome.
+- Institutions differ in methods, base years and revisions. Cross-validation shows where they differ; it does not decide which one is right.
+- Values are verified for the last year or so. Older history is served as published, without cross-validation.
+- The ECOS → SDMX structure mapping is this server's own mapping, not an official one, and the output says so.
+- OECD's rate limit is per IP. Heavy use can put OECD on cooldown, and the resolver then falls back to other institutions where the catalog has them.
+
+## 📝 License
+
+MIT License. Release notes are in [CHANGELOG.md](CHANGELOG.md).

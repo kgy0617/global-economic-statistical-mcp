@@ -120,12 +120,12 @@ async def test_sdmx_metadata(fake_sdmx):
 async def test_concept_for_korea_uses_ecos_with_provenance_and_validation(fake_all):
     ecos, sdmx = fake_all
     add_korea_cpi(ecos, sdmx)
-    out = json.loads(await ok("get_data", {"indicator": "소비자물가지수", "start_date": "2026-01", "end_date": "2026-03"}))
+    out = json.loads(await ok("get_data", {"indicator": "소비자물가지수", "country": "KR", "start_date": "2026-01", "end_date": "2026-03"}))
     assert out["concept"]["id"] == "CPI" and out["source"]["provider"] == "ECOS"
     series = out["series"][0]
     assert series["data"] == [["2026-01", 118.03], ["2026-02", 118.4], ["2026-03", 118.8]]
     assert (series["unit"], series["base_period"], series["country"]) == ("IX", "2020", "KR")
-    assert out["provenance"][0]["citation"].startswith("출처: 한국은행")
+    assert out["provenance"][0]["citation"].startswith("Source: Bank of Korea")
     assert out["validation"][0]["status"] == "pass"
 
 
@@ -142,7 +142,7 @@ async def test_concept_for_another_country_uses_sdmx(fake_sdmx):
 async def test_cross_validate_three_providers(fake_all):
     ecos, sdmx = fake_all
     add_korea_cpi(ecos, sdmx)
-    out = json.loads(await ok("get_data", {"indicator": "CPI", "start_date": "2026-01", "end_date": "2026-03", "cross_validate": True}))
+    out = json.loads(await ok("get_data", {"indicator": "CPI", "country": "KR", "start_date": "2026-01", "end_date": "2026-03", "cross_validate": True}))
     cv = out["cross_validation"]
     assert cv["status"] in ("consistent", "consistent_within_tolerance")
     assert cv["method"] == "rebased:2026-01=100"  # OECD publishes on a 2015 base
@@ -156,7 +156,7 @@ async def test_policy_rate_changes_only_and_yoy_transform(fake_all):
     ecos, _ = fake_all
     values = {f"202601{d:02d}": 2.5 for d in range(1, 11)} | {f"202601{d:02d}": 2.75 for d in range(11, 21)}
     ecos.add_series("722Y001", "D", values, item_code1="0101000", item_name1="기준금리", unit="연%")
-    out = json.loads(await ok("get_data", {"indicator": "기준금리", "start_date": "20260101", "end_date": "20260120"}))
+    out = json.loads(await ok("get_data", {"indicator": "기준금리", "country": "KR", "start_date": "20260101", "end_date": "20260120"}))
     assert out["changes_only"] is True
     assert out["series"][0]["data"] == [["2026-01-01", 2.5], ["2026-01-11", 2.75], ["2026-01-20", 2.75]]
     # Validation ran on the full daily series, so no gaps are reported for the compressed view.
@@ -193,7 +193,7 @@ async def test_direct_sdmx_query_and_formats(fake_sdmx):
 async def test_rebase_index(fake_all):
     ecos, _ = fake_all
     ecos.add_series("901Y009", "M", monthly(2026, [110.0, 121.0]))
-    out = json.loads(await ok("get_data", {"indicator": "CPI", "start_date": "2026-01", "end_date": "2026-02", "rebase_period": "2026-01"}))
+    out = json.loads(await ok("get_data", {"indicator": "CPI", "country": "KR", "start_date": "2026-01", "end_date": "2026-02", "rebase_period": "2026-01"}))
     assert out["series"][0]["data"] == [["2026-01", 100.0], ["2026-02", 110.0]]
     assert "rebase" in out["provenance"][0]["transformations"][0]
 
@@ -202,11 +202,11 @@ async def test_rebase_index(fake_all):
     ("args", "message"),
     [
         ({"indicator": "CPI", "transform": "cagr"}, "transform"),
-        ({"indicator": "CPI", "cycle": "X"}, "주기"),
-        ({"indicator": "CPI", "stat_code": "901Y009"}, "함께 쓸 수 없습니다"),
-        ({"indicator": "M2", "country": "US"}, "출처가 없습니다"),
+        ({"indicator": "CPI", "country": "KR", "cycle": "X"}, "Invalid frequency"),
+        ({"indicator": "CPI", "stat_code": "901Y009"}, "cannot be combined"),
+        ({"indicator": "M2", "country": "US"}, "No source for M2"),
         ({"indicator": "CPI", "output_format": "xml"}, "output_format"),
-        ({"indicator": "CPI", "start_date": "2026-13"}, "해석할 수 없습니다"),
+        ({"indicator": "CPI", "country": "KR", "start_date": "2026-13"}, "Cannot parse"),
     ],
 )
 async def test_invalid_requests_are_tool_errors(fake_all, args, message):
@@ -217,7 +217,7 @@ async def test_invalid_requests_are_tool_errors(fake_all, args, message):
 async def test_provider_errors_never_leak_the_ecos_key(fake_all):
     ecos, _ = fake_all
     ecos.forced.extend([httpx.Response(401)])
-    is_error, text = await call("get_data", {"indicator": "CPI", "source": "ECOS"})
+    is_error, text = await call("get_data", {"indicator": "CPI", "country": "KR", "source": "ECOS"})
     assert is_error and "HTTP_401" in text and TEST_KEY not in text
 
 
@@ -242,7 +242,7 @@ async def test_compare_same_concept_across_providers_cross_validates(fake_all):
     ecos, sdmx = fake_all
     add_korea_cpi(ecos, sdmx)
     out = json.loads(await ok("compare_series", {
-        "series": [{"indicator": "CPI", "source": "ECOS"}, {"indicator": "CPI", "source": "IMF"}],
+        "series": [{"indicator": "CPI", "country": "KR", "source": "ECOS"}, {"indicator": "CPI", "country": "KR", "source": "IMF"}],
         "start_date": "2026-01", "end_date": "2026-03",
     }))
     assert out["correlation"]["CPI:KR:ECOS ~ CPI:KR:IMF"]["r"] == 1.0
@@ -252,7 +252,7 @@ async def test_compare_same_concept_across_providers_cross_validates(fake_all):
 async def test_calculate_statistics(fake_all):
     ecos, _ = fake_all
     ecos.add_series("901Y009", "M", monthly(2025, [100] * 12 + [100 + i for i in range(12)]))
-    out = json.loads(await ok("calculate_statistics", {"indicator": "CPI", "start_date": "2025-01", "end_date": "2026-12"}))
+    out = json.loads(await ok("calculate_statistics", {"indicator": "CPI", "country": "KR", "start_date": "2025-01", "end_date": "2026-12"}))
     stats = out["series"][0]["stats"]
     assert stats["first"] == {"time": "2025-01", "value": 100} and stats["max"] == {"time": "2026-12", "value": 111}
     assert stats["latest_yoy_pct"] == 11.0
@@ -264,7 +264,7 @@ async def test_explain_indicator(fake_all):
     ecos.keyed[("StatisticWord", "소비자물가상승률")] = [{"WORD": "소비자물가상승률", "CONTENT": "전년동월대비 변화율"}]
     out = json.loads(await ok("explain_indicator", {"term": "CPI_YOY", "country": "US"}))
     assert out["concept"]["concept_id"] == "CPI_YOY"
-    assert [s["provider"] for s in out["sources_for_country"]] == ["IMF", "OECD"]
+    assert [s["provider"] for s in out["sources_for_country"]] == ["IMF", "BIS", "OECD"]
     assert out["sources_for_country"][0]["key"] == "USA.CPI._T.YOY_PCH_PA_PT.M"
     assert out["definition"] == [{"word": "소비자물가상승률", "definition": "전년동월대비 변화율"}]
 
@@ -275,9 +275,9 @@ async def test_explain_indicator(fake_all):
 @pytest.mark.parametrize(
     ("args", "message"),
     [
-        ({"indicator": "CPI_YOY", "transform": "yoy"}, "이미 증감률 개념"),  # would compute yoy of yoy
-        ({"indicator": "KTB_3Y", "cycle": "D", "transform": "yoy"}, "일간(D)"),
-        ({"stat_code": "817Y002", "cycle": "D", "item_code1": "010200000", "transform": "yoy"}, "일간(D)"),
+        ({"indicator": "CPI_YOY", "country": "KR", "transform": "yoy"}, "already a rate of change"),  # would compute yoy of yoy
+        ({"indicator": "KTB_3Y", "country": "KR", "cycle": "D", "transform": "yoy"}, "daily (D)"),
+        ({"stat_code": "817Y002", "cycle": "D", "item_code1": "010200000", "transform": "yoy"}, "daily (D)"),
     ],
 )
 async def test_invalid_transforms_fail_before_any_request(fake_all, args, message):
@@ -290,20 +290,20 @@ async def test_invalid_transforms_fail_before_any_request(fake_all, args, messag
 async def test_yoy_on_concept_with_daily_default_uses_a_feasible_source(fake_all):
     ecos, _ = fake_all
     ecos.add_series("722Y001", "M", monthly(2025, [3.0] * 12 + [2.5, 2.5]), item_code1="0101000", item_name1="기준금리", unit="연%")
-    out = json.loads(await ok("get_data", {"indicator": "POLICY_RATE", "transform": "yoy", "start_date": "2026-01", "end_date": "2026-02"}))
+    out = json.loads(await ok("get_data", {"indicator": "POLICY_RATE", "country": "KR", "transform": "yoy", "start_date": "2026-01", "end_date": "2026-02"}))
     assert out["source"]["freq"] == "M" and "fallback_attempts" not in out
     assert out["series"][0]["data"][0] == ["2026-01", -16.6667, 2.5]
 
 
 async def test_explain_unknown_country_is_a_clear_error():
     is_error, text = await call("explain_indicator", {"term": "CPI", "country": "ZZ"})
-    assert is_error and "알 수 없는 국가" in text
+    assert is_error and "Unknown country" in text
 
 
 async def test_explain_does_not_guess_from_substrings(fake_all):
     is_error, text = await call("explain_indicator", {"term": "rice", "country": "US"})
     # 'rice' must not be matched to 'Consumer price index'; with no concept, table or glossary hit it is "not found".
-    assert is_error and "찾지 못했습니다" in text
+    assert is_error and "Nothing found" in text
 
 
 async def test_direct_sdmx_without_country_is_not_checked_against_korea(fake_sdmx):
@@ -315,7 +315,7 @@ async def test_direct_sdmx_without_country_is_not_checked_against_korea(fake_sdm
 
 async def test_all_sources_failing_gives_a_readable_summary(fake_all):
     is_error, text = await call("get_data", {"indicator": "CPI", "country": "US", "start_date": "2026-01", "end_date": "2026-02"})
-    assert is_error and "IMF IMF.STA:CPI [USA.CPI._T.IX.M] → 2026-01~2026-02 기간에 데이터 없음" in text
+    assert is_error and "IMF IMF.STA:CPI [USA.CPI._T.IX.M] → no data for 2026-01–2026-02" in text
     assert "{'" not in text
 
 
@@ -323,19 +323,19 @@ async def test_rate_statistics_use_percentage_points_and_report_truncation(fake_
     monkeypatch.setattr(client_module, "ECOS_API_KEY", "sample")
     ecos, _ = fake_all
     ecos.add_series("721Y001", "M", monthly(2025, [3.0 + i * 0.1 for i in range(20)]), item_code1="5050000", item_name1="국고채(10년)", unit="연%")
-    out = json.loads(await ok("calculate_statistics", {"indicator": "LONG_TERM_RATE", "start_date": "2025-01", "end_date": "2026-08"}))
+    out = json.loads(await ok("calculate_statistics", {"indicator": "LONG_TERM_RATE", "country": "KR", "start_date": "2025-01", "end_date": "2026-08"}))
     series = out["series"][0]
     assert series["stats"]["change_pp"] == pytest.approx(0.9)
     assert "change_pct" not in series["stats"] and "cagr_pct" not in series["stats"]
     assert series["truncated"] is True
-    assert any("최근 10건" in n for n in series["notes"])  # the sample key only returned the latest 10 months
-    assert series["note_units"].startswith("비율 지표")
+    assert any("latest 10 of" in n for n in series["notes"])  # the sample key only returned the latest 10 months
+    assert series["note_units"].startswith("rate series")
 
 
 async def test_unit_mult_rescales_values(fake_all):
     ecos, _ = fake_all
     ecos.add_series("200Y108", "Q", {"2026Q1": 600000.0}, item_code1="10601", item_name1="GDP", unit="십억원")
-    out = json.loads(await ok("get_data", {"indicator": "GDP_REAL", "start_date": "2026Q1", "end_date": "2026Q1", "unit_mult": 12}))
+    out = json.loads(await ok("get_data", {"indicator": "GDP_REAL", "country": "KR", "start_date": "2026Q1", "end_date": "2026Q1", "unit_mult": 12}))
     series = out["series"][0]
     assert series["data"] == [["2026-Q1", 600.0]] and series["unit_mult"] == 12
 
@@ -348,4 +348,13 @@ async def test_transform_survives_a_failing_base_request(fake_all):
                                            "start_date": "2026-01", "end_date": "2026-02"}))
     series = out["series"][0]
     assert series["data"] == [["2026-01", None, 103.0], ["2026-02", 0.9709, 104.0]]
-    assert "기준기간 데이터를 가져오지 못해" in series["notes"][0]
+    assert "Base-period data could not be retrieved" in series["notes"][0]
+
+
+async def test_explain_without_country_lists_every_verified_economy(fake_all):
+    out = json.loads(await ok("explain_indicator", {"term": "POLICY_RATE"}))
+    by_country = out["sources_by_country"]
+    assert list(by_country) == ["KR", "US", "JP", "CN", "EA", "GB"]
+    assert by_country["EA"][0]["key"] == "M.XM"
+    assert out["concept"]["name_en"] == "Central bank policy rate"
+

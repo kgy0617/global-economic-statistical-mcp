@@ -176,8 +176,8 @@ def scale_multiplier(points: list[Point], from_mult: int, to_mult: int) -> list[
     """Scale observation values between decimal multipliers.
 
     Example:
-        from_mult=9 (십억원) to to_mult=0 (원) multiplies by 10^9.
-        from_mult=0 (원) to to_mult=9 (십억원) multiplies by 10^-9.
+        from_mult=9 (billions) to to_mult=0 (units) multiplies by 10^9.
+        from_mult=0 (units) to to_mult=9 (billions) multiplies by 10^-9.
     """
     if from_mult == to_mult or not points:
         return points
@@ -211,28 +211,6 @@ def rebase_index(
         return points
 
     return [(t, _round((v / base_obs) * base_value, 4) if v is not None else None) for t, v in points]
-
-
-def convert_currency(
-    points: list[Point],
-    fx_points: list[Point],
-    direction: str = "usd_to_krw",
-) -> list[Point]:
-    """Convert currency values using matched historical exchange rates.
-
-    direction:
-        - "usd_to_krw": multiplies USD values by KRW/USD exchange rate.
-        - "krw_to_usd": divides KRW values by KRW/USD exchange rate.
-    """
-    fx_map = {t: v for t, v in fx_points if isinstance(v, int | float) and v > 0}
-    out: list[Point] = []
-    for t, v in points:
-        if v is None or t not in fx_map:
-            continue
-        fx = fx_map[t]
-        converted = v * fx if direction == "usd_to_krw" else v / fx
-        out.append((t, _round(converted, 4)))
-    return out
 
 
 def normalize(

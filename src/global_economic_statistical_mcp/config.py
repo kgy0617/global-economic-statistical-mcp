@@ -54,12 +54,12 @@ def today_kst() -> date:
 # Valid cycle values for StatisticSearch
 VALID_CYCLES = {"A", "S", "Q", "M", "SM", "D"}
 CYCLE_DESCRIPTIONS = {
-    "A": "연간 (Annual) — 포맷: YYYY (예: 2024)",
-    "S": "반기 (Semi-annual) — 포맷: YYYYS1 / YYYYS2 (예: 2024S1)",
-    "Q": "분기 (Quarterly) — 포맷: YYYYQ1 ~ YYYYQ4 (예: 2024Q1)",
-    "M": "월간 (Monthly) — 포맷: YYYYMM (예: 202401)",
-    "SM": "반월 (Semi-monthly) — 포맷: YYYYMMS1 / YYYYMMS2 (예: 202401S1)",
-    "D": "일간 (Daily) — 포맷: YYYYMMDD (예: 20240101)",
+    "A": "Annual — format YYYY (e.g. 2024)",
+    "S": "Semi-annual — format YYYYS1 / YYYYS2 (e.g. 2024S1)",
+    "Q": "Quarterly — format YYYYQ1 to YYYYQ4 (e.g. 2024Q1)",
+    "M": "Monthly — format YYYYMM (e.g. 202401)",
+    "SM": "Semi-monthly (ECOS) — format YYYYMMS1 / YYYYMMS2 (e.g. 202401S1)",
+    "D": "Daily — format YYYYMMDD (e.g. 20240101)",
 }
 
 # Number of periods per year, used for year-over-year transforms
@@ -67,12 +67,12 @@ PERIODS_PER_YEAR = {"A": 1, "S": 2, "Q": 4, "M": 12, "SM": 24}
 
 # Date validation patterns per cycle
 CYCLE_DATE_FORMATS: dict[str, tuple[str, str]] = {
-    "A": (r"^\d{4}$", "YYYY (예: '2024')"),
-    "S": (r"^\d{4}S[12]$", "YYYYS1 또는 YYYYS2 (예: '2024S1')"),
-    "Q": (r"^\d{4}Q[1-4]$", "YYYYQ1 ~ YYYYQ4 (예: '2024Q1')"),
-    "M": (r"^\d{4}(0[1-9]|1[0-2])$", "YYYYMM (예: '202401')"),
-    "SM": (r"^\d{4}(0[1-9]|1[0-2])S[12]$", "YYYYMMS1 또는 YYYYMMS2 (예: '202401S1')"),
-    "D": (r"^\d{4}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])$", "YYYYMMDD (예: '20240101')"),
+    "A": (r"^\d{4}$", "YYYY (e.g. '2024')"),
+    "S": (r"^\d{4}S[12]$", "YYYYS1 or YYYYS2 (e.g. '2024S1')"),
+    "Q": (r"^\d{4}Q[1-4]$", "YYYYQ1 to YYYYQ4 (e.g. '2024Q1')"),
+    "M": (r"^\d{4}(0[1-9]|1[0-2])$", "YYYYMM (e.g. '202401')"),
+    "SM": (r"^\d{4}(0[1-9]|1[0-2])S[12]$", "YYYYMMS1 or YYYYMMS2 (e.g. '202401S1')"),
+    "D": (r"^\d{4}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])$", "YYYYMMDD (e.g. '20240101')"),
 }
 
 
@@ -85,7 +85,7 @@ def validate_date_format(cycle: str, date_str: str) -> tuple[bool, str]:
     cycle = cycle.upper()
     rule = CYCLE_DATE_FORMATS.get(cycle)
     if not rule:
-        return False, f"지원되지 않는 주기입니다: '{cycle}'"
+        return False, f"Unsupported frequency: '{cycle}'"
     pattern, desc = rule
     value = str(date_str).strip()
     if not re.match(pattern, value):
@@ -94,7 +94,7 @@ def validate_date_format(cycle: str, date_str: str) -> tuple[bool, str]:
         try:
             _parse_day(value)
         except ValueError:
-            return False, f"{desc} — 존재하지 않는 날짜입니다"
+            return False, f"{desc} — no such date"
     return True, ""
 
 
@@ -122,7 +122,7 @@ def period_to_index(cycle: str, value: str) -> int:
         return (year * 12 + int(value[4:6]) - 1) * 2 + int(value[7]) - 1
     if cycle == "D":
         return _parse_day(value).toordinal()
-    raise ValueError(f"지원되지 않는 주기입니다: '{cycle}'")
+    raise ValueError(f"Unsupported frequency: '{cycle}'")
 
 
 def index_to_period(cycle: str, index: int) -> str:
@@ -141,7 +141,7 @@ def index_to_period(cycle: str, index: int) -> str:
         return f"{month_index // 12:04d}{month_index % 12 + 1:02d}S{half + 1}"
     if cycle == "D":
         return date.fromordinal(index).strftime("%Y%m%d")
-    raise ValueError(f"지원되지 않는 주기입니다: '{cycle}'")
+    raise ValueError(f"Unsupported frequency: '{cycle}'")
 
 
 def shift_period(cycle: str, value: str, periods: int) -> str:
@@ -165,7 +165,7 @@ def current_period(cycle: str, today: date | None = None) -> str:
         return f"{today.year}{today.month:02d}S{1 if today.day <= 15 else 2}"
     if cycle == "D":
         return today.strftime("%Y%m%d")
-    raise ValueError(f"지원되지 않는 주기입니다: '{cycle}'")
+    raise ValueError(f"Unsupported frequency: '{cycle}'")
 
 
 def period_start_date(cycle: str, value: str) -> date:
@@ -185,7 +185,7 @@ def period_start_date(cycle: str, value: str) -> date:
         return date(year, int(value[4:6]), 1 if value[7] == "1" else 16)
     if cycle == "D":
         return _parse_day(value)
-    raise ValueError(f"지원되지 않는 주기입니다: '{cycle}'")
+    raise ValueError(f"Unsupported frequency: '{cycle}'")
 
 
 def period_end_date(cycle: str, value: str) -> date:
@@ -231,7 +231,7 @@ def parse_any_period(value: str) -> tuple[str, str]:
             is_valid, _ = validate_date_format(cycle, canonical)
             if is_valid:
                 return cycle, canonical
-    raise ValueError(f"날짜 형식을 해석할 수 없습니다: '{value}'")
+    raise ValueError(f"Cannot parse date '{value}'")
 
 
 def to_cycle(value: str, cycle: str, bound: str = "start") -> str:
@@ -290,16 +290,16 @@ def get_default_date_range(
 
 # ECOS error code descriptions
 ECOS_ERROR_MAP = {
-    "INFO-100": "인증키가 유효하지 않습니다. ECOS_API_KEY 환경변수를 확인하세요.",
-    "INFO-200": "해당 조건에 맞는 데이터가 없습니다.",
-    "ERROR-100": "필수 입력값이 누락되었습니다.",
-    "ERROR-101": "주기와 날짜 형식이 일치하지 않습니다. (예: 분기는 2024Q1, 월은 202401)",
-    "ERROR-200": "파일 타입 오류입니다.",
-    "ERROR-300": "조회건수 값이 누락되었습니다.",
-    "ERROR-301": "조회건수 오류입니다. (참고: sample 키는 1회 최대 10건만 조회 가능합니다.)",
-    "ERROR-400": "조회 범위가 너무 넓어 60초 타임아웃이 발생했습니다. 날짜 범위를 줄이거나 항목코드를 지정하세요.",
-    "ERROR-500": "한국은행 ECOS 서버 내부 오류가 발생했습니다.",
-    "ERROR-600": "한국은행 DB 연결 오류가 발생했습니다.",
-    "ERROR-601": "한국은행 SQL 오류가 발생했습니다.",
-    "ERROR-602": "API 일일 호출 한도를 초과했습니다. 잠시 후 다시 시도하세요.",
+    "INFO-100": "Invalid API key. Check the ECOS_API_KEY environment variable.",
+    "INFO-200": "No data matches the request.",
+    "ERROR-100": "A required parameter is missing.",
+    "ERROR-101": "The date format does not match the frequency (e.g. 2024Q1 for quarterly, 202401 for monthly).",
+    "ERROR-200": "Invalid file type.",
+    "ERROR-300": "The row count is missing.",
+    "ERROR-301": "Invalid row count (the sample key returns at most 10 rows per call).",
+    "ERROR-400": "The request timed out after 60 seconds because the range is too wide. Narrow the dates or specify item codes.",
+    "ERROR-500": "ECOS internal server error.",
+    "ERROR-600": "ECOS database connection error.",
+    "ERROR-601": "ECOS SQL error.",
+    "ERROR-602": "The daily API call limit was exceeded. Try again later.",
 }

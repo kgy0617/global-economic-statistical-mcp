@@ -105,7 +105,7 @@ async def test_provider_ignoring_wildcard_key_is_post_filtered(fake_sdmx):
     fake_sdmx.add("IMF", "CPI", {**dims, "COUNTRY": "AGO"}, {"2026-M01": 280.0})
     series = await _fetch(fake_sdmx, "IMF", "IMF.STA:CPI", "KOR.CPI._T.*.M")
     assert [s.ref_area for s in series] == ["KR"]
-    assert "다른 관측치 1건" in series[0].notes[0]
+    assert "returned 1 observations outside" in series[0].notes[0]
 
 
 async def test_bis_json1_and_implied_index_base(fake_sdmx):
@@ -195,3 +195,12 @@ async def test_rate_limit_opens_a_circuit_and_fails_fast(fake_sdmx):
         await http.close()
     assert first.value.code == second.value.code == "RATE_LIMITED"
     assert len(fake_sdmx.calls) == calls == 1  # no retry storm, and the second call never left the process
+
+
+@pytest.mark.parametrize("raw", ["NaN", "nan", "inf", float("nan")])
+def test_non_finite_values_are_missing(raw):
+    from global_economic_statistical_mcp.providers.sdmx_rest import _number
+    from global_economic_statistical_mcp.timeseries import to_number
+
+    assert _number(raw) is None and to_number(raw) is None
+

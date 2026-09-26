@@ -142,6 +142,21 @@ def test_cross_validation_converts_frequency_and_flags_mismatch():
     assert result["status"] == "inconsistent"
 
 
+@pytest.mark.parametrize(
+    ("aggregation", "quarterly", "expected"),
+    [
+        ("sum", 36_000.0, "consistent"),  # flow: ECOS monthly current account (millions) vs IMF quarterly (units)
+        ("last", 14_000.0, "consistent"),  # stock: end-of-quarter reserves
+        ("mean", 36_000.0, "inconsistent"),  # averaging a flow understates it threefold
+    ],
+)
+def test_cross_validation_aggregates_flows_and_stocks(aggregation, quarterly, expected):
+    monthly = make("ECOS", {"2026-01": 10_000.0, "2026-02": 12_000.0, "2026-03": 14_000.0}, unit="USD", mult=6)
+    imf = make("IMF", {"2026-Q1": quarterly * 1e6}, freq="Q", unit="USD")
+    out = cross_validate([imf, monthly], concept_id="C", country="KR", unit="USD", aggregation=aggregation)
+    assert out["status"] == expected, out
+
+
 def test_cross_validation_refuses_incompatible_units():
     result = cross_validate([make("A", unit="IX"), make("B", unit="PC_PA")], concept_id="X", country="KR")
     assert result["status"] == "not_comparable"
@@ -152,7 +167,57 @@ def test_cross_validation_notes_seasonal_adjustment_differences():
         [make("ECOS", adjustment="NSA", unit="PC"), make("OECD", adjustment="SA", unit="PC")],
         concept_id="UNEMPLOYMENT_RATE", country="KR", unit="PC",
     )
-    assert any("계절조정" in n for n in result["notes"])
+    assert any("seasonal adjustment" in n for n in result["notes"])
+
+
+def _yoy(provider, values, **kw):
+    return make(provider, dict(zip(("2026-01", "2026-02", "2026-03"), values)), unit="PC_YOY", **kw)
+
+
+def test_unexplained_difference_is_unresolved_not_hidden():
+    # UK CPI inflation, 2026: IMF computes 3.03249…, OECD publishes 3.1 — beyond tolerance and rounding.
+    result = cross_validate(
+        [_yoy("IMF", (3.03249, 3.1, 3.2)), _yoy("OECD", (3.1, 3.1, 3.2))], concept_id="CPI_YOY", country="GB", unit="PC_YOY"
+    )
+    oecd = result["agreement"]["OECD"]
+    assert result["validation_status"] == oecd["validation_status"] == "UNRESOLVED"
+    assert oecd["investigation"] == {"status": "unresolved", "unresolved_periods": ["2026-01"]}
+    assert oecd["difference"]["absolute_max"] == pytest.approx(0.06751)
+    assert result["records"][1]["by_provider"]["OECD"]["validation_status"] == "MATCH"
+
+
+def test_difference_within_published_precision_is_explained():
+    result = cross_validate(
+        [make("A", {"2026-01": 100.0, "2026-02": 101.0}), make("B", {"2026-01": 101.0, "2026-02": 101.0})],
+        concept_id="X", country="KR", unit="IX",
+    )
+    assert result["validation_status"] == "DIFFER"
+    assert result["agreement"]["B"]["investigation"]["explanations"] == ["publication precision: A publishes 0 decimals, B publishes 0 decimals"]
+
+
+def test_difference_from_seasonal_adjustment_is_explained():
+    result = cross_validate(
+        [_yoy("ECOS", (2.0, 2.1, 2.2), adjustment="NSA"), _yoy("OECD", (2.4, 2.1, 2.2), adjustment="SA")],
+        concept_id="UNEMPLOYMENT_RATE", country="KR", unit="PC_YOY",
+    )
+    assert result["validation_status"] == "DIFFER"
+    assert "seasonal adjustment differs" in result["agreement"]["OECD"]["investigation"]["explanations"][0]
+
+
+def test_documented_known_difference_is_explained(monkeypatch):
+    from global_economic_statistical_mcp.catalog import concepts
+
+    known = concepts.KnownDifference("CPI_YOY", "GB", "BIS", "BIS uses another index", "BIS methodology note")
+    monkeypatch.setattr(concepts, "KNOWN_DIFFERENCES", (known,))
+    result = cross_validate(
+        [_yoy("IMF", (3.03249, 3.1, 3.2)), _yoy("BIS", (2.8, 2.9, 3.0))], concept_id="CPI_YOY", country="GB", unit="PC_YOY"
+    )
+    assert result["validation_status"] == "DIFFER"
+    assert result["agreement"]["BIS"]["investigation"]["explanations"] == ["BIS uses another index (BIS methodology note)"]
+
+
+def test_single_source_is_not_compared():
+    assert cross_validate([make("A")], concept_id="X", country="KR")["validation_status"] == "NOT_COMPARED"
 
 
 def test_ledger_summary_per_provider_pair(tmp_path):
@@ -162,3 +227,27 @@ def test_ledger_summary_per_provider_pair(tmp_path):
     pairs = {tuple(p["providers"]): p for p in ValidationLedger(root=tmp_path, persist=True).summary()["pairs"]}
     assert pairs[("ECOS", "IMF")]["agreement_rate"] == 1.0
     assert pairs[("ECOS", "OECD")]["agreement_rate"] == pytest.approx(2 / 3, abs=1e-4)
+
+
+def test_ledger_partitions_history_by_day_and_keeps_the_latest_state(tmp_path):
+    ledger = ValidationLedger(root=tmp_path, persist=True)
+    cross_validate([_yoy("IMF", (3.03249, 3.1, 3.2)), _yoy("OECD", (3.1, 3.1, 3.2))], concept_id="CPI_YOY", country="GB",
+                   unit="PC_YOY", ledger=ledger)
+    history = list((tmp_path / "validation" / "history").glob("*.jsonl"))
+    assert len(history) == 1 and len(history[0].read_text().splitlines()) == 3
+    latest = ValidationLedger(root=tmp_path, persist=True).latest()["pairs"]["CPI_YOY|GB|IMF~OECD"]
+    assert (latest["period"], latest["validation_status"]) == ("2026-03", "MATCH")
+    pair = ValidationLedger(root=tmp_path, persist=True).summary()["pairs"][0]
+    assert pair["by_validation_status"] == {"MATCH": 2, "UNRESOLVED": 1}
+    assert pair["latest"]["period"] == "2026-03"
+
+
+def test_ledger_deletes_history_beyond_retention(tmp_path):
+    old = tmp_path / "validation" / "history" / "2000-01-01.jsonl"
+    old.parent.mkdir(parents=True)
+    old.write_text("{}\n")
+    ledger = ValidationLedger(root=tmp_path, persist=True, retention_days=30)
+    cross_validate([make("ECOS"), make("IMF")], concept_id="CPI", country="KR", unit="IX", ledger=ledger)
+    days = sorted(p.stem for p in old.parent.glob("*.jsonl"))
+    assert "2000-01-01" not in days and len(days) == 1
+

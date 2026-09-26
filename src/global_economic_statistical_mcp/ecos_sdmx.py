@@ -339,7 +339,7 @@ def compact_structure(structure: TableStructure, language: str = "kr") -> dict[s
         out["partial"] = True
     if not structure.complete:
         out["complete"] = False
-        out["note"] = "API 한도로 항목 목록 일부만 조회했습니다 (sample 키 등). 정식 키를 쓰면 전체 항목이 조회됩니다."
+        out["note"] = "Only part of the item list was retrieved because of the API row limit (e.g. the sample key). A registered key returns every item."
     linked = linked_concepts(structure.stat_code)
     if linked:
         out["canonical_concepts"] = linked

@@ -99,12 +99,3 @@ def test_rebase_index():
     norm_rebased = normalize(series, "rebase", base_period="202401")
     assert norm_rebased[1][1] == 100.0
 
-
-def test_convert_currency():
-    from global_economic_statistical_mcp.analytics import convert_currency
-
-    usd_series = [("202401", 10.0), ("202402", 20.0)]
-    fx_rates = [("202401", 1300.0), ("202402", 1400.0)]
-    krw_series = convert_currency(usd_series, fx_rates, direction="usd_to_krw")
-    assert krw_series == [("202401", 13000.0), ("202402", 28000.0)]
-

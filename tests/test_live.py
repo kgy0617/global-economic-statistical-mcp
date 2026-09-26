@@ -2,10 +2,13 @@
 
     uv run pytest -m live
 
-Every Concept Catalog mapping is re-verified here for Korea and the United States, so a
-provider changing a dataflow or key is caught instead of silently returning nothing.
+Every Concept Catalog mapping is re-verified here for the default economies (KR, US, JP,
+CN, EA, GB), so a provider changing a dataflow or key is caught instead of silently
+returning nothing. OECD enforces a strict per-IP quota, so each OECD mapping is checked for
+all economies in one request, and a rate-limited request waits out the cooldown once.
 """
 
+import asyncio
 import json
 import urllib.request
 from functools import cache
@@ -15,7 +18,10 @@ from jsonschema import Draft201909Validator
 from mcp import Client
 
 from global_economic_statistical_mcp.catalog.concepts import CONCEPTS
-from global_economic_statistical_mcp.catalog.countries import get_country
+from global_economic_statistical_mcp.catalog.countries import (
+    DEFAULT_COUNTRIES,
+    get_country,
+)
 from global_economic_statistical_mcp.config import get_default_date_range
 from global_economic_statistical_mcp.ecos_client import EcosClient
 from global_economic_statistical_mcp.model import canonical_unit, ecos_to_canonical
@@ -29,14 +35,21 @@ pytestmark = [pytest.mark.live, pytest.mark.anyio]
 SDMX_JSON_COMMIT = "faa661d2247b9914052c76a5dabafd5990493f5a"
 SCHEMA_URL = f"https://raw.githubusercontent.com/sdmx-twg/sdmx-json/{SDMX_JSON_COMMIT}/{{}}/tools/schemas/sdmx-json-{{}}-schema.json"
 
-MAPPINGS = [
-    (concept, mapping, country)
-    for concept in CONCEPTS
-    for country in ("KR", "US")
-    for mapping in concept.sources_for(get_country(country))
-    # OECD does not publish a US-dollar rate for the United States itself.
-    if not (concept.id == "USD_EXCHANGE_RATE" and country == "US" and mapping.provider == "OECD")
-]
+# One case per (mapping, economy); OECD mappings are one case for all economies they cover.
+MAPPINGS: list[tuple] = []
+for _concept in CONCEPTS:
+    for _mapping in _concept.sources:
+        _covered = tuple(c for c in DEFAULT_COUNTRIES if _mapping.covers(get_country(c)))
+        if _mapping.provider == "OECD":
+            MAPPINGS += [(_concept, _mapping, _covered)] if _covered else []
+        else:
+            MAPPINGS += [(_concept, _mapping, (c,)) for c in _covered]
+
+
+def combined_key(mapping, countries) -> str:
+    """Merge per-country keys into one SDMX key ('KOR+USA.M.IRLT...')."""
+    parts = [mapping.render_key(get_country(c)).split(".") for c in countries]
+    return ".".join("+".join(dict.fromkeys(p)) for p in zip(*parts))
 
 
 @cache
@@ -70,32 +83,41 @@ async def service():
     await s.close()
 
 
+async def load_patiently(service, src, start, end):
+    """Load once; on a rate limit wait out the provider's cooldown and retry once."""
+    for attempt in range(2):
+        try:
+            return await service.load(src, start, end, end_count=10, record=False)
+        except ProviderError as e:
+            if e.code != "RATE_LIMITED":
+                raise
+            if attempt:
+                pytest.skip(f"{e.provider} rate limit (not a mapping error): {e.message}")
+            await asyncio.sleep(service.http.cooldown_remaining(e.provider) + 1)
+            service.http._cooldown_until.clear()
+
+
 @pytest.mark.parametrize(
-    ("concept", "mapping", "country"),
+    ("concept", "mapping", "countries"),
     MAPPINGS,
-    ids=[f"{c.id}-{m.provider}-{m.freq}-{k}" for c, m, k in MAPPINGS],
+    ids=[f"{c.id}-{m.provider}-{m.freq}{'-' + m.adjustment if m.adjustment else ''}-{'+'.join(k)}" for c, m, k in MAPPINGS],
 )
-async def test_catalog_mapping_returns_valid_data(service, concept, mapping, country):
-    ctry = get_country(country)
+async def test_catalog_mapping_returns_valid_data(service, concept, mapping, countries):
     start, end = get_default_date_range(mapping.freq, recent_years=1)
-    src = ResolvedSource(
-        mapping.provider, mapping.dataflow, mapping.render_key(ctry), mapping.freq, concept, ctry, mapping,
-        mapping.transform, False, concept.name_ko,
-    )
-    try:
-        loaded = await service.load(src, ecos_to_canonical(start, mapping.freq), ecos_to_canonical(end, mapping.freq), end_count=10, record=False)
-    except ProviderError as e:
-        if e.code == "RATE_LIMITED":
-            pytest.skip(f"{e.provider} rate limit (not a mapping error): {e.message}")
-        raise
-    assert len(loaded.series) == 1, [s.series_id for s in loaded.series]
-    series, report = loaded.series[0], loaded.reports[0]
-    assert series.observations, "no observations"
-    failed = [c for c in report.checks if c.status == "fail"]
-    assert not failed, failed
-    assert series.ref_area == country
-    if series.unit:
-        assert canonical_unit(series.unit) in (mapping.unit, "PC", "XDC"), (series.unit, mapping.unit)
+    single = get_country(countries[0]) if len(countries) == 1 else None
+    key = mapping.render_key(single) if single else combined_key(mapping, countries)
+    src = ResolvedSource(mapping.provider, mapping.dataflow, key, mapping.freq, concept, single, mapping, mapping.transform, False, concept.name_ko)
+    loaded = await load_patiently(service, src, ecos_to_canonical(start, mapping.freq), ecos_to_canonical(end, mapping.freq))
+    by_area = {s.ref_area: (s, r) for s, r in zip(loaded.series, loaded.reports)}
+    assert len(loaded.series) == len(countries), [s.series_id for s in loaded.series]
+    assert set(by_area) == set(countries), sorted(by_area)
+    for country, (series, report) in by_area.items():
+        assert series.observations, f"{country}: no observations"
+        failed = [c for c in report.checks if c.status == "fail"]
+        assert not failed, (country, failed)
+        if series.unit:
+            assert canonical_unit(series.unit) in (mapping.unit, "PC", "XDC"), (country, series.unit, mapping.unit)
+
 
 
 async def test_cross_validation_of_korean_cpi_agrees():

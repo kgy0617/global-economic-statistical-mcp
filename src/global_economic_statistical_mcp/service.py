@@ -16,7 +16,11 @@ from global_economic_statistical_mcp.catalog.concepts import (
     find_concept,
     rank_concepts,
 )
-from global_economic_statistical_mcp.catalog.countries import Country, get_country
+from global_economic_statistical_mcp.catalog.countries import (
+    DEFAULT_COUNTRIES,
+    Country,
+    get_country,
+)
 from global_economic_statistical_mcp.config import (
     PERIODS_PER_YEAR,
     VALID_CYCLES,
@@ -119,7 +123,7 @@ def shift(period: str, freq: str, n: int) -> str:
 def transform_lookback(freq: str, transform: str) -> int:
     if transform == "yoy":
         if freq == "D":
-            raise ResolutionError("일간(D) 시계열에는 transform='yoy'를 쓸 수 없습니다. 'pop'을 쓰거나 월간 지표를 사용하세요.")
+            raise ResolutionError("transform='yoy' is not available for daily (D) series. Use 'pop' or a monthly concept.")
         return PERIODS_PER_YEAR[freq]
     return 10 if freq == "D" else 1
 
@@ -148,10 +152,10 @@ def apply_transform(series: CanonicalSeries, transform: str, base: list[Observat
     series.unit_label = "percent change, year on year" if transform == "yoy" else "percent change, period on period"
     series.unit_mult = 0
     series.base_period = None
-    label = "전년동기대비 증감률(%)" if transform == "yoy" else "전기대비 증감률(%)"
+    label = "% change, year on year" if transform == "yoy" else "% change, period on period"
     series.title = f"{series.title} [{label}]"
     series.provenance.transformations.append(
-        f"{transform}: 이 서버가 원자료 수준값에서 {label}을 계산(원값은 source_value)"
+        f"{transform}: {label} computed by this server from the published levels (original values in source_value)"
     )
 
 
@@ -195,16 +199,21 @@ class StatService:
             return concept
         ranked = rank_concepts(indicator)
         if ranked:
-            listed = ", ".join(f"{c.id}({c.name_ko})" for _, c in ranked[:6])
-            raise ResolutionError(f"'{indicator}'에 해당하는 개념이 여러 개입니다: {listed}. concept_id나 더 구체적인 표현을 쓰세요.")
+            listed = ", ".join(f"{c.id} ({c.name_en})" for _, c in ranked[:6])
+            raise ResolutionError(f"'{indicator}' matches several concepts: {listed}. Use a concept_id or a more specific term.")
         raise ResolutionError(
-            f"'{indicator}'에 해당하는 표준 개념이 없습니다. search_statistics로 개념·ECOS 통계표·SDMX 데이터플로를 찾아보세요."
+            f"No concept matches '{indicator}'. Use search_statistics to find concepts, ECOS tables or SDMX dataflows."
         )
 
     def resolve_country(self, country: str | None) -> Country:
-        c = get_country(country or "KR")
+        if not country or not country.strip():
+            raise ResolutionError(
+                "country is required for concept queries (e.g. country='US'; 'EA' for the euro area). "
+                f"Verified economies: {', '.join(DEFAULT_COUNTRIES)}. Only direct ECOS queries (stat_code) default to KR."
+            )
+        c = get_country(country)
         if not c:
-            raise ResolutionError(f"알 수 없는 국가입니다: '{country}'. ISO 코드(KR, US, JP, KOR, USA 등)를 사용하세요.")
+            raise ResolutionError(f"Unknown country '{country}'. Use an ISO code (US, JP, KOR, ...) or EA for the euro area.")
         return c
 
     def resolve(
@@ -226,45 +235,47 @@ class StatService:
         """Candidate sources in priority order (the first one that returns data is used)."""
         provider = source.strip().upper() if source else None
         if provider and provider not in PROVIDERS:
-            raise ResolutionError(f"지원하지 않는 source입니다: '{source}'. {', '.join(PROVIDERS)} 중 하나를 쓰세요.")
+            raise ResolutionError(f"Unsupported source '{source}'. Use one of {', '.join(PROVIDERS)}.")
         freq = freq.strip().upper() if freq else None
         if freq and freq not in VALID_CYCLES:
-            raise ResolutionError(f"유효하지 않은 주기입니다: '{freq}'. A, S, Q, M, SM, D 중 하나를 쓰세요.")
+            raise ResolutionError(f"Invalid frequency '{freq}'. Use one of A, S, Q, M, SM, D.")
         transform = (transform or "").strip().lower() or None
         if transform in ("none", "raw"):
             transform = "none"
         if transform not in (None, "none", "yoy", "pop"):
-            raise ResolutionError(f"지원하지 않는 transform입니다: '{transform}'. 'yoy', 'pop', 'none' 중 하나를 쓰세요.")
+            raise ResolutionError(f"Unsupported transform '{transform}'. Use 'yoy', 'pop' or 'none'.")
 
         if indicator and indicator.strip():
             if stat_code or dataflow:
-                raise ResolutionError("indicator와 stat_code/dataflow는 함께 쓸 수 없습니다. 하나만 지정하세요.")
+                raise ResolutionError("indicator cannot be combined with stat_code/dataflow. Specify only one.")
             if item_codes and any(item_codes):
-                raise ResolutionError("indicator를 쓸 때는 item_code를 지정할 수 없습니다. 직접 조회하려면 stat_code를 쓰세요.")
+                raise ResolutionError("item_code cannot be used with indicator. For a direct query use stat_code.")
             concept = self.resolve_concept(indicator)
             ctry = self.resolve_country(country)
             if transform is not None and concept.unit in TRANSFORM_UNITS.values():
                 raise ResolutionError(
-                    f"{concept.id}는 이미 증감률 개념이라 transform을 지정할 수 없습니다. "
-                    "수준값에서 계산하려면 CPI 같은 지수 개념에 transform을 쓰세요."
+                    f"{concept.id} is already a rate of change, so transform cannot be applied. "
+                    "To compute one from levels, apply transform to a level concept such as CPI."
                 )
             mappings = concept.sources_for(ctry, provider=provider, freq=freq)
             if transform == "yoy" and mappings:
                 feasible = [m for m in mappings if m.freq != "D"]
                 if not feasible:
                     raise ResolutionError(
-                        f"{concept.id}의 선택된 출처는 모두 일간(D)이라 transform='yoy'를 쓸 수 없습니다. cycle='M' 등을 지정하세요."
+                        f"Every selected source of {concept.id} is daily (D), so transform='yoy' is not available. Specify cycle='M'."
                     )
                 mappings = feasible
             if not mappings:
                 available = sorted({(s.provider, s.freq) for s in concept.sources_for(ctry)})
                 everywhere = sorted({(s.provider, s.freq) for s in concept.sources})
+                unpublished = sorted({s.provider for s in concept.sources if ctry.iso2 in s.excludes})
                 raise ResolutionError(
-                    f"{concept.id}({concept.name_ko})는 {ctry.iso2}"
-                    + (f"·{provider}" if provider else "")
-                    + (f"·주기 {freq}" if freq else "")
-                    + f" 조합의 출처가 없습니다. {ctry.iso2}에서 가능한 (출처, 주기): {available or '없음'}; "
-                    f"전체: {everywhere}"
+                    f"No source for {concept.id} ({concept.name_en}) in {ctry.iso2}"
+                    + (f" from {provider}" if provider else "")
+                    + (f" at frequency {freq}" if freq else "")
+                    + f". Available (source, frequency) for {ctry.iso2}: {available or 'none'}; "
+                    f"all: {everywhere}"
+                    + (f". {', '.join(unpublished)} does not publish this statistic for {ctry.iso2}" if unpublished else "")
                 )
             return [
                 ResolvedSource(
@@ -277,22 +288,22 @@ class StatService:
                     mapping=m,
                     transform=m.transform if transform is None else (None if transform == "none" else transform),
                     changes_only=m.changes_only if changes_only is None else changes_only,
-                    label=label or concept.name_ko,
+                    label=label or concept.name_en,
                 )
                 for m in mappings
             ]
 
         explicit_transform = None if transform in (None, "none") else transform
         if explicit_transform == "yoy" and freq == "D":
-            raise ResolutionError("일간(D) 시계열에는 transform='yoy'를 쓸 수 없습니다. 'pop'을 쓰거나 월간 주기를 지정하세요.")
+            raise ResolutionError("transform='yoy' is not available for daily (D) series. Use 'pop' or a monthly cycle.")
         if stat_code and stat_code.strip():
             if provider not in (None, "ECOS"):
-                raise ResolutionError("stat_code는 ECOS 통계표코드입니다. 국제기구 데이터는 dataflow와 key를 쓰세요.")
+                raise ResolutionError("stat_code is an ECOS table code. For international data use dataflow and key.")
             cycle = freq or default_ecos_cycle
             if not cycle:
-                raise ResolutionError(f"통계표 '{stat_code}'의 주기를 알 수 없습니다. cycle을 지정하세요.")
+                raise ResolutionError(f"Unknown frequency for table '{stat_code}'. Specify cycle.")
             if explicit_transform == "yoy" and cycle == "D":
-                raise ResolutionError(f"통계표 '{stat_code}'의 기본 주기가 일간(D)이라 yoy를 계산할 수 없습니다. cycle='M'을 지정하세요.")
+                raise ResolutionError(f"Table '{stat_code}' is daily (D) by default, so yoy is not available. Specify cycle='M'.")
             codes = [c.strip() if c and c.strip() else "" for c in (item_codes or [])]
             while codes and not codes[-1]:
                 codes.pop()
@@ -310,13 +321,13 @@ class StatService:
             ]
         if dataflow and dataflow.strip():
             if provider not in SOURCES:
-                raise ResolutionError("dataflow를 쓸 때는 source를 OECD, IMF, BIS 중 하나로 지정하세요.")
+                raise ResolutionError("With dataflow, set source to OECD, IMF or BIS.")
             if not freq:
-                raise ResolutionError("SDMX 직접 조회에는 cycle(주기)을 지정하세요 (시점 형식을 맞추는 데 필요).")
+                raise ResolutionError("Direct SDMX queries need cycle (the frequency determines the period format).")
             if not (key or "").strip() or key.strip().lower() == "all":
                 raise ResolutionError(
-                    "SDMX 직접 조회에는 key를 지정하세요 (데이터플로 전체 요청은 매우 크고 호출 한도에 걸립니다). "
-                    "get_metadata(source=..., dataflow=...)의 key_template을 참고하세요."
+                    "Direct SDMX queries need a key (a whole dataflow is very large and hits rate limits). "
+                    "See key_template in get_metadata(source=..., dataflow=...)."
                 )
             ctry = get_country(country) if country else None
             return [
@@ -332,8 +343,8 @@ class StatService:
                 )
             ]
         raise ResolutionError(
-            "indicator(표준 개념), stat_code(ECOS 통계표) 또는 source+dataflow(OECD·IMF·BIS) 중 하나가 필요합니다. "
-            "search_statistics로 찾을 수 있습니다."
+            "Specify indicator (a concept), stat_code (an ECOS table) or source + dataflow (OECD, IMF, BIS). "
+            "search_statistics finds them."
         )
 
     # ── Loading ─────────────────────────────────────────────────────
@@ -375,7 +386,7 @@ class StatService:
                     )
                 except ProviderError as e:
                     base_series = []
-                    series.notes.append(f"기준기간 데이터를 가져오지 못해 첫 {lookback}개 시점의 증감률은 비어 있습니다: {e}")
+                    series.notes.append(f"Base-period data could not be retrieved, so the first {lookback} changes are empty: {e}")
                 base = next((b for b in base_series if b.series_key == series.series_key), None)
                 apply_transform(series, src.transform, base.observations if base else [])
 
@@ -387,7 +398,7 @@ class StatService:
             if series.adjustment is None and src.mapping and src.mapping.adjustment:
                 series.adjustment = src.mapping.adjustment
             if series.unit is None and src.mapping and not src.transform:
-                series.provenance.transformations.append(f"단위 {src.mapping.unit}: 공급자 미표기, 카탈로그 선언값")
+                series.provenance.transformations.append(f"unit {src.mapping.unit}: not published by the provider, declared in the catalog")
             report = validate_series(series, expectation, self.revisions)
             reports.append(report)
             if record:
@@ -409,11 +420,11 @@ class StatService:
             if loaded.series:
                 loaded.attempts = attempts
                 return loaded
-            attempts.append({**src.describe(), "result": f"{start}~{end} 기간에 데이터 없음"})
+            attempts.append({**src.describe(), "result": f"no data for {start}–{end}"})
         if last_error and len(attempts) == 1:
             raise last_error
         lines = "; ".join(f"{a['provider']} {a['dataflow']} [{a['key']}] → {a['result']}" for a in attempts)
-        raise ResolutionError(f"모든 출처에서 데이터를 얻지 못했습니다. {lines}. 기간이나 국가를 확인하세요.")
+        raise ResolutionError(f"No source returned data. {lines}. Check the dates and the country.")
 
     async def cross_check(
         self,
@@ -463,6 +474,7 @@ class StatService:
             concept_id=concept.id,
             country=country.iso2,
             unit=concept.unit,
+            aggregation=concept.aggregation,
             ledger=self.ledger,
         )
         result["source_validation"] = {ls.source.provider: ls.reports[0].compact() for ls in loaded if ls.reports}

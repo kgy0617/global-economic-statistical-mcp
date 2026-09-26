@@ -10,7 +10,7 @@ Canonical conventions
   ``SM`` (half-month, ECOS only), ``D`` (day).
 - Period: SDMX reporting-period style — ``2026``, ``2026-S1``, ``2026-Q1``, ``2026-01``,
   ``2026-01-S1`` (half-month), ``2026-01-15``.
-- Country: ISO 3166-1 alpha-2 (``KR``, ``US``, ``XM`` for the euro area).
+- Country: ISO 3166-1 alpha-2 (``KR``, ``US``), ``EA`` for the euro area.
 - Unit: a small SDMX-flavoured vocabulary (see :data:`UNIT_LABELS`) plus ``unit_mult``
   (power of ten) and ``base_period`` for index numbers.
 """
@@ -106,7 +106,7 @@ def parse_period(value: str, freq: str | None = None) -> tuple[str, str]:
         if f == "S":
             return f, f"{g[0]}-S{g[1]}"
         return f, g[0]
-    raise ValueError(f"기간 형식을 해석할 수 없습니다: '{value}'" + (f" (주기 {freq})" if freq else ""))
+    raise ValueError(f"Cannot parse period '{value}'" + (f" (frequency {freq})" if freq else ""))
 
 
 def canonical_period(value: str, freq: str) -> str:
@@ -156,7 +156,7 @@ class Provenance:
 
     def citation(self, title: str | None = None) -> str:
         name = f"'{title}'" if title else self.dataflow_name or self.dataflow
-        return f"출처: {self.agency}, {name}, 데이터셋 {self.dataflow}, 시계열 {self.series_key}, 조회 {self.retrieved_at}"
+        return f"Source: {self.agency}, {name}, dataset {self.dataflow}, series {self.series_key}, retrieved {self.retrieved_at}"
 
 
 @dataclass

@@ -74,7 +74,7 @@ async def test_client_errors_are_not_retried(fake_ecos, client):
 async def test_no_data_is_an_empty_result(fake_ecos, client):
     res = await client.search_statistics("722Y001", "D", "19000101", "19000105")
     assert res["rows"] == [] and res["total_count"] == 0
-    assert "데이터가 없습니다" in res["note"]
+    assert "No data matches" in res["note"]
 
 
 async def test_nested_error_raises(fake_ecos, client):
@@ -104,7 +104,7 @@ async def test_truncated_search_returns_latest_rows(fake_ecos, client):
     fake_ecos.add_series("901Y009", "M", monthly(2024, list(range(1, 25))))
     res = await client.search_statistics("901Y009", "M", "202401", "202412", end_count=5)
     assert [r["TIME"] for r in res["rows"]] == ["202408", "202409", "202410", "202411", "202412"]
-    assert res["truncated"] and "최근 5건" in res["note"]
+    assert res["truncated"] and "latest 5 of" in res["note"]
 
     res = await client.search_statistics(
         "901Y009", "M", "202401", "202412", end_count=5, prefer_latest=False

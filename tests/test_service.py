@@ -25,24 +25,46 @@ def window(src):
 async def test_resolution_orders_sources_by_country(service):
     kr = service.resolve(indicator="CPI", country="KR")
     us = service.resolve(indicator="CPI", country="USA")
-    assert [s.provider for s in kr] == ["ECOS", "IMF", "OECD"]
-    assert [s.provider for s in us] == ["IMF", "OECD"]
+    assert [s.provider for s in kr] == ["ECOS", "IMF", "BIS", "OECD"]
+    assert [s.provider for s in us] == ["IMF", "BIS", "OECD"]
     assert us[0].key == "USA.CPI._T.IX.M"
     assert service.resolve(indicator="USD_EXCHANGE_RATE", country="JP", source="BIS")[0].key == "M.JP.JPY.A"
+
+
+async def test_euro_area_uses_each_providers_own_area_code(service):
+    keys = {s.provider: s.key for s in service.resolve(indicator="USD_EXCHANGE_RATE", country="유로존")}
+    assert keys == {"IMF": "G163.XDC_USD.PA_RT.M", "BIS": "M.XM.EUR.A", "OECD": "EA20.M.CC.XDC_USD._Z._Z._Z._Z.N"}
+    # A dataflow can override the provider default (OECD national accounts use "EA", not "EA20").
+    assert service.resolve(indicator="GDP_REAL_GROWTH_QOQ", country="EA")[0].key.startswith("Q.Y.EA.S1.")
+    # Sources known not to publish the euro area are skipped (OECD CPI stopped at the enlargement).
+    assert [s.provider for s in service.resolve(indicator="CPI", country="EA")] == ["BIS"]
+
+
+@pytest.mark.parametrize(
+    ("indicator", "country", "message"),
+    [
+        ("USD_EXCHANGE_RATE", "US", "No source for USD_EXCHANGE_RATE"),  # USD per USD
+        ("UNEMPLOYMENT_RATE", "CN", "OECD does not publish this statistic for CN"),
+    ],
+)
+async def test_unpublished_combinations_are_reported_not_fetched(service, indicator, country, message):
+    with pytest.raises(ResolutionError, match=message):
+        service.resolve(indicator=indicator, country=country)
 
 
 @pytest.mark.parametrize(
     ("kwargs", "message"),
     [
-        ({"indicator": "지수"}, "여러 개"),
-        ({"indicator": "없는지표xyz"}, "표준 개념이 없습니다"),
-        ({"indicator": "CPI", "country": "ZZ"}, "알 수 없는 국가"),
-        ({"indicator": "M2", "country": "US"}, "출처가 없습니다"),
-        ({"indicator": "CPI", "source": "FRED"}, "지원하지 않는 source"),
-        ({"indicator": "CPI", "stat_code": "901Y009"}, "함께 쓸 수 없습니다"),
-        ({"dataflow": "BIS:WS_CBPOL(1.0)", "key": "M.KR"}, "source를 OECD"),
+        ({"indicator": "지수", "country": "KR"}, "matches several concepts"),
+        ({"indicator": "없는지표xyz", "country": "KR"}, "No concept matches"),
+        ({"indicator": "CPI"}, "country is required"),
+        ({"indicator": "CPI", "country": "ZZ"}, "Unknown country"),
+        ({"indicator": "M2", "country": "US"}, "No source for M2"),
+        ({"indicator": "CPI", "source": "FRED"}, "Unsupported source"),
+        ({"indicator": "CPI", "stat_code": "901Y009"}, "cannot be combined"),
+        ({"dataflow": "BIS:WS_CBPOL(1.0)", "key": "M.KR"}, "set source to OECD"),
         ({"source": "BIS", "dataflow": "BIS:WS_CBPOL(1.0)", "key": "M.KR"}, "cycle"),
-        ({"source": "BIS", "dataflow": "BIS:WS_CBPOL(1.0)", "freq": "M"}, "key를 지정"),
+        ({"source": "BIS", "dataflow": "BIS:WS_CBPOL(1.0)", "freq": "M"}, "need a key"),
         ({}, "indicator"),
     ],
 )

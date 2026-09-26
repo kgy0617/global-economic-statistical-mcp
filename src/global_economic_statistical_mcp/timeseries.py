@@ -3,11 +3,12 @@
 from __future__ import annotations
 
 import json
+import math
 from typing import Any
 
 TRANSFORMS = {
-    "yoy": "yoy_pct",  # 전년동기대비 증감률(%)
-    "pop": "pop_pct",  # 직전 관측치 대비 증감률(%)
+    "yoy": "yoy_pct",  # year-on-year change (%)
+    "pop": "pop_pct",  # change on the previous observation (%)
 }
 
 
@@ -21,7 +22,7 @@ def to_number(value: Any) -> float | int | str | None:
     if value is None:
         return None
     if isinstance(value, int | float):
-        return value
+        return value if math.isfinite(value) else None
     text = str(value).strip().replace(",", "")
     if not text:
         return None
@@ -29,6 +30,8 @@ def to_number(value: Any) -> float | int | str | None:
         number = float(text)
     except ValueError:
         return str(value)
+    if not math.isfinite(number):
+        return None
     if number.is_integer() and "." not in text and "e" not in text.lower():
         return int(number)
     return number

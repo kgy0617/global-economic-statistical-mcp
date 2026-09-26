@@ -1,12 +1,18 @@
 """Global Economic Statistical MCP server.
 
+An AI-native interface for discovering, retrieving, comparing and analysing trusted
+macroeconomic statistics across central banks and international organisations.
+
     LLM ── 6 MCP tools ── Concept Resolver ── Concept Catalog / Provider Catalog
                                    │
                            Provider Resolver
                  ┌─────────────────┴──────────────────┐
                ECOS (Bank of Korea REST)     SDMX: OECD · IMF · BIS
                  └─────────────────┬──────────────────┘
-                           Canonical Model → Validation → Analysis → Provenance
+                            Canonical Model
+                         (Validation + Provenance)
+                                   │
+                                Analysis
 
 Tools:
 - search_statistics: concepts, ECOS items/tables, OECD·IMF·BIS dataflows, ECOS key statistics
@@ -54,7 +60,12 @@ from global_economic_statistical_mcp.catalog.concepts import (
     find_concept,
     search_concepts,
 )
-from global_economic_statistical_mcp.catalog.countries import all_countries
+from global_economic_statistical_mcp.catalog.countries import (
+    DEFAULT_COUNTRIES,
+    Country,
+    all_countries,
+    get_country,
+)
 from global_economic_statistical_mcp.catalog.search import (
     dataflow_name,
     search_dataflows,
@@ -105,17 +116,22 @@ mcp = MCPServer(
     name="Global Economic Statistical MCP",
     version=__version__,
     description=(
-        "한국은행 ECOS와 OECD·IMF·BIS(SDMX) 거시경제 통계를 하나의 개념 체계(Concept Catalog)와 "
-        "표준 시계열 모델로 조회·검증·비교하는 MCP 서버. 모든 응답에 출처(provenance)와 검증 결과가 포함됩니다."
+        "Global economic statistics infrastructure for AI-powered macro research: discover, retrieve, compare "
+        "and analyse trusted macroeconomic statistics from central banks and international organisations "
+        "(Bank of Korea ECOS, OECD, IMF, BIS) through one Concept Catalog and canonical time-series model. "
+        "Every response carries provenance and validation results."
     ),
     instructions=(
-        "1) 지표는 표준 개념(concept)으로 조회하세요: get_data(indicator='CPI_YOY', country='US'). "
-        "한국은 한국은행 ECOS가 1순위이고, 다른 나라는 OECD·IMF·BIS에서 가져옵니다. "
-        "2) 개념이 없는 통계는 search_statistics로 ECOS 통계표/품목이나 OECD·IMF·BIS 데이터플로를 찾고 "
-        "get_metadata로 키를 확인한 뒤 get_data(stat_code=...) 또는 get_data(source=..., dataflow=..., key=...)로 조회합니다. "
-        "3) 응답의 validation(단위·주기·배수·기간·국가·결측·중복·개정 검사)을 확인하고, 출처가 여럿인 개념은 "
-        "cross_validate=True로 기관 간 값을 대조하세요. "
-        "4) 수치를 인용할 때는 provenance의 citation을 함께 제시하세요."
+        "Statistics infrastructure for global macroeconomic research. Verified economies: Korea (KR), United States (US), "
+        "Japan (JP), China (CN), euro area (EA) and United Kingdom (GB). "
+        "1) Ask for a concept and an economy: get_data(indicator='CPI_YOY', country='US'). country is required. "
+        "Korea is served by the Bank of Korea (ECOS) first; other economies by OECD, IMF and BIS. "
+        "2) For statistics without a concept, find an ECOS table or item or an OECD/IMF/BIS dataflow with search_statistics, "
+        "check its key with get_metadata, then call get_data(stat_code=...) or get_data(source=..., dataflow=..., key=...). "
+        "3) Read each response's validation (country, frequency, unit, scale, period, missing, duplicate, revision checks). "
+        "For concepts with several sources use cross_validate=True: MATCH means the institutions agree, DIFFER means they "
+        "differ for a documented reason, UNRESOLVED means they differ and nobody has explained why — report it, never pick silently. "
+        "4) Cite provenance.citation next to every number."
     ),
     lifespan=lifespan,
 )
@@ -130,7 +146,7 @@ def _service(ctx: Context) -> StatService:
 def _choice(value: str | None, allowed: set[str], name: str, default: str) -> str:
     choice = (value or default).strip().lower()
     if choice not in allowed:
-        raise ToolError(f"지원되지 않는 {name}입니다: '{value}'. {', '.join(sorted(allowed))} 중 하나를 사용하세요.")
+        raise ToolError(f"Unsupported {name} '{value}'. Use one of: {', '.join(sorted(allowed))}.")
     return choice
 
 
@@ -154,11 +170,11 @@ def _date_window(freq: str, start_date: str | None, end_date: str | None, recent
         end = to_cycle(end_date, freq, "end") if end_date else def_end
     except ValueError as e:
         raise ResolutionError(
-            f"{e}. 주기 '{freq}'의 포맷은 {CYCLE_DATE_FORMATS[freq][1]}이며, '2024', '2024-03', '2024Q1', "
-            "'2024-03-15' 같은 형식도 자동 변환됩니다."
+            f"{e}. Frequency '{freq}' uses {CYCLE_DATE_FORMATS[freq][1]}; '2024', '2024-03', '2024Q1' and "
+            "'2024-03-15' are converted automatically."
         ) from e
     if period_to_index(freq, start) > period_to_index(freq, end):
-        raise ResolutionError(f"start_date('{start}')가 end_date('{end}')보다 늦습니다.")
+        raise ResolutionError(f"start_date ('{start}') is after end_date ('{end}').")
     return ecos_to_canonical(start, freq), ecos_to_canonical(end, freq)
 
 
@@ -176,19 +192,19 @@ async def _default_ecos_cycle(client: EcosClient, stat_code: str | None) -> str 
 class SeriesSpec(BaseModel):
     """One series: a concept for a country, an ECOS table, or an OECD/IMF/BIS dataflow."""
 
-    indicator: str | None = Field(None, description="표준 개념 id 또는 이름 (예: 'CPI_YOY', '기준금리')")
-    country: str | None = Field(None, description="국가 ISO 코드 (기본값 KR)")
-    source: str | None = Field(None, description="ECOS | OECD | IMF | BIS (생략 시 우선순위대로)")
-    stat_code: str | None = Field(None, description="ECOS 통계표코드 (indicator 대신)")
-    cycle: str | None = Field(None, description="주기 A/S/Q/M/SM/D")
+    indicator: str | None = Field(None, description="Concept id or name (e.g. 'CPI_YOY', 'policy rate')")
+    country: str | None = Field(None, description="Economy: ISO code or EA for the euro area (required with indicator)")
+    source: str | None = Field(None, description="ECOS | OECD | IMF | BIS (default: catalog priority)")
+    stat_code: str | None = Field(None, description="ECOS table code (instead of indicator; Korea)")
+    cycle: str | None = Field(None, description="Frequency A/S/Q/M/SM/D")
     item_code1: str | None = None
     item_code2: str | None = None
     item_code3: str | None = None
     item_code4: str | None = None
-    dataflow: str | None = Field(None, description="SDMX 데이터플로 (예: 'BIS:WS_CBPOL(1.0)')")
-    key: str | None = Field(None, description="SDMX 시계열 키 (예: 'M.US')")
+    dataflow: str | None = Field(None, description="SDMX dataflow (e.g. 'BIS:WS_CBPOL(1.0)')")
+    key: str | None = Field(None, description="SDMX series key (e.g. 'M.US')")
     transform: str | None = Field(None, description="'yoy' | 'pop' | 'none'")
-    label: str | None = Field(None, description="결과에 표시할 이름")
+    label: str | None = Field(None, description="Name shown in the results")
 
 
 async def _resolve(service: StatService, spec: SeriesSpec, *, changes_only: bool | None = None) -> list[ResolvedSource]:
@@ -211,7 +227,7 @@ async def _resolve(service: StatService, spec: SeriesSpec, *, changes_only: bool
 
 # ── Tool 1: search ──────────────────────────────────────────────────
 
-@mcp.tool(title="통계 검색", annotations=READ_ONLY, structured_output=False)
+@mcp.tool(title="Search statistics", annotations=READ_ONLY, structured_output=False)
 async def search_statistics(
     ctx: Context,
     query: str | None = None,
@@ -222,27 +238,27 @@ async def search_statistics(
     limit: int = 20,
     language: str = "kr",
 ) -> str:
-    """표준 개념, ECOS 통계표·품목, OECD·IMF·BIS 데이터플로를 검색합니다. 조회 전 첫 단계입니다.
+    """Search concepts, OECD/IMF/BIS dataflows and Bank of Korea (ECOS) tables and items. The first step before retrieval.
 
     scope:
-    - "all"(기본값): concepts + ECOS items + ECOS tables + international dataflows
-    - "concepts": 여러 기관을 묶은 표준 개념 (get_data(indicator=...)로 바로 조회, 국가 지정 가능)
-    - "items": ECOS 세부 품목 (예: '쌀', '휘발유', '위안화') — 코드는 ECOS API에서 생성한 색인 기준
-    - "tables": ECOS 통계표 (query 없으면 parent_code 분류의 하위 항목)
-    - "dataflows": OECD·IMF·BIS 데이터플로 (영문 이름·id, 단어 모두 포함; source로 기관 제한)
-    - "key_statistics": 한국은행 100대 주요 경제지표 최신값
+    - "all" (default): concepts + ECOS items + ECOS tables + international dataflows
+    - "concepts": country-agnostic concepts mapped across institutions (retrieve with get_data(indicator=..., country=...))
+    - "items": ECOS items (e.g. '쌀' rice, '휘발유' gasoline) from an index generated from the ECOS API
+    - "tables": ECOS tables (without query: children of the parent_code category)
+    - "dataflows": OECD, IMF and BIS dataflows (every word must match the English name or id; source narrows the institution)
+    - "key_statistics": latest values of the Bank of Korea's 100 key statistics
 
     Args:
-        query: 검색어 (예: "물가", "policy rate", "unemployment", "쌀")
+        query: search terms (e.g. "policy rate", "unemployment", "inflation", "물가")
         scope: "all" | "concepts" | "items" | "tables" | "dataflows" | "key_statistics"
-        source: dataflows 검색 시 기관 제한 (OECD | IMF | BIS)
-        parent_code: ECOS 통계표 분류 코드
-        searchable_only: ECOS 통계표 검색 시 조회 가능한 표만
-        limit: 범주별 최대 결과 수
-        language: key_statistics 응답 언어
+        source: institution for dataflow search (OECD | IMF | BIS)
+        parent_code: ECOS table category code
+        searchable_only: ECOS tables that can be queried only
+        limit: maximum results per category
+        language: language of key_statistics ("kr" | "en")
 
     Returns:
-        범주별 검색 결과 (concepts, items, tables, dataflows, key_statistics)
+        results per category (concepts, items, tables, dataflows, key_statistics)
     """
     scope = _choice(scope, {"all", "concepts", "items", "tables", "dataflows", "key_statistics"}, "scope", "all")
     service = _service(ctx)
@@ -260,7 +276,7 @@ async def search_statistics(
         else:
             res = client.browse_statistic_tables(parent_code=parent_code)
             if parent_code and res["parent"] is None:
-                raise ToolError(f"ECOS 통계표 인덱스에 '{parent_code}' 코드가 없습니다.")
+                raise ToolError(f"No ECOS table category '{parent_code}'.")
         out["tables"] = {
             "total_matches": res["total_matches"],
             "data": _compact_rows(
@@ -269,7 +285,7 @@ async def search_statistics(
         }
     if scope in ("all", "dataflows") and text:
         if source and source.upper() not in SOURCES:
-            raise ToolError("dataflows 검색의 source는 OECD, IMF, BIS 중 하나입니다.")
+            raise ToolError("For dataflow search, source must be OECD, IMF or BIS.")
         out["dataflows"] = search_dataflows(text, provider=source, limit=limit)
     if scope == "key_statistics":
         res = await _guard(service.ecos_client.get_all_key_statistics(language=language))
@@ -292,7 +308,7 @@ async def search_statistics(
 
 # ── Tool 2: metadata ────────────────────────────────────────────────
 
-@mcp.tool(title="구조(메타데이터) 조회", annotations=READ_ONLY, structured_output=False)
+@mcp.tool(title="Get structure (metadata)", annotations=READ_ONLY, structured_output=False)
 async def get_metadata(
     ctx: Context,
     stat_code: str | None = None,
@@ -303,32 +319,33 @@ async def get_metadata(
     output_format: str = "compact",
     language: str = "kr",
 ) -> str:
-    """통계의 구조(차원·코드목록)를 조회해 get_data에 넣을 코드를 확인합니다.
+    """Return the structure (dimensions and codelists) of a dataset, to find the codes get_data needs.
 
-    - ECOS: stat_code 지정 → SDMX로 매핑한 구조 (FREQ + ITEM_CODE1~4, 수록기간·단위). output_format="sdmx" 가능
-    - OECD·IMF·BIS: source + dataflow 지정 → 기관이 발행한 실제 DSD의 차원과 코드목록.
-      시계열 키는 차원 순서대로 코드를 '.'로 이은 것입니다 (예: BIS WS_CBPOL → 'M.KR').
+    - OECD, IMF, BIS: source + dataflow → the dimensions and codelists of the institution's own DSD.
+      A series key is the codes joined with '.' in dimension order (e.g. BIS WS_CBPOL → 'M.US').
+    - ECOS: stat_code → the table's structure mapped to SDMX (FREQ + ITEM_CODE1..4, coverage, units).
+      output_format="sdmx" returns an SDMX-JSON structure message.
 
     Args:
-        stat_code: ECOS 통계표코드 (예: "901Y009")
-        source: OECD | IMF | BIS (dataflow와 함께)
-        dataflow: SDMX 데이터플로 (예: "BIS:WS_CBPOL(1.0)", "IMF.STA:CPI")
-        code_keyword: 코드 이름/값 필터 (예: "쌀", "Korea", "KOR")
-        codes_limit: 차원별 최대 코드 수 (기본값 30)
-        output_format: "compact" | "sdmx"(ECOS만)
-        language: "kr" | "en"
+        stat_code: ECOS table code (e.g. "901Y009")
+        source: OECD | IMF | BIS (with dataflow)
+        dataflow: SDMX dataflow (e.g. "BIS:WS_CBPOL(1.0)", "IMF.STA:CPI")
+        code_keyword: filter codes by name or value (e.g. "Japan", "JPN", "current account")
+        codes_limit: maximum codes per dimension (default 30)
+        output_format: "compact" | "sdmx" (ECOS only)
+        language: "kr" | "en" (ECOS names)
 
     Returns:
-        차원 목록, 차원별 코드, 키 예시
+        dimensions, codes per dimension, a key template
     """
     fmt = _choice(output_format, {"compact", "sdmx"}, "output_format", "compact")
     service = _service(ctx)
     if dataflow:
         provider = (source or "").upper()
         if provider not in SOURCES:
-            raise ToolError("dataflow 구조 조회에는 source를 OECD, IMF, BIS 중 하나로 지정하세요.")
+            raise ToolError("With dataflow, set source to OECD, IMF or BIS.")
         if fmt == "sdmx":
-            raise ToolError("SDMX 기관 데이터플로의 원본 구조는 structure_url에서 직접 받을 수 있습니다. compact를 사용하세요.")
+            raise ToolError("The original structure of an OECD/IMF/BIS dataflow is available at structure_url. Use output_format='compact'.")
         summary = await _guard(service.providers[provider].structure(dataflow.strip()))
         keyword = (code_keyword or "").strip().lower()
         for dim in summary["dimensions"]:
@@ -343,17 +360,17 @@ async def get_metadata(
         return dumps(summary)
 
     if not stat_code:
-        raise ToolError("stat_code(ECOS) 또는 source+dataflow(OECD·IMF·BIS)를 지정하세요.")
+        raise ToolError("Specify source + dataflow (OECD, IMF, BIS) or stat_code (ECOS).")
     client = service.ecos_client
     code = stat_code.strip()
     info = client.table_info(code)
     if info and info.get("SRCH_YN") == "N":
         raise ToolError(
-            f"'{code}'({info.get('STAT_NAME')})는 분류 항목입니다. search_statistics(scope='tables', parent_code='{code}')로 하위 통계표를 확인하세요."
+            f"'{code}' ({info.get('STAT_NAME')}) is a category. List its tables with search_statistics(scope='tables', parent_code='{code}')."
         )
     items = await _guard(client.list_all_statistic_items(code, language=language))
     if not items["rows"]:
-        raise ToolError(f"통계표 '{code}'의 항목을 찾을 수 없습니다. search_statistics로 코드를 확인하세요.")
+        raise ToolError(f"No items found for table '{code}'. Check the code with search_statistics.")
     stat_name = (info or {}).get("STAT_NAME") or items["rows"][0].get("STAT_NAME") or code
     structure = ecos_sdmx.build_table_structure(code, stat_name, items["rows"], complete=items["complete"])
     structure = ecos_sdmx.filter_structure(structure, code_keyword, max(1, codes_limit))
@@ -379,18 +396,18 @@ def _harmonize(loaded: LoadedSeries, rebase_period: str | None, unit_mult: int |
         return
     for series in loaded.series:
         if (series.unit or loaded.source.expected_unit) != "IX":
-            raise ResolutionError("rebase_period는 지수(IX) 시계열에만 쓸 수 있습니다.")
+            raise ResolutionError("rebase_period applies to index (IX) series only.")
         target = ecos_to_canonical(to_cycle(rebase_period, series.freq, "start"), series.freq)
         points = [(o.period, o.value) for o in series.observations]
         if target not in dict(points):
-            raise ResolutionError(f"재기준 시점 {target}의 값이 없습니다 (조회 기간 안의 시점을 지정하세요).")
+            raise ResolutionError(f"No value at the rebase period {target} (choose a period inside the requested window).")
         for obs, (_, value) in zip(series.observations, rebase_index(points, base_period=target)):
             obs.value = value
         series.base_period = target.replace("-", "")
-        series.provenance.transformations.append(f"rebase: {target}=100으로 재기준화")
+        series.provenance.transformations.append(f"rebase: {target}=100")
 
 
-@mcp.tool(title="시계열 조회(검증·출처 포함)", annotations=READ_ONLY, structured_output=False)
+@mcp.tool(title="Get data (validated, with provenance)", annotations=READ_ONLY, structured_output=False)
 async def get_data(
     ctx: Context,
     indicator: str | None = None,
@@ -418,45 +435,46 @@ async def get_data(
     end_count: int = 1000,
     language: str = "kr",
 ) -> str:
-    """시계열을 조회합니다. 모든 결과는 표준 모델로 변환되고, 검증(validation)과 출처(provenance)가 붙습니다.
+    """Retrieve a time series in the canonical model, with validation and provenance.
 
-    조회 방법 (셋 중 하나):
-    1. 표준 개념: indicator(+country, source, cycle) — 예: indicator="CPI_YOY", country="US"
-       한국은 ECOS 우선, 그 외 국가는 OECD·IMF·BIS. 첫 출처에 데이터가 없으면 다음 출처로 자동 전환
-    2. ECOS 통계표: stat_code(+cycle, item_code1~4)
-    3. SDMX 데이터플로: source(OECD|IMF|BIS) + dataflow + key + cycle
+    Three ways to ask (use one):
+    1. Concept: indicator + country (+ source, cycle), e.g. indicator="CPI_YOY", country="US".
+       Korea uses ECOS first; other economies OECD, IMF and BIS. If a source has no data, the next one is tried.
+    2. ECOS table (Korea): stat_code (+ cycle, item_code1..4)
+    3. SDMX dataflow: source (OECD | IMF | BIS) + dataflow + key + cycle
 
-    ★ validation: 국가·주기·단위(지수 기준)·배수·기간·결측·중복·개정을 검사합니다(pass/info/warn/fail)
-    ★ cross_validate=True: 같은 개념을 가진 모든 출처를 조회해 시점별 값·차이를 대조합니다(표준 개념만)
-    ★ 날짜: "2024", "2024-03", "2024Q1", "2024-03-15" 등 자동 변환. 생략 시 일별 3개월, 그 외 2년
-    ★ transform: "yoy"(전년동기비 %) / "pop"(전기비 %) — value가 증감률이 되고 원값은 level 열
-    ★ rebase_period: 지수를 해당 시점=100으로 재기준화 (예: "2020")
+    * validation: country, frequency, unit (and index base), scale, period, missing, duplicate and revision checks (pass/info/warn/fail)
+    * cross_validate=True: fetch the concept from every source and compare period by period;
+      the result is MATCH, DIFFER (documented cause) or UNRESOLVED (unexplained difference)
+    * dates: "2024", "2024-03", "2024Q1", "2024-03-15" are converted; default window 3 months for daily data, else 2 years
+    * transform: "yoy" / "pop" % change — value becomes the change and the level is kept
+    * rebase_period: rebase an index to that period = 100 (e.g. "2020")
 
     Args:
-        indicator: 표준 개념 id/이름 (search_statistics(scope="concepts")로 확인)
-        country: 국가 ISO 코드 (표준 개념 조회 시 기본값 KR; SDMX 직접 조회 시 지정하면 국가 검증에 사용)
+        indicator: concept id or name (see search_statistics(scope="concepts"))
+        country: economy, ISO code or EA (required with indicator; with a direct SDMX query it enables the country check)
         source: ECOS | OECD | IMF | BIS
-        stat_code: ECOS 통계표코드
-        cycle: 주기 A/S/Q/M/SM/D
-        item_code1~4: ECOS 항목코드
-        dataflow: SDMX 데이터플로 (예: "OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0)")
-        key: SDMX 시계열 키 (예: "USA.M.IRLT.PA._Z._Z._Z._Z.N")
-        start_date: 시작 시점
-        end_date: 종료 시점
-        recent_years: 날짜 생략 시 기간
+        stat_code: ECOS table code
+        cycle: frequency A/S/Q/M/SM/D
+        item_code1..4: ECOS item codes
+        dataflow: SDMX dataflow (e.g. "OECD.SDD.STES:DSD_STES@DF_FINMARK(4.0)")
+        key: SDMX series key (e.g. "USA.M.IRLT.PA._Z._Z._Z._Z.N")
+        start_date: start period
+        end_date: end period
+        recent_years: window when dates are omitted
         transform: "yoy" | "pop" | "none"
-        changes_only: 값이 바뀐 시점만 표시 (기준금리 개념은 기본 적용)
-        rebase_period: 지수 재기준 시점
-        unit_mult: 값의 배수를 10^unit_mult 단위로 환산 (예: 십억원(9) 시계열에 12 → 조 단위)
-        cross_validate: 기관 간 교차검증 결과 포함
+        changes_only: only periods where the value changed (default for policy rates)
+        rebase_period: index rebase period
+        unit_mult: rescale values to 10^unit_mult (e.g. 12 turns a billions (9) series into trillions)
+        cross_validate: include cross-validation across institutions
         output_format: "compact" | "csv" | "json" | "sdmx"
-        prefer_latest: ECOS 결과가 잘릴 때 최신 구간 우선
-        start_count: ECOS 조회 시작 순번
-        end_count: ECOS 조회 끝 순번
-        language: "kr" | "en"
+        prefer_latest: when ECOS results are truncated, keep the latest periods
+        start_count: ECOS first row
+        end_count: ECOS last row
+        language: "kr" | "en" (ECOS names)
 
     Returns:
-        series(시점·값), provenance(출처·인용문), validation(검증 결과), 선택 시 cross_validation
+        series (periods and values), provenance (source and citation), validation, and optionally cross_validation
     """
     fmt = _choice(output_format, FORMATS, "output_format", "compact")
     service = _service(ctx)
@@ -479,7 +497,7 @@ async def get_data(
         _harmonize(loaded, rebase_period, unit_mult)
         src = loaded.source
         header: dict[str, Any] = {
-            "concept": {"id": src.concept.id, "name": src.concept.name_ko} if src.concept else None,
+            "concept": _concept_header(src),
             "country": src.country.iso2 if src.country else None,
             "source": src.describe(),
             "start_date": loaded.start,
@@ -490,7 +508,7 @@ async def get_data(
         extra = None
         if cross_validate:
             if not (src.concept and src.country):
-                raise ResolutionError("cross_validate는 표준 개념(indicator)으로 조회할 때만 쓸 수 있습니다.")
+                raise ResolutionError("cross_validate requires a concept query (indicator + country).")
             result = await service.cross_check(
                 src.concept, src.country, lambda s: _date_window(s.freq, start_date, end_date, recent_years)
             )
@@ -511,7 +529,7 @@ async def get_data(
 
 # ── Tool 4: compare ─────────────────────────────────────────────────
 
-@mcp.tool(title="시계열 비교·교차검증", annotations=READ_ONLY, structured_output=False)
+@mcp.tool(title="Compare series and cross-validate", annotations=READ_ONLY, structured_output=False)
 async def compare_series(
     ctx: Context,
     series: list[SeriesSpec],
@@ -519,36 +537,37 @@ async def compare_series(
     end_date: str | None = None,
     recent_years: int = 3,
     frequency: str | None = None,
-    aggregation: str = "mean",
+    aggregation: str | None = None,
     normalize_method: str = "none",
     join: str = "inner",
     output_format: str = "compact",
 ) -> str:
-    """여러 시계열(2~6개)을 같은 주기로 맞춰 비교합니다. 국가 간·기관 간·지표 간 비교 모두 가능합니다.
+    """Align 2-6 series to one frequency and compare them: across economies, institutions or concepts.
 
-    예:
-    - 국가 비교: [{"indicator":"POLICY_RATE","country":"KR"}, {"indicator":"POLICY_RATE","country":"US"}]
-    - 기관 대조: [{"indicator":"CPI","source":"ECOS"}, {"indicator":"CPI","source":"IMF"}]
-      → 같은 개념·국가를 다른 기관에서 가져오면 cross_validation(시점별 값·차이)이 자동 포함됩니다
-    - 지표 관계: [{"indicator":"POLICY_RATE"}, {"indicator":"CPI_YOY"}]
+    Examples:
+    - economies: [{"indicator":"POLICY_RATE","country":"US"}, {"indicator":"POLICY_RATE","country":"EA"}]
+    - institutions: [{"indicator":"CPI","country":"CN","source":"IMF"}, {"indicator":"CPI","country":"CN","source":"BIS"}]
+      → the same concept and economy from different institutions adds cross_validation automatically
+    - concepts: [{"indicator":"POLICY_RATE","country":"GB"}, {"indicator":"CPI_YOY","country":"GB"}]
 
     Args:
-        series: 계열 목록 (각 항목: indicator/country/source 또는 stat_code/... 또는 source/dataflow/key/cycle)
-        start_date: 시작 시점 (생략 시 최근 recent_years년)
-        end_date: 종료 시점
-        recent_years: 기간 (기본값 3)
-        frequency: 비교 주기 (생략 시 가장 낮은 빈도)
-        aggregation: "mean" | "last" | "first" | "sum"
-        normalize_method: "none" | "index"(첫 시점=100) | "zscore"
+        series: list of series (indicator/country/source, or stat_code/..., or source/dataflow/key/cycle)
+        start_date: start period (default: the last recent_years years)
+        end_date: end period
+        recent_years: window (default 3)
+        frequency: comparison frequency (default: the lowest one)
+        aggregation: "mean" | "last" | "first" | "sum" (default per concept: flows such as the current account
+            or GDP are summed, stocks such as reserves take the period end, everything else is averaged)
+        normalize_method: "none" | "index" (first period = 100) | "zscore"
         join: "inner" | "outer"
         output_format: "compact" | "csv"
 
     Returns:
-        정렬된 비교표, 상관계수, 계열별 출처·검증, 해당 시 교차검증 결과
+        the aligned table, correlations, provenance and validation per series, and cross-validation where it applies
     """
     if not 2 <= len(series) <= 6:
-        raise ToolError("series는 2~6개를 지정하세요.")
-    how = _choice(aggregation, AGGREGATIONS, "aggregation", "mean")
+        raise ToolError("Specify 2 to 6 series.")
+    how = _choice(aggregation, AGGREGATIONS, "aggregation", "mean") if aggregation else None
     norm = _choice(normalize_method, NORMALIZATIONS, "normalize_method", "none")
     join_how = _choice(join, {"inner", "outer"}, "join", "inner")
     fmt = _choice(output_format, {"compact", "csv"}, "output_format", "compact")
@@ -560,11 +579,11 @@ async def compare_series(
         # Prefer sources already at the comparison frequency (e.g. monthly policy rate over daily).
         candidate_lists = [sorted(c, key=lambda src: src.freq != target) for c in candidate_lists]
         if target not in VALID_CYCLES:
-            raise ResolutionError(f"유효하지 않은 frequency입니다: '{frequency}'.")
+            raise ResolutionError(f"Invalid frequency '{frequency}'.")
         for c in candidate_lists:
             if not can_convert(c[0].freq, target):
                 raise ResolutionError(
-                    f"주기 {c[0].freq}를 더 높은 빈도 {target}로 변환할 수 없습니다. frequency를 생략하거나 더 낮은 빈도를 지정하세요."
+                    f"Cannot convert frequency {c[0].freq} to the higher frequency {target}. Omit frequency or choose a lower one."
                 )
         window_start, window_end = _date_window(target, start_date, end_date, recent_years)
         ecos_start, ecos_end = to_ecos_period(window_start, target), to_ecos_period(window_end, target)
@@ -583,10 +602,11 @@ async def compare_series(
         for spec, loaded in zip(series, loaded_list):
             if len(loaded.series) > 1:
                 names = ", ".join(s.title for s in loaded.series[:4])
-                raise ResolutionError(f"'{spec.label or spec.indicator or spec.stat_code or spec.dataflow}'가 여러 계열을 반환합니다({names}). 코드를 더 지정하세요.")
+                raise ResolutionError(f"'{spec.label or spec.indicator or spec.stat_code or spec.dataflow}' returns several series ({names}). Specify more codes.")
             s = loaded.series[0]
             points = [(to_ecos_period(p, s.freq), v) for p, v in s.points()]
-            points = convert_frequency(points, s.freq, target, how)
+            series_how = how or (loaded.source.concept.aggregation if loaded.source.concept else "mean")
+            points = convert_frequency(points, s.freq, target, series_how)
             points = normalize([(ecos_to_canonical(p, target), v) for p, v in points], norm)
             label = spec.label or (
                 f"{loaded.source.concept.id}:{s.ref_area}:{s.provider}" if loaded.source.concept else s.title
@@ -602,6 +622,7 @@ async def compare_series(
                     "country": s.ref_area,
                     "unit": s.unit or loaded.source.expected_unit,
                     "source_freq": s.freq,
+                    **({"aggregation": series_how} if s.freq != target else {}),
                     "validation": loaded.reports[0].compact()["status"],
                     "citation": s.provenance.citation(s.title),
                 }
@@ -610,7 +631,7 @@ async def compare_series(
         table = align(converted, join_how)
         out: dict[str, Any] = {
             "frequency": target,
-            "aggregation": how,
+            "aggregation": how or "concept_default",
             "start_date": window_start,
             "end_date": window_end,
             **({"normalize": norm} if norm != "none" else {}),
@@ -632,6 +653,7 @@ async def compare_series(
                         concept_id=concept_id,
                         country=country_code,
                         unit=group[0].source.concept.unit,
+                        aggregation=group[0].source.concept.aggregation,
                         ledger=service.ledger,
                     )
                 )
@@ -640,7 +662,7 @@ async def compare_series(
 
         if fmt == "csv":
             buffer = io.StringIO()
-            buffer.write(f"# frequency: {target}, aggregation: {how}\n")
+            buffer.write(f"# frequency: {target}, aggregation: {how or 'concept_default'}\n")
             for pair, stats in out["correlation"].items():
                 buffer.write(f"# corr {pair}: r={stats['r']} (n={stats['n']})\n")
             for i in info:
@@ -656,7 +678,7 @@ async def compare_series(
 
 # ── Tool 5: statistics ──────────────────────────────────────────────
 
-@mcp.tool(title="기술통계·추세 계산", annotations=READ_ONLY, structured_output=False)
+@mcp.tool(title="Calculate statistics", annotations=READ_ONLY, structured_output=False)
 async def calculate_statistics(
     ctx: Context,
     indicator: str | None = None,
@@ -674,27 +696,27 @@ async def calculate_statistics(
     end_date: str | None = None,
     recent_years: int | None = None,
 ) -> str:
-    """시계열의 요약통계를 계산합니다 (get_data와 같은 방식으로 대상을 지정).
+    """Summary statistics of a series (addressed the same way as get_data).
 
-    계열별: count, first/last, min/max(시점), mean, median, std, change/change_pct, cagr_pct,
-    trend_per_year/trend_r2, latest_pop_pct·pop_pct_std, max_drawdown_pct, latest_yoy_pct·mean_yoy_pct.
-    검증 결과와 출처가 함께 반환됩니다.
+    Per series: count, first/last, min/max (with periods), mean, median, std, change/change_pct, cagr_pct,
+    trend_per_year/trend_r2, latest_pop_pct, pop_pct_std, max_drawdown_pct, latest_yoy_pct, mean_yoy_pct.
+    Rates (interest rates, inflation) change in percentage points. Validation and provenance are included.
 
     Args:
-        indicator: 표준 개념 id/이름
-        country: 국가 ISO 코드 (표준 개념 조회 시 기본값 KR)
+        indicator: concept id or name
+        country: economy, ISO code or EA (required with indicator)
         source: ECOS | OECD | IMF | BIS
-        stat_code: ECOS 통계표코드
-        cycle: 주기
-        item_code1~4: ECOS 항목코드
-        dataflow: SDMX 데이터플로
-        key: SDMX 시계열 키
-        start_date: 시작 시점
-        end_date: 종료 시점
-        recent_years: 기간
+        stat_code: ECOS table code
+        cycle: frequency
+        item_code1..4: ECOS item codes
+        dataflow: SDMX dataflow
+        key: SDMX series key
+        start_date: start period
+        end_date: end period
+        recent_years: window
 
     Returns:
-        계열별 요약통계, 검증 상태, 출처
+        statistics, validation status and provenance per series
     """
     service = _service(ctx)
     spec = SeriesSpec(
@@ -735,7 +757,7 @@ async def calculate_statistics(
                 "citation": s.provenance.citation(s.title),
             }
             if is_rate:
-                entry["note_units"] = "비율 지표라 변화는 %p(퍼센트포인트)로 계산했습니다"
+                entry["note_units"] = "rate series: changes are in percentage points"
             if s.truncated:
                 entry["truncated"] = True
             if s.notes:
@@ -744,7 +766,7 @@ async def calculate_statistics(
         src = loaded.source
         return dumps(
             {
-                "concept": {"id": src.concept.id, "name": src.concept.name_ko} if src.concept else None,
+                "concept": _concept_header(src),
                 "source": src.describe(),
                 "start_date": loaded.start,
                 "end_date": loaded.end,
@@ -757,6 +779,11 @@ async def calculate_statistics(
 
 # ── Tool 6: explain ─────────────────────────────────────────────────
 
+def _concept_header(src: ResolvedSource) -> dict[str, Any] | None:
+    c = src.concept
+    return {"id": c.id, "name": c.name_en, "name_ko": c.name_ko} if c else None
+
+
 def _meta_candidates(term: str, table_name: str | None) -> list[str]:
     names = [term.strip()]
     if table_name:
@@ -765,33 +792,33 @@ def _meta_candidates(term: str, table_name: str | None) -> list[str]:
     return list(dict.fromkeys(n for n in names if n))[:3]
 
 
-@mcp.tool(title="지표 설명", annotations=READ_ONLY, structured_output=False)
+@mcp.tool(title="Explain indicator", annotations=READ_ONLY, structured_output=False)
 async def explain_indicator(
     ctx: Context,
     term: str,
-    country: str = "KR",
+    country: str | None = None,
     stat_code: str | None = None,
     language: str = "kr",
 ) -> str:
-    """지표의 뜻과 측정 방식, 국가별로 쓸 수 있는 출처(기관·데이터플로·키)를 설명합니다.
+    """Explain what an indicator measures and which sources (institution, dataflow, key) serve each economy.
 
-    표준 개념 정의(한/영), 개념의 출처 매핑과 국가별 키, 한국은행 통계용어사전 정의와
-    통계 설명자료(작성기관·작성방법), 관련 ECOS 통계표를 한 번에 반환합니다.
+    Returns the concept definition, its source mappings with rendered keys, and for Korean statistics the
+    Bank of Korea glossary definition, methodology notes and related ECOS tables.
 
     Args:
-        term: 지표·용어 (예: "CPI_YOY", "기준금리", "경제심리지수", "unemployment")
-        country: 출처 키를 보여줄 국가 (기본값 KR)
-        stat_code: 특정 ECOS 통계표를 설명할 때
-        language: "kr" | "en"
+        term: indicator or term (e.g. "CPI_YOY", "policy rate", "unemployment", "경제심리지수")
+        country: economy whose sources to show (default: every verified economy)
+        stat_code: a specific ECOS table to explain
+        language: "kr" | "en" (Bank of Korea glossary and methodology)
 
     Returns:
-        concept(정의·단위·출처), definition(용어사전), methodology(설명자료), tables
+        concept (definition, unit, sources), sources per economy, definition (glossary), methodology, tables
     """
     service = _service(ctx)
     client = service.ecos_client
     term = term.strip()
     if not term:
-        raise ToolError("term을 입력하세요.")
+        raise ToolError("term is required.")
     out: dict[str, Any] = {"term": term}
 
     concept = find_concept(term)
@@ -801,19 +828,25 @@ async def explain_indicator(
         raise ToolError(str(e)) from e
     if concept:
         out["concept"] = concept.to_dict()
-        if ctry:
-            out["sources_for_country"] = [
+
+        def sources(c: Country) -> list[dict[str, Any]]:
+            return [
                 {
                     "provider": m.provider,
                     "dataflow": m.dataflow,
                     "dataflow_name": dataflow_name(m.provider, m.dataflow) if m.provider != "ECOS" else None,
-                    "key": m.render_key(ctry),
+                    "key": m.render_key(c),
                     "freq": m.freq,
                     "unit": m.unit,
                     **({"transform": m.transform} if m.transform else {}),
                 }
-                for m in concept.sources_for(ctry)
+                for m in concept.sources_for(c)
             ]
+
+        if ctry:
+            out["sources_for_country"] = sources(ctry)
+        else:
+            out["sources_by_country"] = {c: sources(get_country(c)) for c in DEFAULT_COUNTRIES}
     tables = client.search_statistic_tables(term, searchable_only=True, limit=5)["rows"] if not concept or (ctry and ctry.iso2 == "KR") else []
     ecos_code = (stat_code or "").strip() or (
         next((m.dataflow for m in concept.sources if m.provider == "ECOS"), None) if concept else None
@@ -852,7 +885,7 @@ async def explain_indicator(
     if tables:
         out["tables"] = _compact_rows([{k: t.get(k) for k in ("STAT_CODE", "STAT_NAME", "CYCLE")} for t in tables])
     if len(out) == 1:
-        raise ToolError(f"'{term}'에 대한 정보를 찾지 못했습니다. search_statistics로 다른 검색어를 시도하세요.")
+        raise ToolError(f"Nothing found for '{term}'. Try other terms with search_statistics.")
     return dumps(out)
 
 
@@ -860,22 +893,25 @@ async def explain_indicator(
 
 @mcp.resource("gesm://concepts")
 def concepts_resource() -> str:
-    """Concept Catalog: 표준 개념과 기관별 출처 매핑(키 템플릿·단위·기준)."""
+    """Concept Catalog: concepts and their source mappings (key templates, units, base periods)."""
     return dumps({"concepts": [c.to_dict() for c in CONCEPTS]})
 
 
 @mcp.resource("gesm://countries")
 def countries_resource() -> str:
-    """키 템플릿에 쓰이는 국가 코드(ISO2/ISO3/통화)."""
-    return dumps({"countries": [c.__dict__ for c in all_countries()]})
+    """Economies: ISO codes, currencies, provider area codes, and the default set re-verified against the live APIs."""
+    countries = [
+        {**c.__dict__, "provider_codes": dict(c.provider_codes), "verified": c.iso2 in DEFAULT_COUNTRIES} for c in all_countries()
+    ]
+    return dumps({"default_countries": list(DEFAULT_COUNTRIES), "countries": countries})
 
 
 @mcp.resource("gesm://providers")
 def providers_resource() -> str:
-    """연동 기관(ECOS, OECD, IMF, BIS)의 엔드포인트와 형식."""
+    """Institutions (ECOS, OECD, IMF, BIS): endpoints and formats."""
     return dumps(
         {
-            "ECOS": {"endpoint": "https://ecos.bok.or.kr/api", "format": "ECOS REST JSON (SDMX 미제공 → 서버에서 SDMX 개념으로 매핑)", "key": "ECOS_API_KEY"},
+            "ECOS": {"endpoint": "https://ecos.bok.or.kr/api", "format": "ECOS REST JSON (no SDMX endpoint; mapped to SDMX concepts by this server)", "key": "ECOS_API_KEY"},
             **{
                 k: {"endpoint": v.data_base, "structure": v.structure_base, "sdmx_api": v.api, "format": v.data_accept, "attribution": v.attribution}
                 for k, v in SOURCES.items()
@@ -886,57 +922,60 @@ def providers_resource() -> str:
 
 @mcp.resource("gesm://validation/summary")
 def validation_summary_resource() -> str:
-    """검증 원장(ledger)에 쌓인 기관 간 교차검증 결과의 일치율 요약."""
+    """Validation ledger: agreement between institutions per concept, economy and provider pair (retention window) and the latest status."""
     return dumps(ValidationLedger().summary())
 
 
 @mcp.resource("gesm://sdmx/ecos-conventions", mime_type="text/plain")
 def sdmx_conventions_resource() -> str:
-    """ECOS → SDMX 매핑 규칙."""
+    """ECOS → SDMX mapping conventions."""
     return ecos_sdmx.__doc__ or ""
 
 
 @mcp.resource("gesm://date-format-guide")
 def date_format_guide_resource() -> str:
-    """주기별 날짜 형식."""
-    return dumps({"cycles": CYCLE_DESCRIPTIONS, "note": "'2024', '2024-03', '2024Q1', '2024-03-15' 등은 자동 변환됩니다."})
+    """Date formats per frequency."""
+    return dumps({"cycles": CYCLE_DESCRIPTIONS, "note": "'2024', '2024-03', '2024Q1' and '2024-03-15' are converted automatically."})
 
 
 # ── Prompts ─────────────────────────────────────────────────────────
 
 @mcp.prompt(name="macro-economic-briefing")
-def macro_economic_briefing(country: str = "KR") -> str:
-    """국가 거시경제 브리핑."""
+def macro_economic_briefing(country: str) -> str:
+    """Evidence-based macroeconomic briefing for one economy."""
     return (
-        f"{country}의 거시경제 현황을 근거 기반으로 브리핑해주세요.\n"
-        f"1. calculate_statistics로 GDP_REAL_GROWTH_QOQ, CPI_YOY, POLICY_RATE, UNEMPLOYMENT_RATE_SA를 country='{country}'로 요약합니다.\n"
-        "2. 각 응답의 validation 상태를 확인하고, warn/fail이 있으면 보고서에 명시합니다.\n"
-        f"3. get_data(indicator='CPI_YOY', country='{country}', cross_validate=True)로 기관 간 일치 여부를 확인합니다.\n"
-        "4. 모든 수치 옆에 provenance의 citation(기관·데이터셋·조회시각)을 붙여 보고서를 작성하세요."
+        f"Write an evidence-based macroeconomic briefing for {country}.\n"
+        f"1. Summarise GDP_REAL_GROWTH_QOQ, CPI_YOY, POLICY_RATE, UNEMPLOYMENT_RATE_SA and CURRENT_ACCOUNT with "
+        f"calculate_statistics(country='{country}'). Skip concepts with no source (e.g. China's unemployment rate) and say so.\n"
+        "2. Check each response's validation status and state any warn or fail in the briefing.\n"
+        f"3. Check agreement between institutions with get_data(indicator='CPI_YOY', country='{country}', cross_validate=True); "
+        "report DIFFER and UNRESOLVED results rather than choosing one number.\n"
+        "4. Put the provenance citation (institution, dataset, retrieval time) next to every number."
     )
 
 
 @mcp.prompt(name="compare-countries")
-def compare_countries(indicator: str = "POLICY_RATE", countries: str = "KR,US,JP") -> str:
-    """여러 국가의 같은 지표 비교."""
+def compare_countries(indicator: str = "POLICY_RATE", countries: str = ",".join(DEFAULT_COUNTRIES)) -> str:
+    """Compare one indicator across economies."""
     items = ", ".join(f'{{"indicator":"{indicator}","country":"{c.strip()}"}}' for c in countries.split(","))
     return (
-        f"{countries} 국가들의 {indicator}를 비교 분석해주세요.\n"
-        f"1. explain_indicator(term='{indicator}')로 개념과 국가별 출처를 확인합니다.\n"
-        f"2. compare_series(series=[{items}])로 같은 주기로 맞춰 비교합니다.\n"
-        "3. 기관·기준시점·계절조정 차이와 validation 결과를 짚고, 출처를 인용해 결론을 제시하세요."
+        f"Compare {indicator} across {countries}.\n"
+        f"1. Check the concept and each economy's sources with explain_indicator(term='{indicator}').\n"
+        f"2. Align them with compare_series(series=[{items}]).\n"
+        "3. Point out differences in institution, base period and seasonal adjustment and the validation results, "
+        "then conclude with citations."
     )
 
 
 @mcp.prompt(name="analyze-economic-trend")
-def analyze_economic_trend(indicator_name: str = "CPI", country: str = "KR") -> str:
-    """특정 지표의 추이 분석."""
+def analyze_economic_trend(indicator_name: str, country: str) -> str:
+    """Trend analysis of one indicator for one economy."""
     return (
-        f"{country}의 '{indicator_name}' 추이를 분석해주세요.\n"
-        f"1. explain_indicator(term='{indicator_name}', country='{country}')로 정의와 출처를 확인합니다.\n"
-        f"2. get_data(indicator='{indicator_name}', country='{country}', recent_years=3)로 조회하고 validation을 확인합니다.\n"
-        f"3. calculate_statistics로 변화율·추세·변동성을 계산합니다.\n"
-        "4. 변곡점과 배경, 시사점을 설명하고 수치마다 citation을 붙이세요."
+        f"Analyse the trend of '{indicator_name}' in {country}.\n"
+        f"1. Check the definition and sources with explain_indicator(term='{indicator_name}', country='{country}').\n"
+        f"2. Retrieve it with get_data(indicator='{indicator_name}', country='{country}', recent_years=3) and check validation.\n"
+        "3. Compute changes, trend and volatility with calculate_statistics.\n"
+        "4. Explain turning points, their background and implications, citing every number."
     )
 
 
@@ -948,14 +987,14 @@ def _mask_key(key: str) -> str:
 
 async def run_health_check() -> int:
     print("=" * 65)
-    print(f"🩺 Global Economic Statistical MCP {__version__} — 자가 진단")
+    print(f"🩺 Global Economic Statistical MCP {__version__} — self-check")
     print("=" * 65)
     print(f"\n[1/3] Python {sys.version.split()[0]} ({sys.platform})")
     if ECOS_API_KEY == SAMPLE_API_KEY:
-        print("[2/3] ECOS 키: ⚠️ sample 키 (1회 10건 제한) — 정식 키: https://ecos.bok.or.kr/api/#/")
+        print("[2/3] ECOS key: ⚠️ sample key (10 rows per call) — register at https://ecos.bok.or.kr/api/#/")
     else:
-        print(f"[2/3] ECOS 키: ✅ 설정됨 ({_mask_key(ECOS_API_KEY)})")
-    print("\n[3/3] 공급자 연결 확인 (각 1건 조회)...")
+        print(f"[2/3] ECOS key: ✅ set ({_mask_key(ECOS_API_KEY)})")
+    print("\n[3/3] Provider connectivity (one request each)...")
     service = StatService()
     failures = 0
     probes = [("ECOS", "POLICY_RATE", "KR"), ("BIS", "POLICY_RATE", "US"), ("IMF", "CPI", "US"), ("OECD", "LONG_TERM_RATE", "US")]
@@ -965,14 +1004,14 @@ async def run_health_check() -> int:
                 candidates = service.resolve(indicator=concept, country=country, source=provider, freq="M")
                 loaded = await service.load(candidates[0], *_date_window("M", None, None, 1), record=False)
                 last = loaded.series[0].observations[-1] if loaded.series and loaded.series[0].observations else None
-                print(f"  ✅ {provider:4} {concept}({country}) 최신 {last.period if last else '-'} = {last.value if last else '-'}")
+                print(f"  ✅ {provider:4} {concept}({country}) latest {last.period if last else '-'} = {last.value if last else '-'}")
             except Exception as e:  # noqa: BLE001 - diagnostics report every failure
                 failures += 1
                 print(f"  ❌ {provider:4} {concept}({country}): {e}")
     finally:
         await service.close()
     print("\n" + "=" * 65)
-    print("🎉 모든 진단을 통과했습니다." if not failures else f"⚠️ {failures}개 공급자 연결에 실패했습니다.")
+    print("🎉 All checks passed." if not failures else f"⚠️ {failures} provider(s) failed.")
     print("=" * 65)
     return 1 if failures else 0
 
@@ -980,10 +1019,10 @@ async def run_health_check() -> int:
 def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(
         prog="global-economic-statistical-mcp",
-        description="ECOS + OECD·IMF·BIS(SDMX) 거시경제 통계 MCP 서버. 옵션 없이 실행하면 stdio MCP 서버로 동작합니다.",
-        epilog="ECOS API 키는 ECOS_API_KEY 환경변수로 설정합니다 (미설정 시 sample 키). OECD·IMF·BIS는 키가 필요 없습니다.",
+        description="Global Economic Statistical MCP server (Bank of Korea ECOS, OECD, IMF, BIS). Without options it runs as a stdio MCP server.",
+        epilog="Set the ECOS key in ECOS_API_KEY (the sample key is used otherwise). OECD, IMF and BIS need no key.",
     )
-    parser.add_argument("--check", "-c", action="store_true", help="API 키와 공급자 연결을 진단하고 종료합니다")
+    parser.add_argument("--check", "-c", action="store_true", help="check the API key and provider connectivity, then exit")
     parser.add_argument("--version", "-V", action="version", version=f"%(prog)s {__version__}")
     args = parser.parse_args(argv)
     if args.check:
