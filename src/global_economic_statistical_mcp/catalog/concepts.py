@@ -154,10 +154,15 @@ CONCEPTS: tuple[Concept, ...] = (
         synonyms=("기준금리", "정책금리", "금리", "policy rate", "base rate", "central bank rate", "bok rate", "fed funds", "ecb rate", "bank rate"),
         aliases=("base_rate", "BOK_BASE_RATE"),
         sources=(
-            _ecos("722Y001", "0101000", "D", "PC_PA", changes_only=True, note="한국은행 기준금리(일별, 변경 시점만)"),
-            _ecos("722Y001", "0101000", "M", "PC_PA", note="한국은행 기준금리(월)"),
-            SourceMapping("BIS", BIS_CBPOL, "M.{ISO2}", "M", "PC_PA", note="BIS central bank policy rates (monthly)"),
-            SourceMapping("BIS", BIS_CBPOL, "D.{ISO2}", "D", "PC_PA", note="BIS central bank policy rates (daily)"),
+            _ecos("722Y001", "0101000", "D", "PC_PA", changes_only=True, note="Bank of Korea Base Rate (daily, change dates only)"),
+            _ecos("722Y001", "0101000", "M", "PC_PA", note="Bank of Korea Base Rate (monthly)"),
+            # BIS publishes the euro area (XM), not its member states.
+            SourceMapping(
+                "BIS", BIS_CBPOL, "M.{ISO2}", "M", "PC_PA", excludes=EURO[1:], note="BIS central bank policy rates (monthly)"
+            ),
+            SourceMapping(
+                "BIS", BIS_CBPOL, "D.{ISO2}", "D", "PC_PA", excludes=EURO[1:], note="BIS central bank policy rates (daily)"
+            ),
             SourceMapping(
                 "ECB", ECB_FM, "D.{ISO2}.EUR.4F.KR.DFR.LEV", "D", "PC_PA", countries=("EA",), changes_only=True,
                 note="ECB deposit facility rate",
@@ -175,7 +180,7 @@ CONCEPTS: tuple[Concept, ...] = (
         synonyms=("장기금리", "국채10년", "국고채10년", "10년물", "long term rate", "10y yield", "bond yield 10y"),
         aliases=("BOND_KTB_10Y",),
         sources=(
-            _ecos("721Y001", "5050000", "M", "PC_PA", note="국고채(10년) 월평균"),
+            _ecos("721Y001", "5050000", "M", "PC_PA", note="10-year Korea Treasury Bond, monthly average"),
             SourceMapping("OECD", OECD_FINMARK, "{ISO3}.M.IRLT.PA._Z._Z._Z._Z.N", "M", "PC_PA"),
             SourceMapping(
                 "ECB", ECB_IRS, "M.{ISO2}.L.L40.CI.0000.EUR.N.Z", "M", "PC_PA", countries=EURO,
@@ -193,7 +198,7 @@ CONCEPTS: tuple[Concept, ...] = (
         description_en="3-month money market rate, monthly average; for Korea the 91-day CD rate.",
         synonyms=("단기금리", "CD금리", "CD91일", "3개월금리", "short term rate", "3m rate", "interbank rate"),
         sources=(
-            _ecos("721Y001", "2010000", "M", "PC_PA", note="CD(91일) 월평균"),
+            _ecos("721Y001", "2010000", "M", "PC_PA", note="91-day CD rate, monthly average"),
             SourceMapping("OECD", OECD_FINMARK, "{ISO3}.M.IR3TIB.PA._Z._Z._Z._Z.N", "M", "PC_PA"),
             SourceMapping(
                 "ECB", ECB_FM, "M.{ISO2}.EUR.RT.MM.EURIBOR3MD_.HSTA", "M", "PC_PA", countries=("EA",), note="3-month Euribor"
@@ -211,8 +216,8 @@ CONCEPTS: tuple[Concept, ...] = (
         synonyms=("국고채", "국고채3년", "채권금리", "시장금리", "ktb3y", "treasury 3y", "국고채월평균"),
         aliases=("treasury_3y", "treasury_3y_monthly", "BOND_KTB_3Y_DAILY", "BOND_KTB_3Y_MONTHLY"),
         sources=(
-            _ecos("817Y002", "010200000", "D", "PC_PA", note="일별"),
-            _ecos("721Y001", "5020000", "M", "PC_PA", note="월평균"),
+            _ecos("817Y002", "010200000", "D", "PC_PA", note="daily"),
+            _ecos("721Y001", "5020000", "M", "PC_PA", note="monthly average"),
         ),
     ),
     # ── Prices ──────────────────────────────────────────────────────
@@ -229,7 +234,7 @@ CONCEPTS: tuple[Concept, ...] = (
         sources=(
             _ecos("901Y009", "0", "M", "IX", base_period="2020"),
             SourceMapping(
-                "IMF", IMF_CPI, "{ISO3}.CPI._T.IX.M", "M", "IX", excludes=("EA",), note="기준연도는 국가마다 다름(한국 2020, 미국 2010)"
+                "IMF", IMF_CPI, "{ISO3}.CPI._T.IX.M", "M", "IX", excludes=("EA",), note="base year differs by country (KR 2020, US 2010)"
             ),
             SourceMapping(
                 "EUROSTAT", ESTAT_HICP, "M.I25.TOTAL.{ISO2}", "M", "IX", base_period="2025", countries=EU_AREAS,
@@ -371,7 +376,7 @@ CONCEPTS: tuple[Concept, ...] = (
         synonyms=("실업률", "unemployment", "unemployment rate", "jobless rate"),
         aliases=("LABOR_UNEMPLOYMENT_RATE",),
         sources=(
-            _ecos("901Y027", "I61BC.I28A", "M", "PC", adjustment="NSA", note="실업률 원계열"),
+            _ecos("901Y027", "I61BC.I28A", "M", "PC", adjustment="NSA", note="not seasonally adjusted"),
             SourceMapping(
                 "OECD", OECD_UNEMP, "{ISO3}.UNE_LF_M.PT_LF_SUB._Z.N._T.Y_GE15._Z.M", "M", "PC", adjustment="NSA",
                 excludes=("CN",), area_codes=(("EA", "EA"),),
@@ -391,7 +396,7 @@ CONCEPTS: tuple[Concept, ...] = (
         description_en="Seasonally adjusted unemployment rate (%).",
         synonyms=("계절조정실업률", "sa unemployment", "seasonally adjusted unemployment"),
         sources=(
-            _ecos("901Y027", "I61BC.I28B", "M", "PC", adjustment="SA", note="실업률 계절조정"),
+            _ecos("901Y027", "I61BC.I28B", "M", "PC", adjustment="SA", note="seasonally adjusted"),
             SourceMapping(
                 "OECD", OECD_UNEMP, "{ISO3}.UNE_LF_M.PT_LF_SUB._Z.Y._T.Y_GE15._Z.M", "M", "PC", adjustment="SA",
                 excludes=("CN",), area_codes=(("EA", "EA"),),

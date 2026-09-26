@@ -110,7 +110,7 @@ async def test_catalog_mapping_returns_valid_data(service, concept, mapping, cou
     start, end = get_default_date_range(mapping.freq, recent_years=3 if mapping.freq == "A" else 1)
     single = get_country(countries[0]) if len(countries) == 1 else None
     key = mapping.render_key(single) if single else combined_key(mapping, countries)
-    src = ResolvedSource(mapping.provider, mapping.dataflow, key, mapping.freq, concept, single, mapping, mapping.transform, False, concept.name_ko)
+    src = ResolvedSource(mapping.provider, mapping.dataflow, key, mapping.freq, concept, single, mapping, mapping.transform, False, concept.name_en)
     loaded = await load_patiently(service, src, ecos_to_canonical(start, mapping.freq), ecos_to_canonical(end, mapping.freq))
     by_area = {s.ref_area: (s, r) for s, r in zip(loaded.series, loaded.reports)}
     assert len(loaded.series) == len(countries), [s.series_id for s in loaded.series]

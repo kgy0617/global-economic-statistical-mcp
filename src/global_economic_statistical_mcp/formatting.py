@@ -169,6 +169,8 @@ def _dataflow_link(series: CanonicalSeries) -> dict[str, str]:
     """A URN when the dataflow version is known, otherwise the query URL (never an invented version)."""
     if series.provider == "ECOS":
         return {"rel": "dataflow", "urn": ecos_sdmx.dataflow_urn(series.dataflow)}
+    if ":" not in series.dataflow:  # not an SDMX dataflow (World Bank Data360 database id)
+        return {"rel": "dataflow", "href": series.provenance.query_url or series.provenance.web_url or "about:blank"}
     agency, rest = series.dataflow.split(":", 1)
     flow, _, version = rest.partition("(")
     version = version.rstrip(")")

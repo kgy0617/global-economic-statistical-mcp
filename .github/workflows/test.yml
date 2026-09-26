@@ -10,6 +10,11 @@ on:
     - cron: "17 21 * * *"
   workflow_dispatch:
 
+# A newer push to the same branch cancels the older run (the live job takes ~25 minutes).
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     if: github.event_name != 'schedule'
@@ -42,6 +47,7 @@ jobs:
     # OECD, IMF and BIS APIs. Informative, not blocking: OECD rate limits shared runner IPs.
     runs-on: ubuntu-latest
     continue-on-error: true
+    timeout-minutes: 90
     env:
       ECOS_API_KEY: ${{ secrets.ECOS_API_KEY }}
     steps:

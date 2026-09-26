@@ -294,6 +294,12 @@ class StatService:
                 available = sorted({(s.provider, s.freq) for s in concept.sources_for(ctry)})
                 everywhere = sorted({(s.provider, s.freq) for s in concept.sources})
                 unpublished = sorted({s.provider for s in concept.sources if ctry.iso2 in s.excludes})
+                euro_area = get_country("EA")
+                hint = (
+                    f". {ctry.iso2} is a euro-area member; the euro-area series may apply: country='EA'"
+                    if ctry.currency == "EUR" and ctry.iso2 != "EA" and concept.sources_for(euro_area)
+                    else ""
+                )
                 raise ResolutionError(
                     f"No source for {concept.id} ({concept.name_en}) in {ctry.iso2}"
                     + (f" from {provider}" if provider else "")
@@ -301,6 +307,7 @@ class StatService:
                     + f". Available (source, frequency) for {ctry.iso2}: {available or 'none'}; "
                     f"all: {everywhere}"
                     + (f". {', '.join(unpublished)} does not publish this statistic for {ctry.iso2}" if unpublished else "")
+                    + hint
                 )
             return [
                 ResolvedSource(
@@ -489,7 +496,7 @@ class StatService:
                 "records": [],
             }
         resolved = [
-            ResolvedSource(m.provider, m.dataflow, m.render_key(country), m.freq, concept, country, m, m.transform, False, concept.name_ko)
+            ResolvedSource(m.provider, m.dataflow, m.render_key(country), m.freq, concept, country, m, m.transform, False, concept.name_en)
             for m in chosen.values()
         ]
 

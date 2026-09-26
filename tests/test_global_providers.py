@@ -168,3 +168,17 @@ async def test_metadata_and_search_for_new_institutions(fake_all):
     assert found["world_bank_indicators"][0]["indicator"] == "WB_WDI_SP_POP_TOTL"
     is_error, text = await call("get_metadata", {"source": "FRED", "dataflow": "X"})
     assert is_error and "one of OECD, IMF, BIS, ECB, EUROSTAT, WB" in text
+
+
+async def test_world_bank_series_render_as_sdmx_json(fake_all):
+    _, sdmx = fake_all
+    sdmx.wb.add("WB_WDI_SP_POP_TOTL", "JPN", {"2024": 123975371, "2025": 123366734}, unit="PS", name="Population, total")
+    out = json.loads(await ok("get_data", {"indicator": "POPULATION", "country": "JP", "start_date": "2024", "end_date": "2025", "output_format": "sdmx"}))
+    link = out["data"]["structures"][0]["links"][0]
+    assert link["rel"] == "dataflow" and "data360api.worldbank.org" in link["href"]
+
+
+async def test_euro_area_members_are_pointed_to_the_euro_area(service):
+    with pytest.raises(Exception, match="BIS does not publish this statistic for DE.*country='EA'"):
+        service.resolve(indicator="POLICY_RATE", country="DE")
+

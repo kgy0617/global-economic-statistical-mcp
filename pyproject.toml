@@ -1,6 +1,6 @@
 [project]
 name = "global-economic-statistical-mcp"
-version = "0.5.0"
+version = "0.5.1"
 description = "AI-native MCP interface for discovering, retrieving, comparing and analysing trusted macroeconomic statistics across central banks and international organisations (Bank of Korea ECOS, OECD, IMF, BIS, ECB, Eurostat, World Bank)"
 readme = "README.md"
 license = "MIT"
