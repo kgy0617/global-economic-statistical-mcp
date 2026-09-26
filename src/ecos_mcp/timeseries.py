@@ -116,6 +116,7 @@ def format_timeseries(
     output_format: str = "compact",
     transform: str | None = None,
     meta: dict[str, Any] | None = None,
+    evidence: dict[str, Any] | None = None,
 ) -> str:
     """Render StatisticSearch results as compact JSON, CSV, or raw JSON.
 
@@ -133,6 +134,8 @@ def format_timeseries(
         "total_count": result.get("total_count", len(rows)),
         "count": len(rows),
     }
+    if evidence:
+        summary["evidence"] = evidence
     for key in ("truncated", "note"):
         if result.get(key):
             summary[key] = result[key]
@@ -143,7 +146,17 @@ def format_timeseries(
 
     if output_format == "csv":
         buffer = io.StringIO()
+        if evidence:
+            buffer.write(f"# evidence_agency: {evidence.get('source_agency', '')}\n")
+            buffer.write(f"# evidence_table: {evidence.get('table_name', '')} ({evidence.get('table_code', '')})\n")
+            buffer.write(f"# evidence_series_key: {evidence.get('series_key', '')}\n")
+            buffer.write(f"# evidence_period: {evidence.get('period', '')}\n")
+            buffer.write(f"# evidence_retrieved_at: {evidence.get('retrieved_at', '')}\n")
+            buffer.write(f"# evidence_url: {evidence.get('ecos_url', '')}\n")
+            buffer.write(f"# evidence_citation: {evidence.get('citation', '')}\n")
         for key, value in summary.items():
+            if key == "evidence":
+                continue
             buffer.write(f"# {key}: {value}\n")
         writer = csv.writer(buffer, lineterminator="\n")
         header = ["TIME", "ITEM_CODE", "ITEM", "VALUE", "UNIT"]

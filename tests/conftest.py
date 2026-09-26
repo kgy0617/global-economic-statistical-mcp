@@ -23,6 +23,8 @@ class FakeEcos:
     def __init__(self) -> None:
         self.observations: list[dict[str, Any]] = []
         self.lists: dict[str, list[dict[str, Any]]] = {}
+        # Per-argument responses: (service, first extra path segment) -> rows
+        self.keyed: dict[tuple[str, str], list[dict[str, Any]]] = {}
         self.calls: list[list[str]] = []
         self.forced: list[httpx.Response | Exception] = []
 
@@ -85,6 +87,8 @@ class FakeEcos:
                 )
             ]
             rows.sort(key=lambda r: (r["TIME"], r["ITEM_CODE1"], r["ITEM_CODE2"] or ""))
+        elif extra and (service, extra[0]) in self.keyed:
+            rows = self.keyed[(service, extra[0])]
         else:
             rows = self.lists.get(service, [])
 
@@ -110,4 +114,24 @@ def monthly(start_year: int, values: list[float]) -> dict[str, float]:
     """Map consecutive months starting at January of start_year to values."""
     return {
         f"{start_year + i // 12}{i % 12 + 1:02d}": v for i, v in enumerate(values)
+    }
+
+
+def item_row(stat_code, group, code, name, cycle="M", unit="원", parent=None, grp_name=None, start="200001", end="202608"):
+    """A StatisticItemList row."""
+    return {
+        "STAT_CODE": stat_code,
+        "STAT_NAME": "테스트 통계표",
+        "GRP_CODE": f"Group{group}",
+        "GRP_NAME": grp_name or ("계정항목" if group == 1 else "측정항목"),
+        "ITEM_CODE": code,
+        "ITEM_NAME": name,
+        "P_ITEM_CODE": parent,
+        "P_ITEM_NAME": None,
+        "CYCLE": cycle,
+        "START_TIME": start,
+        "END_TIME": end,
+        "DATA_CNT": 100,
+        "UNIT_NAME": unit,
+        "WEIGHT": None,
     }

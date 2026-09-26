@@ -14,11 +14,21 @@ jobs:
       id-token: write
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: astral-sh/setup-uv@v6
+      - uses: astral-sh/setup-uv@v10
 
       - run: uv sync --locked
+
+      - name: Check release tag matches package version
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          VERSION=$(uv run python -c "import importlib.metadata as m; print(m.version('ecos-mcp'))")
+          if [ "${TAG#v}" != "$VERSION" ]; then
+            echo "::error::Release tag '$TAG' does not match pyproject version '$VERSION'"
+            exit 1
+          fi
 
       - run: uv run pytest
 

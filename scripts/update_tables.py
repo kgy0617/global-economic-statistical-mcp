@@ -11,10 +11,10 @@ from __future__ import annotations
 import asyncio
 import json
 import sys
-from datetime import date
 from pathlib import Path
 
 from ecos_mcp.client import EcosClient
+from ecos_mcp.config import today_kst
 
 OUTPUT = Path(__file__).resolve().parent.parent / "src" / "ecos_mcp" / "tables.json"
 FIELDS = ("P_STAT_CODE", "STAT_CODE", "STAT_NAME", "CYCLE", "SRCH_YN", "ORG_NAME")
@@ -42,7 +42,7 @@ async def main() -> None:
 
     tables = [{field: row.get(field) for field in FIELDS} for row in rows]
     payload = {
-        "generated_at": date.today().isoformat(),
+        "generated_at": today_kst().isoformat(),
         "source": "ECOS StatisticTableList",
         "tables": tables,
     }

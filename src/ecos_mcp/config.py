@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import os
 import re
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta, timezone
 from typing import Any
 
 from dotenv import load_dotenv
@@ -30,16 +30,28 @@ DEFAULT_START_COUNT = 1
 DEFAULT_END_COUNT = 100
 DEFAULT_LANGUAGE = "kr"
 SAMPLE_KEY_MAX_COUNT = 10
+DEFAULT_TIMESERIES_ROWS = 1000
 
 # HTTP behaviour
 HTTP_TIMEOUT_SECONDS = 30.0
 HTTP_MAX_RETRIES = 2  # retries after the first attempt (3 attempts total)
 HTTP_RETRY_BACKOFF_SECONDS = 0.5
 METADATA_CACHE_TTL_SECONDS = 6 * 60 * 60
+METADATA_CACHE_MAX_ENTRIES = 512
+KEY_STATISTICS_CACHE_TTL_SECONDS = 60 * 60
 
 # Default look-back windows when no dates are given
 DEFAULT_RECENT_YEARS = 2
 DEFAULT_DAILY_RECENT_DAYS = 90
+
+# ECOS publishes on Korean dates; "today" must not depend on the host timezone.
+# Korea has no daylight saving time, so a fixed offset is exact (and needs no tzdata).
+KST = timezone(timedelta(hours=9), "KST")
+
+
+def today_kst() -> date:
+    return datetime.now(KST).date()
+
 
 # Valid cycle values for StatisticSearch
 VALID_CYCLES = {"A", "S", "Q", "M", "SM", "D"}
@@ -140,8 +152,8 @@ def shift_period(cycle: str, value: str, periods: int) -> str:
 
 
 def current_period(cycle: str, today: date | None = None) -> str:
-    """Return the period string containing today."""
-    today = today or date.today()
+    """Return the period string containing today (Korean date by default)."""
+    today = today or today_kst()
     cycle = cycle.upper()
     if cycle == "A":
         return f"{today.year}"
@@ -158,6 +170,91 @@ def current_period(cycle: str, today: date | None = None) -> str:
     raise ValueError(f"지원되지 않는 주기입니다: '{cycle}'")
 
 
+def period_start_date(cycle: str, value: str) -> date:
+    """First calendar day of an ECOS period."""
+    cycle = cycle.upper()
+    value = value.strip()
+    year = int(value[:4])
+    if cycle == "A":
+        return date(year, 1, 1)
+    if cycle == "S":
+        return date(year, 1 if value[5] == "1" else 7, 1)
+    if cycle == "Q":
+        return date(year, (int(value[5]) - 1) * 3 + 1, 1)
+    if cycle == "M":
+        return date(year, int(value[4:6]), 1)
+    if cycle == "SM":
+        return date(year, int(value[4:6]), 1 if value[7] == "1" else 16)
+    if cycle == "D":
+        return _parse_day(value)
+    raise ValueError(f"지원되지 않는 주기입니다: '{cycle}'")
+
+
+def period_end_date(cycle: str, value: str) -> date:
+    """Last calendar day of an ECOS period."""
+    if cycle.upper() == "D":
+        return _parse_day(value.strip())
+    return period_start_date(cycle, shift_period(cycle, value, 1)) - timedelta(days=1)
+
+
+def convert_period(value: str, from_cycle: str, to_cycle: str) -> str:
+    """Map a period to the (coarser or finer) period of to_cycle containing its first day."""
+    return current_period(to_cycle, period_start_date(from_cycle, value))
+
+
+# Accepted spellings for dates given without a cycle (compare_series, flexible inputs)
+_ANY_PERIOD_PATTERNS: list[tuple[str, str]] = [
+    (r"^(\d{4})$", "A"),
+    (r"^(\d{4})-?S([12])$", "S"),
+    (r"^(\d{4})-?Q([1-4])$", "Q"),
+    (r"^(\d{4})-?(0[1-9]|1[0-2])$", "M"),
+    (r"^(\d{4})-?(0[1-9]|1[0-2])-?S([12])$", "SM"),
+    (r"^(\d{4})-?(0[1-9]|1[0-2])-?(0[1-9]|[12]\d|3[01])$", "D"),
+]
+
+
+def parse_any_period(value: str) -> tuple[str, str]:
+    """Detect the cycle of a date string and return (cycle, canonical ECOS value).
+
+    Accepts ECOS forms (2024, 2024Q1, 202401, 20240115, ...) and ISO-like forms
+    (2024-01, 2024-01-15, 2024-Q1).
+    """
+    text = str(value).strip().upper()
+    for pattern, cycle in _ANY_PERIOD_PATTERNS:
+        match = re.match(pattern, text)
+        if match:
+            canonical = "".join(match.groups())
+            if cycle == "S":
+                canonical = f"{match.group(1)}S{match.group(2)}"
+            elif cycle == "Q":
+                canonical = f"{match.group(1)}Q{match.group(2)}"
+            elif cycle == "SM":
+                canonical = f"{match.group(1)}{match.group(2)}S{match.group(3)}"
+            is_valid, _ = validate_date_format(cycle, canonical)
+            if is_valid:
+                return cycle, canonical
+    raise ValueError(f"날짜 형식을 해석할 수 없습니다: '{value}'")
+
+
+def to_cycle(value: str, cycle: str, bound: str = "start") -> str:
+    """Normalize a date string of any supported form to the given cycle.
+
+    bound='start' maps to the period containing the first day of the given period,
+    bound='end' to the period containing its last day (so '2024' → '202412' for M).
+    """
+    cycle = cycle.upper()
+    text = str(value).strip()
+    if validate_date_format(cycle, text)[0]:
+        return text
+    source_cycle, canonical = parse_any_period(text)
+    day = (
+        period_start_date(source_cycle, canonical)
+        if bound == "start"
+        else period_end_date(source_cycle, canonical)
+    )
+    return current_period(cycle, day)
+
+
 def get_default_date_range(
     cycle: str,
     recent_years: int | None = None,
@@ -169,12 +266,12 @@ def get_default_date_range(
         cycle: Period cycle (A, S, Q, M, SM, D)
         recent_years: Number of years to look back. When None, daily series look back
             DEFAULT_DAILY_RECENT_DAYS days and all other cycles DEFAULT_RECENT_YEARS years.
-        today: Reference date (for tests).
+        today: Reference date (defaults to today's Korean date).
 
     Returns:
         (start_date, end_date) in valid format for cycle
     """
-    today = today or date.today()
+    today = today or today_kst()
     cycle = cycle.upper()
     end = current_period(cycle, today)
 

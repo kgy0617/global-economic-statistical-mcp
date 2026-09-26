@@ -7,9 +7,9 @@ import json
 import logging
 import re
 import time
+import urllib.parse
 from pathlib import Path
 from typing import Any
-import urllib.parse
 
 import httpx
 
@@ -21,6 +21,8 @@ from ecos_mcp.config import (
     HTTP_MAX_RETRIES,
     HTTP_RETRY_BACKOFF_SECONDS,
     HTTP_TIMEOUT_SECONDS,
+    KEY_STATISTICS_CACHE_TTL_SECONDS,
+    METADATA_CACHE_MAX_ENTRIES,
     METADATA_CACHE_TTL_SECONDS,
     SAMPLE_API_KEY,
     SAMPLE_KEY_MAX_COUNT,
@@ -248,6 +250,9 @@ class EcosClient:
             except EcosApiError as e:
                 raise EcosApiError(e.code, self._redact(e.message)) from None
             if cache_ttl:
+                if len(self._response_cache) >= METADATA_CACHE_MAX_ENTRIES:
+                    # dicts keep insertion order: evict the oldest entry
+                    self._response_cache.pop(next(iter(self._response_cache)))
                 self._response_cache[url] = (time.monotonic() + cache_ttl, data)
 
         total_count, rows = self._extract_result(data, service_name)
@@ -402,6 +407,88 @@ class EcosClient:
                     found.add(child)
                     stack.append(child)
         return found
+
+    def table_info(self, stat_code: str) -> dict[str, Any] | None:
+        """Look up a table (or category) in the local index."""
+        code = stat_code.strip()
+        return next((t for t in self._load_tables_cache() if t.get("STAT_CODE") == code), None)
+
+    async def _fetch_all_pages(
+        self,
+        service_name: str,
+        language: str,
+        *extra: str,
+        max_rows: int,
+        max_calls: int,
+        cache_ttl: float | None = None,
+    ) -> tuple[list[dict[str, Any]], int]:
+        """Fetch every page of a list service (concurrently after the first page).
+
+        Returns (rows, total_count). Stops at max_rows rows or max_calls requests; when
+        capped, pages are taken from both ends so that later item groups (listed last
+        by ECOS) are still represented.
+        """
+        page = SAMPLE_KEY_MAX_COUNT if self.is_sample_key else 1000
+        first = await self._request(service_name, language, 1, page, *extra, cache_ttl=cache_ttl)
+        total = first["total_count"]
+        last_row = min(total, max_rows)
+        starts = list(range(page + 1, last_row + 1, page))
+        budget = max(0, max_calls - 1)
+        if len(starts) > budget:
+            head = budget // 2
+            starts = starts[:head] + starts[len(starts) - (budget - head) :]
+        pages = await asyncio.gather(
+            *(
+                self._request(
+                    service_name, language, start, min(start + page - 1, last_row), *extra, cache_ttl=cache_ttl
+                )
+                for start in starts
+            )
+        )
+        rows = list(first["rows"])
+        for result in pages:
+            rows.extend(result["rows"])
+        return rows, total
+
+    async def list_all_statistic_items(
+        self,
+        stat_code: str,
+        language: str = "kr",
+        max_rows: int = 10000,
+    ) -> dict[str, Any]:
+        """All StatisticItemList rows for a table (capped at ~10 calls for the sample key)."""
+        rows, total = await self._fetch_all_pages(
+            "StatisticItemList",
+            language,
+            stat_code.strip(),
+            max_rows=max_rows,
+            max_calls=10 if self.is_sample_key else 20,
+            cache_ttl=METADATA_CACHE_TTL_SECONDS,
+        )
+        return {"total_count": total, "rows": rows, "complete": len(rows) >= total}
+
+    async def get_all_statistic_meta(self, data_name: str, language: str = "kr") -> dict[str, Any]:
+        """All StatisticMeta rows for a dataset name (section headers and their texts)."""
+        rows, total = await self._fetch_all_pages(
+            "StatisticMeta",
+            language,
+            data_name,
+            max_rows=500,
+            max_calls=10,
+            cache_ttl=METADATA_CACHE_TTL_SECONDS,
+        )
+        return {"total_count": total, "rows": rows, "complete": len(rows) >= total}
+
+    async def get_all_key_statistics(self, language: str = "kr") -> dict[str, Any]:
+        """The full 100대 주요 경제지표 list (cached for an hour; values change daily)."""
+        rows, total = await self._fetch_all_pages(
+            "KeyStatisticList",
+            language,
+            max_rows=200,
+            max_calls=20,
+            cache_ttl=KEY_STATISTICS_CACHE_TTL_SECONDS,
+        )
+        return {"total_count": total, "rows": rows, "complete": len(rows) >= total}
 
     def browse_statistic_tables(self, parent_code: str | None = None) -> dict[str, Any]:
         """List the direct children of a table-tree node from the local index.

@@ -9,7 +9,9 @@ from ecos_mcp.config import (
     get_default_date_range,
     load_api_key,
     match_popular_indicators,
+    parse_any_period,
     shift_period,
+    to_cycle,
     validate_date_format,
 )
 
@@ -121,3 +123,34 @@ def test_presets_are_well_formed():
         assert preset.get("transform") in (None, "yoy", "pop")
         if preset.get("transform") == "yoy":
             assert preset["cycle"] != "D"
+
+
+@pytest.mark.parametrize(
+    ("value", "cycle", "bound", "expected"),
+    [
+        ("2024", "M", "start", "202401"),
+        ("2024", "M", "end", "202412"),
+        ("2024-03", "Q", "end", "2024Q1"),
+        ("2024Q2", "M", "end", "202406"),
+        ("2024-01-15", "M", "start", "202401"),
+        ("20240115", "SM", "start", "202401S1"),
+        ("202402", "D", "end", "20240229"),
+        ("202401", "M", "start", "202401"),
+    ],
+)
+def test_to_cycle(value, cycle, bound, expected):
+    assert to_cycle(value, cycle, bound) == expected
+
+
+@pytest.mark.parametrize("value", ["2024-13", "24", "2024Q5", "abc"])
+def test_parse_any_period_rejects_garbage(value):
+    with pytest.raises(ValueError):
+        parse_any_period(value)
+
+
+def test_today_is_korean_date():
+    from datetime import datetime
+
+    from ecos_mcp.config import KST, today_kst
+
+    assert today_kst() == datetime.now(KST).date()
